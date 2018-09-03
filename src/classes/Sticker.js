@@ -8,7 +8,7 @@ class Sticker {
 
     contains(p) {
         let u = this.points[this.points.length - 1], zProduct = 0, product;
-        for(let v of this.points) {
+        for (let v of this.points) {
             product = new Vector(u, v).cross(new Vector(u, p));
             if ((zProduct < 0 && product.z > 0) || (zProduct > 0 && product.z < 0)) {
                 return false;
@@ -34,7 +34,7 @@ class Sticker {
     }
 
     getPointProjection(point) {
-        return [point.x + ((this.attractor.x - point.x) >> 5), point.y +((this.attractor.y - point.y) >> 5)];
+        return [point.x + ((this.attractor.x - point.x) >> 5), point.y + ((this.attractor.y - point.y) >> 5)];
     }
 
     render(ctx) {

@@ -1,5 +1,5 @@
 class Cube extends Puzzle {
-    constructor(size=2, fullSpan=250) {
+    constructor(size = 2, fullSpan = 250) {
         const width = fullSpan / size;
         const span = fullSpan / 2;
         const alphaM = Math.PI / 2;
@@ -11,59 +11,59 @@ class Cube extends Puzzle {
         const grid = {};
         const faces = [];
         const faceConfig = [
-            {'fixed': 'x', 'direction': -1, 'variable': ['y', 'z'], 'color': 'yellow'},
-            {'fixed': 'x', 'direction': 1, 'variable': ['y', 'z'], 'color': 'white'},
-            {'fixed': 'y', 'direction': -1, 'variable': ['z', 'x'], 'color': 'blue'},
-            {'fixed': 'y', 'direction': 1, 'variable': ['z', 'x'], 'color': 'lawngreen'},
-            {'fixed': 'z', 'direction': -1, 'variable': ['x', 'y'], 'color': 'red'},
-            {'fixed': 'z', 'direction': 1, 'variable': ['x', 'y'], 'color': 'darkorange'},
+            { 'fixed': 'x', 'direction': -1, 'variable': ['y', 'z'], 'color': 'yellow' },
+            { 'fixed': 'x', 'direction': 1, 'variable': ['y', 'z'], 'color': 'white' },
+            { 'fixed': 'y', 'direction': -1, 'variable': ['z', 'x'], 'color': 'blue' },
+            { 'fixed': 'y', 'direction': 1, 'variable': ['z', 'x'], 'color': 'lawngreen' },
+            { 'fixed': 'z', 'direction': -1, 'variable': ['x', 'y'], 'color': 'red' },
+            { 'fixed': 'z', 'direction': 1, 'variable': ['x', 'y'], 'color': 'darkorange' },
         ];
         const cycleFamilyConfig = [
             {
                 'slices': [
-                    {fIndex: 1, sIndex: 0, sJump: size, cJump: 1},
-                    {fIndex: 3, sIndex: size - 1, sJump: -1, cJump: size},
-                    {fIndex: 0, sIndex: (size - 1) * size, sJump: -size, cJump: 1},
-                    {fIndex: 2, sIndex: 0, sJump: 1, cJump: size}
+                    { fIndex: 1, sIndex: 0, sJump: size, cJump: 1 },
+                    { fIndex: 3, sIndex: size - 1, sJump: -1, cJump: size },
+                    { fIndex: 0, sIndex: (size - 1) * size, sJump: -size, cJump: 1 },
+                    { fIndex: 2, sIndex: 0, sJump: 1, cJump: size }
                 ],
-                'attachedFaces': { ffIndex: 4, lfIndex: 5, iStep: size, jStep: 1},
+                'attachedFaces': { ffIndex: 4, lfIndex: 5, iStep: size, jStep: 1 },
                 'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 0, 0, 1))
             },
             {
                 'slices': [
-                    {fIndex: 1, sIndex: 0, sJump: 1, cJump: size},
-                    {fIndex: 5, sIndex: (size - 1) * size, sJump: -size, cJump: 1},
-                    {fIndex: 0, sIndex: size - 1, sJump: -1, cJump: size},
-                    {fIndex: 4, sIndex: 0, sJump: size, cJump: 1}
+                    { fIndex: 1, sIndex: 0, sJump: 1, cJump: size },
+                    { fIndex: 5, sIndex: (size - 1) * size, sJump: -size, cJump: 1 },
+                    { fIndex: 0, sIndex: size - 1, sJump: -1, cJump: size },
+                    { fIndex: 4, sIndex: 0, sJump: size, cJump: 1 }
                 ],
-                'attachedFaces': { ffIndex: 2, lfIndex: 3, iStep: 1, jStep: size},
+                'attachedFaces': { ffIndex: 2, lfIndex: 3, iStep: 1, jStep: size },
                 'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 0, -1, 0))
             },
             {
                 'slices': [
-                    {fIndex: 2, sIndex: 0, sJump: size, cJump: 1},
-                    {fIndex: 5, sIndex: 0, sJump: 1, cJump: size},
-                    {fIndex: 3, sIndex: (size - 1) * size, sJump: -size, cJump: 1},
-                    {fIndex: 4, sIndex: size - 1, sJump: -1, cJump: size}
+                    { fIndex: 2, sIndex: 0, sJump: size, cJump: 1 },
+                    { fIndex: 5, sIndex: 0, sJump: 1, cJump: size },
+                    { fIndex: 3, sIndex: (size - 1) * size, sJump: -size, cJump: 1 },
+                    { fIndex: 4, sIndex: size - 1, sJump: -1, cJump: size }
                 ],
-                'attachedFaces': { ffIndex: 0, lfIndex: 1, iStep: 1, jStep: size},
+                'attachedFaces': { ffIndex: 0, lfIndex: 1, iStep: 1, jStep: size },
                 'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, 0, 0))
             }
         ];
-        const fSliceConfig = [{key: 'iStep', dir: 1}, {key: 'jStep', dir: 1}, {key: 'iStep', dir: -1}, {key: 'jStep', dir: -1}];
+        const fSliceConfig = [{ key: 'iStep', dir: 1 }, { key: 'jStep', dir: 1 }, { key: 'iStep', dir: -1 }, { key: 'jStep', dir: -1 }];
 
         let v1, v2, pointDef, pid, sid, spoints;
         faceConfig.forEach((config, f) => {
             let stickers = [];
             v1 = -span;
-            for(let i = 0; i <= size; i++) {
+            for (let i = 0; i <= size; i++) {
                 v2 = -span;
-                for(let j =0; j <= size; j++) {
+                for (let j = 0; j <= size; j++) {
                     pid = `p-${f}-${i}-${j}`;
                     pointDef = {};
                     pointDef[config.fixed] = config.direction * span;
                     pointDef[config.variable[0]] = v1;
-                    pointDef[config.variable[1]] = v2;                    
+                    pointDef[config.variable[1]] = v2;
                     grid[pid] = new Point(pid, pointDef.x, pointDef.y, pointDef.z);
                     if (i && j) {
                         sid = `s-${f}-${i}-${j}`;
@@ -88,11 +88,11 @@ class Cube extends Puzzle {
         const cycles = [];
         let cycle, stickerCollection, stickerIndex, fCycle, lCycle, fFace, lFace;
         cycleFamilyConfig.forEach(config => {
-            for(let c = 0; c < size; c++) {
+            for (let c = 0; c < size; c++) {
                 cycle = new Cycle([], 4, config.unitVector, animationConfig);
                 stickerCollection = [];
                 config.slices.forEach(slice => {
-                    for(let s = 0; s < size; s++) {
+                    for (let s = 0; s < size; s++) {
                         stickerIndex = slice.sIndex + s * slice.sJump + c * slice.cJump;
                         stickerCollection.push(faces[slice.fIndex].stickers[stickerIndex]);
                     }
@@ -102,11 +102,11 @@ class Cube extends Puzzle {
             }
             fCycle = cycles[cycles.length - size];
             fFace = faces[config.attachedFaces.ffIndex];
-            for(let c = 0; c < Math.floor(size / 2); c++) {
+            for (let c = 0; c < Math.floor(size / 2); c++) {
                 stickerCollection = [];
                 stickerIndex = c * (size + 1);
-                fSliceConfig.forEach(({key, dir}) => {
-                    for(let s = 0; s < size - 2 * c - 1; s++) {
+                fSliceConfig.forEach(({ key, dir }) => {
+                    for (let s = 0; s < size - 2 * c - 1; s++) {
                         stickerCollection.push(fFace.stickers[stickerIndex]);
                         stickerIndex += config.attachedFaces[key] * dir;
                     }
@@ -115,11 +115,11 @@ class Cube extends Puzzle {
             }
             lCycle = cycles[cycles.length - 1];
             lFace = faces[config.attachedFaces.lfIndex];
-            for(let c = 0; c < Math.floor(size / 2); c++) {
+            for (let c = 0; c < Math.floor(size / 2); c++) {
                 stickerCollection = [];
                 stickerIndex = c * (size + 1);
-                fSliceConfig.forEach(({key, dir}) => {
-                    for(let s = 0; s < size - 2 * c - 1; s++) {
+                fSliceConfig.forEach(({ key, dir }) => {
+                    for (let s = 0; s < size - 2 * c - 1; s++) {
                         stickerCollection.push(lFace.stickers[stickerIndex]);
                         stickerIndex += config.attachedFaces[key] * dir;
                     }

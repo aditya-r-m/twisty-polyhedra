@@ -1,9 +1,9 @@
 class Puzzle {
-    constructor(grid, faces, cycles) {
+    constructor(grid, faces, cycles, angles) {
         this.grid = grid;
         this.faces = faces;
         this.cycles = cycles;
-        this.baseAngles = this.angles = { 'theta': - Math.PI / 4, 'phi': Math.PI / 8 };
+        this.baseAngles = this.angles = angles || { 'theta': - Math.PI / 4, 'phi': Math.PI / 8 };
 
         this.twisting = this.rotating = false;
         this.startEvtCoordinates = {};
@@ -27,8 +27,8 @@ class Puzzle {
             stickerCollection.forEach(sticker => {
                 this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || {};
                 this.cycleMap[previous.id] = this.cycleMap[previous.id] || {};
-                this.cycleMap[sticker.id][previous.id] = { index: cycleIndex, direction: -1};
-                this.cycleMap[previous.id][sticker.id] = { index: cycleIndex, direction: 1};
+                this.cycleMap[sticker.id][previous.id] = { index: cycleIndex, direction: -1 };
+                this.cycleMap[previous.id][sticker.id] = { index: cycleIndex, direction: 1 };
                 previous = sticker;
             })
         });
@@ -60,11 +60,11 @@ class Puzzle {
 
     findTouchedSticker(x, y) {
         let sticker;
-        for(let f = this.faces.length - 1; f >= 0; f--) {
+        for (let f = this.faces.length - 1; f >= 0; f--) {
             if (this.faces[f].normalVector.z >= 0) {
                 return;
             }
-            sticker = this.faces[f].stickers.find(sticker =>  sticker.contains({x, y, z: 0}));
+            sticker = this.faces[f].stickers.find(sticker => sticker.contains({ x, y, z: 0 }));
             if (sticker) {
                 return sticker;
             }
@@ -76,7 +76,7 @@ class Puzzle {
             this.rotating = true;
             this.startEvtCoordinates.x = x;
             this.startEvtCoordinates.y = y;
-            this.baseAngles = {...this.angles};
+            this.baseAngles = { ...this.angles };
         } else {
             this.startSticker = this.findTouchedSticker(x, y);
             this.twisting = !!this.startSticker;

@@ -8,14 +8,14 @@ class Cycle {
     }
 
     update() {
-        this.stickerCollections.forEach(collection =>  collection.forEach(({ id }) => this.stickerCover[id] = true));
+        this.stickerCollections.forEach(collection => collection.forEach(({ id }) => this.stickerCover[id] = true));
     }
 
     mod(n, m) {
         return ((n % m) + m) % m;
     }
 
-    twist(direction=1) {
+    twist(direction = 1) {
         this.stickerCollections.forEach(collection => {
             if (collection.length === 1) return;
             let increment = direction * collection.length / this.period;

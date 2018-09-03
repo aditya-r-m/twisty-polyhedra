@@ -9,7 +9,7 @@
         })
     }
 
-    window.menuConfig.puzzles.forEach(({elem, create}) => {
+    window.menuConfig.puzzles.forEach(({ elem, create }) => {
         const ctx = elem.getContext('2d');
         const dT = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
         const dP = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;

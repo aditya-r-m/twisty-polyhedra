@@ -8,7 +8,7 @@ class Point {
 
     update(referencePoint, theta, phi, unitVector, alpha) {
         let xn, yn, zn;
-        let {x, y, z} = unitVector ? this.rotate3D(referencePoint, unitVector, alpha) : referencePoint;
+        let { x, y, z } = unitVector ? this.rotate3D(referencePoint, unitVector, alpha) : referencePoint;
 
         zn = z * Math.cos(-theta) - x * Math.sin(-theta);
         xn = z * Math.sin(-theta) + x * Math.cos(-theta);
@@ -38,19 +38,19 @@ class Point {
         let Y = unitVector.y;
         let Z = unitVector.z;
 
-        let d11 = t*X**2 + c;
-        let d12 = t*X*Y - s*Z;
-        let d13 = t*X*Z + s*Y;
-        let d21 = t*X*Y + s*Z;
-        let d22 = t*Y**2 + c;
-        let d23 = t*Y*Z - s*X;
-        let d31 = t*X*Z - s*Y;
-        let d32 = t*Y*Z + s*X;
-        let d33 = t*Z**2 + c;
+        let d11 = t * X ** 2 + c;
+        let d12 = t * X * Y - s * Z;
+        let d13 = t * X * Z + s * Y;
+        let d21 = t * X * Y + s * Z;
+        let d22 = t * Y ** 2 + c;
+        let d23 = t * Y * Z - s * X;
+        let d31 = t * X * Z - s * Y;
+        let d32 = t * Y * Z + s * X;
+        let d33 = t * Z ** 2 + c;
 
-        q.x = d11*point.x + d12*point.y + d13*point.z;
-        q.y = d21*point.x + d22*point.y + d23*point.z;
-        q.z = d31*point.x + d32*point.y + d33*point.z;
+        q.x = d11 * point.x + d12 * point.y + d13 * point.z;
+        q.y = d21 * point.x + d22 * point.y + d23 * point.z;
+        q.z = d31 * point.x + d32 * point.y + d33 * point.z;
         return q;
     }
 

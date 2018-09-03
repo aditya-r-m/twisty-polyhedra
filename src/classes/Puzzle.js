@@ -41,7 +41,7 @@ class Puzzle {
                 this.grid, this.angles.theta, this.angles.phi,
                 ...(this.animationState.cycle.stickerCover[sticker.id] ? [this.animationState.cycle.unitVector, alpha] : []))
             );
-            this.stickers.sort((s1, s2) => s1.attractor.z < s2.attractor.z);
+            this.stickers.sort((s1, s2) => s2.attractor.z - s1.attractor.z);
             this.animationState.counter++;
         } else {
             if (this.animationState.active) {
@@ -54,7 +54,7 @@ class Puzzle {
                 };
             }
             this.faces.forEach(face => face.update(this.grid, this.angles.theta, this.angles.phi));
-            this.faces.sort((f1, f2) => f1.normalVector.z < f2.normalVector.z);
+            this.faces.sort((f1, f2) => f2.normalVector.z - f1.normalVector.z);
         }
     }
 

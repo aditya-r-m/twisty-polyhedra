@@ -7,6 +7,7 @@ class Puzzle {
 
         this.twisting = this.rotating = false;
         this.startEvtCoordinates = {};
+        this.twistCounter = 0;
         this.animationState = {
             active: false,
             counter: 0,
@@ -21,17 +22,11 @@ class Puzzle {
     }
 
     processCycleMap() {
-        this.cycles.forEach((cycle, cycleIndex) => {
-            let stickerCollection = cycle.stickerCollections[0]
-            let previous = stickerCollection[stickerCollection.length - 1];
-            stickerCollection.forEach(sticker => {
-                this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || {};
-                this.cycleMap[previous.id] = this.cycleMap[previous.id] || {};
-                this.cycleMap[sticker.id][previous.id] = { index: cycleIndex, direction: -1 };
-                this.cycleMap[previous.id][sticker.id] = { index: cycleIndex, direction: 1 };
-                previous = sticker;
-            })
-        });
+        this.cycles.forEach(cycle => cycle.stickerCollections[0].forEach(sticker => {
+            this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || [];
+            this.cycleMap[sticker.id].push(cycle);
+        })
+        );
     }
 
     update() {
@@ -72,10 +67,10 @@ class Puzzle {
     }
 
     grab(x, y, type) {
+        this.startEvtCoordinates.x = x;
+        this.startEvtCoordinates.y = y;
         if (type == 2) {
             this.rotating = true;
-            this.startEvtCoordinates.x = x;
-            this.startEvtCoordinates.y = y;
             this.baseAngles = { ...this.angles };
         } else {
             this.startSticker = this.findTouchedSticker(x, y);
@@ -89,22 +84,45 @@ class Puzzle {
             this.angles.theta = this.baseAngles.theta + (x - this.startEvtCoordinates.x) / 100;
             this.angles.phi = this.baseAngles.phi + (y - this.startEvtCoordinates.y) / 100;
         } else if (this.twisting) {
-            let currentSticker = this.findTouchedSticker(x, y);
-            if (currentSticker && this.cycleMap[this.startSticker.id][currentSticker.id]) {
-                this.animationState = {
-                    active: true,
-                    counter: 0,
-                    direction: this.cycleMap[this.startSticker.id][currentSticker.id].direction,
-                    cycle: this.cycles[this.cycleMap[this.startSticker.id][currentSticker.id].index]
-                };
+            if (this.twistCounter < 5) {
+                this.twistCounter++;
+            } else {
+                this.detectCycle(x, y);
             }
-            this.startSticker = currentSticker;
         }
+    }
+
+    detectCycle(x, y) {
+        let v = new Vector(
+            new Point('', this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
+            new Point('', x, y, 0)
+        );
+        let mxMg = 0, mxCycle, mxDirection;
+        this.cycleMap[this.startSticker.id].forEach(cycle => {
+            let unitPoint = new Point('', cycle.unitVector.x, cycle.unitVector.y, cycle.unitVector.z);
+            unitPoint.update(unitPoint, this.angles.theta, this.angles.phi);
+            unitPoint.z = 0;
+            let vC = new Vector({ x: 0, y: 0, z: 0 }, unitPoint).unit();
+            let product = v.cross(vC);
+            if (mxMg < product.magnitude()) {
+                mxMg = product.magnitude();
+                mxCycle = cycle;
+                mxDirection = product.z > 0 ? -1 : 1;
+            }
+        })
+        this.animationState = {
+            active: true,
+            counter: 0,
+            direction: mxDirection,
+            cycle: mxCycle
+        };
+        this.release();
     }
 
     release() {
         this.twisting = this.rotating = false;
         this.startEvtCoordinates = {};
+        this.twistCounter = 0;
         this.startSticker = undefined;
     }
 

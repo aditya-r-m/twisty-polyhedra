@@ -152,7 +152,7 @@ class Tetrahedron extends Puzzle {
             }
             cycle.update();
         });
-        super(grid, faces, cycles, { theta: 0, phi: 0 });
+        super(grid, faces, cycles, { theta: 0, phi: - Math.PI / 16 });
     }
 }
 

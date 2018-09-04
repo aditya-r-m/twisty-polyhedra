@@ -32,10 +32,11 @@ class Puzzle {
     update() {
         if (this.animationState.active && this.animationState.counter < this.animationState.cycle.animationConfig.steps) {
             let alpha = this.animationState.direction * this.animationState.counter * this.animationState.cycle.animationConfig.dAlpha;
-            this.stickers.forEach(sticker => sticker.update(
+            this.stickers.forEach(sticker => {
+                sticker.update(
                 this.grid, this.angles.theta, this.angles.phi,
                 ...(this.animationState.cycle.stickerCover[sticker.id] ? [this.animationState.cycle.unitVector, alpha] : []))
-            );
+            });
             this.stickers.sort((s1, s2) => s2.attractor.z - s1.attractor.z);
             this.animationState.counter++;
         } else {
@@ -84,7 +85,7 @@ class Puzzle {
             this.angles.theta = this.baseAngles.theta + (x - this.startEvtCoordinates.x) / 100;
             this.angles.phi = this.baseAngles.phi + (y - this.startEvtCoordinates.y) / 100;
         } else if (this.twisting) {
-            if (this.twistCounter < 5) {
+            if (this.twistCounter < 9) {
                 this.twistCounter++;
             } else {
                 this.detectCycle(x, y);

@@ -9,7 +9,7 @@
         'y': gameCanvasRect.top + 300
     }
 
-    window.selectedPuzzle = new Cube(3);
+    window.selectedPuzzle = new Tetrahedron(3);
 
     let loop = () => {
         ctx.save();
@@ -39,6 +39,10 @@
     gameCanvas.addEventListener('mouseup', e => {
         e.preventDefault();
         e.stopPropagation();
+        window.selectedPuzzle.release();
+    })
+
+    gameCanvas.addEventListener('mouseleave', e => {
         window.selectedPuzzle.release();
     })
 

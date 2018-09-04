@@ -2,10 +2,16 @@
     window.menuConfig = {
         puzzles: []
     }
-    for (let i = 2; i <= 7; i++) {
+    for (let i = 2; i <= 4; i++) {
         window.menuConfig.puzzles.push({
             elem: window[`menu-1-item-${i - 1}`],
-            create: width => new Cube(i, width)
+            create: isDemo => new Cube(i, isDemo ? 50 : undefined)
+        })
+    }
+    for (let i = 3; i <= 5; i++) {
+        window.menuConfig.puzzles.push({
+            elem: window[`menu-2-item-${i - 2}`],
+            create: isDemo => new Tetrahedron(i, isDemo ? 40 : undefined)
         })
     }
 
@@ -13,7 +19,7 @@
         const ctx = elem.getContext('2d');
         const dT = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
         const dP = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
-        const puzzle = create(50);
+        const puzzle = create(true);
         ctx.translate(50, 50);
         let loop = () => {
             ctx.save();

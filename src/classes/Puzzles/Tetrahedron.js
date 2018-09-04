@@ -1,5 +1,5 @@
 class Tetrahedron extends Puzzle {
-    constructor(size = 3, fullSpan = 250) {
+    constructor(size = 3, fullSpan = 200) {
         const altitude = fullSpan / Math.sqrt(2);
         const alphaM = 2 * Math.PI / 3;
         const animationSteps = 10;
@@ -26,14 +26,38 @@ class Tetrahedron extends Puzzle {
         const cycleFamilyConfig = [
             {
                 'slices': [
-                    { fIndex: 0, sIJ: row => [row, 0], dIJ: row => [0, 1] },
-                    { fIndex: 1, sIJ: row => [row, 0], dIJ: row => [0, 1] },
-                    { fIndex: 2, sIJ: row => [row, 0], dIJ: row => [0, 1] }
+                    { fIndex: 0, sIJ: row => [row, 0], dIJ: () => [0, 1] },
+                    { fIndex: 1, sIJ: row => [row, 0], dIJ: () => [0, 1] },
+                    { fIndex: 2, sIJ: row => [row, 0], dIJ: () => [0, 1] }
                 ],
-                'attachedFace': { fIndex: 3, steps: [row => [1, 0], row => [0, 2], row => [-1, -2]] },
+                'attachedFace': { fIndex: 3, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] },
                 'unitVector': new Vector(new Point('', 0, 0, 0), rootPoints[0]).unit()
+            }, {
+                'slices': [
+                    { fIndex: 0, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1] },
+                    { fIndex: 3, sIJ: row => [row, 0], dIJ: () => [0, 1] },
+                    { fIndex: 1, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1] }
+                ],
+                'attachedFace': { fIndex: 2, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] },
+                'unitVector': new Vector(new Point('', 0, 0, 0), rootPoints[1]).unit()
+            }, {
+                'slices': [
+                    { fIndex: 0, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1] },
+                    { fIndex: 2, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 1 : 0, col % 2 ? 1 : -1] },
+                    { fIndex: 3, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1] }
+                ],
+                'attachedFace': { fIndex: 1, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] },
+                'unitVector': new Vector(new Point('', 0, 0, 0), rootPoints[2]).unit()
+            }, {
+                'slices': [
+                    { fIndex: 1, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1] },
+                    { fIndex: 3, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 1 : 0, col % 2 ? 1 : -1] },
+                    { fIndex: 2, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1] }
+                ],
+                'attachedFace': { fIndex: 0, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] },
+                'unitVector': new Vector(new Point('', 0, 0, 0), rootPoints[3]).unit()
             }
-        ];
+        ]
         faceConfig.forEach((config, f) => {
             let stickers = [];
             let preArr = [config.points[0].clone()], nxtArr, p, q, r, s;
@@ -53,16 +77,26 @@ class Tetrahedron extends Puzzle {
                     q = nxtArr[j].clone();
                     r = nxtArr[j + 1].clone();
                     p.id = `p-${f}-${i}-${j}`;
+                    while (grid[p.id]) p.id += '-n';
                     q.id = `p-${f}-${i + 1}-${j}`;
+                    while (grid[q.id]) q.id += '-n';
                     r.id = `p-${f}-${i + 1}-${j + 1}`;
+                    while (grid[r.id]) r.id += '-n';
                     grid[p.id] = p.clone();
                     grid[q.id] = q.clone();
                     grid[r.id] = r.clone();
                     stickers.push(new Sticker(`s-${f}-${i}-${2 * j}`, config.color, [p, q, r]));
                     stickerMap[stickers[stickers.length - 1].id] = stickers[stickers.length - 1];
                     if (j < preArr.length - 1) {
+                        p = p.clone();
+                        while (grid[p.id]) p.id += '-n';
+                        r = r.clone();
+                        while (grid[r.id]) r.id += '-n';
                         s = preArr[j + 1].clone();
                         s.id = `q-${f}-${i}-${j + 1}`;
+                        while (grid[s.id]) s.id += '-n';
+                        grid[p.id] = p.clone();
+                        grid[r.id] = r.clone();
                         grid[s.id] = s.clone();
                         stickers.push(new Sticker(`s-${f}-${i}-${2 * j + 1}`, config.color, [p, r, s]));
                         stickerMap[stickers[stickers.length - 1].id] = stickers[stickers.length - 1];
@@ -78,9 +112,9 @@ class Tetrahedron extends Puzzle {
                 cycle = new Cycle([], 3, config.unitVector, animationConfig);
                 stickerCollection = [];
                 config.slices.forEach(slice => {
-                    [sI, sJ] = slice.sIJ(c);
-                    [dI, dJ] = slice.dIJ(c);
+                    [sI, sJ] = slice.sIJ(c, stickerCollection.length);
                     for (let s = 0; s < 1 + (2 * c); s++) {
+                        [dI, dJ] = slice.dIJ(c, stickerCollection.length);
                         stickerCollection.push(stickerMap[`s-${slice.fIndex}-${sI}-${sJ}`]);
                         sI += dI;
                         sJ += dJ;
@@ -94,16 +128,18 @@ class Tetrahedron extends Puzzle {
             aFace = config.attachedFace.fIndex;
             let l = size - 1;
             let d = 1;
-            let s = 0, i, j;
+            let s = 0, t, i, j;
             while (l > 0) {
                 i = j = s;
                 stickerCollection = [];
                 config.attachedFace.steps.forEach(stepConfigGetter => {
-                    let [stepI, stepJ] = stepConfigGetter(s);
+                    t = 0;
                     for (let x = 0; x < l; x++) {
+                        let [stepI, stepJ] = stepConfigGetter(s, t);
                         stickerCollection.push(stickerMap[`s-${aFace}-${i}-${j}`]);
                         i += stepI;
                         j += stepJ;
+                        t += 1;
                     }
                 });
                 cycle.stickerCollections.push(stickerCollection);

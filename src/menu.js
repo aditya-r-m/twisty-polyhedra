@@ -14,6 +14,12 @@
             create: isDemo => new Tetrahedron(i, isDemo ? 40 : undefined)
         })
     }
+    for (let i = 2; i <= 5; i++) {
+        window.menuConfig.puzzles.push({
+            elem: window[`menu-3-item-${i - 1}`],
+            create: isDemo => new Octahedron(i, isDemo ? 40 : undefined)
+        })
+    }
 
     window.menuConfig.puzzles.forEach(({ elem, create }) => {
         const ctx = elem.getContext('2d');

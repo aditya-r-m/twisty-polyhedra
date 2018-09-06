@@ -14,7 +14,7 @@
             create: isDemo => new Tetrahedron(i, isDemo ? 40 : undefined)
         })
     }
-    for (let i = 2; i <= 5; i++) {
+    for (let i = 2; i <= 4; i++) {
         window.menuConfig.puzzles.push({
             elem: window[`menu-3-item-${i - 1}`],
             create: isDemo => new Octahedron(i, isDemo ? 40 : undefined)

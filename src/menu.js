@@ -40,6 +40,9 @@
         }
         requestAnimationFrame(loop);
 
-        elem.onmousedown = () => window.selectedPuzzle = create();
+        elem.onmousedown = () => {
+            window.selectedPuzzle = create()
+            window.startbutton.style.display = 'inline-block';
+        };
     });
 })();

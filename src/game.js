@@ -10,6 +10,13 @@
     }
 
     window.selectedPuzzle = new Tetrahedron(3);
+    window.congratulate = time => {
+        window.help.style.display = 'none';
+        window.menu.style.display = 'none';
+        window.startbutton.style.display = 'inline-block';
+        window.success.style.display = 'inline-block';
+        window.message.innerHTML = `You solved it in ${time} seconds.<br/> Good Job.`;
+    }
 
     let loop = () => {
         ctx.save();
@@ -27,7 +34,7 @@
     gameCanvas.addEventListener('mousedown', e => {
         e.preventDefault();
         e.stopPropagation();
-        window.selectedPuzzle.grab(e.clientX - eventOffset.x, e.clientY - eventOffset.y, e.button);
+        window.selectedPuzzle.grab(e.clientX - eventOffset.x, e.clientY - eventOffset.y, e.ctrlKey ? 2 : e.button);
     })
 
     gameCanvas.addEventListener('mousemove', e => {

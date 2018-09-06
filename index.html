@@ -8,7 +8,20 @@
         </style>
     </head>
     <body style="background-color: #202020; color: white; text-align: center">
-        <div id="help" style="display: none; vertical-align: top; width: 394px; border: 3px solid skyblue; border-radius: 20px;">
+        <div id="success" style="display: none; vertical-align: top; width: 394px; margin-top: 100px; border: 3px solid skyblue; border-radius: 20px;">
+            <h2 style="font-family: cursive; position: relative;">
+                Congratulations!
+                <div onclick="menu.style.display='inline-block';success.style.display='none'"
+                    style="font-family: fantasy;
+                        cursor: pointer;
+                        position: absolute;
+                        top: 0;
+                        right: 20;
+                        color: red;">X</button>
+            </h2>
+            <p id="message"></p>
+        </div>
+        <div id="help" style="display: none; vertical-align: top; width: 394px; margin-top: 50px; border: 3px solid skyblue; border-radius: 20px;">
             <h2 style="font-family: cursive; position: relative;">
                 HELP
                 <div onclick="menu.style.display='inline-block';help.style.display='none'"
@@ -21,7 +34,7 @@
             </h2>
             <ul style="margin-right: 10px; font-family: fantasy">
                 <li style="text-align: left">
-                    To rotate the puzzle, press (right mouse button or ctrl key) & drag the mouse.
+                    To rotate the puzzle, press (ctrl + left mouse button) OR right mouse button over puzzle & drag the mouse.
                     <p>
                         Every puzzle has an implicit axis of rotation.
                         Mouse movement along the horizontal direction will cause the puzzle to rotate along this axis.
@@ -29,7 +42,7 @@
                     </p>
                 </li>
                 <li style="text-align: left">
-                    To twist a slice, move the cursor to a sticker, press (left mouse button or alt key) & drag the mouse.
+                    To twist a slice, press left mouse button over a sticker & drag the mouse.
                     <p>
                         Note that for easier handling, It is recommended to keep one of the faces close to the front & use it's stickers to twist slices.
                     </p>
@@ -67,17 +80,18 @@
                         width: 50px;
                         padding-top: 4px;
                         height: 50px;
-                        padding-right: 1px;">?</span>
-                <span onclick="help.style.display='inline-block';menu.style.display='none'"
+                        padding-right: 2px;
+                        padding-left: 2px;">?</span>
+                <span id="startbutton" onclick="selectedPuzzle.scramble();startbutton.style.display='none'""
                     style="cursor: pointer;
                         float: right;
                         border: 3px solid lawngreen;
                         border-radius: 50%;
                         width: 50px;
                         height: 50px;
-                        padding-bottom: 3px;
-                        padding-left: 3px;
-                        color: lawngreen">></span>
+                        padding-bottom: 5px;
+                        padding-left: 9px;
+                        color: lawngreen">&#9654;</span>
             </div>
         </div>
         <div style="display: inline-block">

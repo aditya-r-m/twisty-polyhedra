@@ -21,6 +21,13 @@ class Puzzle {
         this.startSticker = undefined;
     }
 
+    isSolved() {
+        for(let f = 0; f < this.faces.length; f++)
+            for(let s = 0; s < this.faces[f].stickers.length; s++)
+                if (this.faces[f].stickers[s].color !== this.faces[f].stickers[0].color) return false;
+        return true;
+    }
+
     processCycleMap() {
         this.cycles.forEach(cycle => cycle.stickerCollections[0].forEach(sticker => {
             this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || [];
@@ -41,13 +48,18 @@ class Puzzle {
             this.animationState.counter++;
         } else {
             if (this.animationState.active) {
-                this.animationState.cycle.twist(this.animationState.direction)
+                this.animationState.cycle.twist(this.animationState.direction);
+                if (this.startTime && this.isSolved()) {
+                    window.congratulate((new Date().getTime() - this.startTime) / 1000);
+                }
+                let callback = this.animationState.callback || (() => {});
                 this.animationState = {
                     active: false,
                     counter: 0,
                     direction: undefined,
                     cycle: undefined
                 };
+                callback();
             }
             this.faces.forEach(face => face.update(this.grid, this.angles.theta, this.angles.phi));
             this.faces.sort((f1, f2) => f2.normalVector.z - f1.normalVector.z);
@@ -125,6 +137,21 @@ class Puzzle {
         this.startEvtCoordinates = {};
         this.twistCounter = 0;
         this.startSticker = undefined;
+    }
+
+    scramble() {
+        const count = this.cycles.length * 3;
+        const twists = [];
+        for(let c = 0; c < count; c++)
+            twists.push({ cycle: this.cycles[Math.floor(Math.random() * this.cycles.length)], direction: Math.random() < 0.5 ? -1 : 1});
+        const animationConfigs = [];
+        twists.forEach(({ cycle, direction }, index) => {
+            animationConfigs.push({
+                active: true, counter: 0, direction, cycle,
+                callback: index < count - 1 ? () => this.animationState = animationConfigs[index + 1] : () => this.startTime = new Date().getTime()
+            })
+        });
+        this.animationState = animationConfigs[0];
     }
 
     render(ctx) {

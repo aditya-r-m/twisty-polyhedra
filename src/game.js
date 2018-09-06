@@ -9,7 +9,7 @@
         'y': gameCanvasRect.top + 300
     }
 
-    window.selectedPuzzle = new Octahedron(3);
+    window.selectedPuzzle = new Tetrahedron(3);
 
     let loop = () => {
         ctx.save();

@@ -56,25 +56,36 @@ class Octahedron extends Puzzle {
                 { fIndex: 5, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
             ],
             'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 1, -1, -1)).unit()
+        }, {
+            'slices': [
+                { fIndex: 1, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0: 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 7, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1], limJ: row => 1 + 2 * row },
+                { fIndex: 6, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: () => [0, -1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 5, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1], limJ: row => 1 + 2 * row },
+                { fIndex: 3, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, col % 2 ? -1 : 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 0, sIJ: row => [row, 0], dIJ: () => [0, 1], limJ: row => 1 + 2 * row }
+            ],
+            'attachedFaces': [
+                { fIndex: 2, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
+                { fIndex: 4, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
+            ],
+            'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, -1, -1)).unit()
+        }, {
+            'slices': [
+                { fIndex: 2, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0: 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 6, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1], limJ: row => 1 + 2 * row },
+                { fIndex: 5, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: () => [0, -1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 4, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1], limJ: row => 1 + 2 * row },
+                { fIndex: 0, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, col % 2 ? -1 : 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 1, sIJ: row => [row, 0], dIJ: () => [0, 1], limJ: row => 1 + 2 * row }
+            ],
+            'attachedFaces': [
+                { fIndex: 3, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
+                { fIndex: 7, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
+            ],
+            'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, 1, -1)).unit()
         }];
-        if (window.exp) {
-            cycleFamilyConfig = [];
-            cycleFamilyConfig.push({
-                'slices': [
-                    { fIndex: 0, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0: 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
-                    { fIndex: 4, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1], limJ: row => 1 + 2 * row },
-                    { fIndex: 7, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: () => [0, -1], limJ: row => 1 + 2 * (size - row - 1) },
-                    { fIndex: 6, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1], limJ: row => 1 + 2 * row },
-                    { fIndex: 2, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, col % 2 ? -1 : 1], limJ: row => 1 + 2 * (size - row - 1) },
-                    { fIndex: 3, sIJ: row => [row, 0], dIJ: () => [0, 1], limJ: row => 1 + 2 * row }
-                ],
-                'attachedFaces': [
-                    { fIndex: 1, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
-                    { fIndex: 5, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
-                ],
-                'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 1, -1, -1)).unit()
-            });
-        }
+
 
         faceConfig.forEach((config, f) => {
             let stickers = [];
@@ -134,7 +145,6 @@ class Octahedron extends Puzzle {
                     lJ = slice.limJ(c);
                     for (let s = 0; s < lJ; s++) {
                         [dI, dJ] = slice.dIJ(c, s);
-                        console.log(slice.fIndex, sI, sJ);
                         stickerCollection.push(stickerMap[`s-${slice.fIndex}-${sI}-${sJ}`]);
                         sI += dI;
                         sJ += dJ;

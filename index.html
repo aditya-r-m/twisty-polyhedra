@@ -1,22 +1,84 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <style>
+            canvas {
+                cursor: pointer;
+            }
+        </style>
     </head>
-    <body style="background-color: black; text-align: center">
-        <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-            <div><canvas id="menu-2-item-1" width="100px" height="100px"></canvas></div>
-            <div><canvas id="menu-2-item-2" width="100px" height="100px"></canvas></div>
-            <div><canvas id="menu-2-item-3" width="100px" height="100px"></canvas></div>
+    <body style="background-color: #202020; color: white; text-align: center">
+        <div id="help" style="display: none; vertical-align: top; width: 394px; border: 3px solid skyblue; border-radius: 20px;">
+            <h2 style="font-family: cursive; position: relative;">
+                HELP
+                <div onclick="menu.style.display='inline-block';help.style.display='none'"
+                    style="font-family: fantasy;
+                        cursor: pointer;
+                        position: absolute;
+                        top: 0;
+                        right: 20;
+                        color: red;">X</button>
+            </h2>
+            <ul style="margin-right: 10px; font-family: fantasy">
+                <li style="text-align: left">
+                    To rotate the puzzle, press (right mouse button or ctrl key) & drag the mouse.
+                    <p>
+                        Every puzzle has an implicit axis of rotation.
+                        Mouse movement along the horizontal direction will cause the puzzle to rotate along this axis.
+                        Mouse movement along the vertical direction will cause the puzzle to rotate along the left-right axis.
+                    </p>
+                </li>
+                <li style="text-align: left">
+                    To twist a slice, move the cursor to a sticker, press (left mouse button or alt key) & drag the mouse.
+                    <p>
+                        Note that for easier handling, It is recommended to keep one of the faces close to the front & use it's stickers to twist slices.
+                    </p>
+                </li>
+                <li style="text-align: left">
+                    Select a puzzle from menu & Trigger automatic scramble.
+                </li>
+            </ul>
+            <h2 style="font-family: cursive">
+                Happy Solving!
+            </h2>
         </div>
-        <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-            <div><canvas id="menu-1-item-1" width="100px" height="100px"></canvas></div>
-            <div><canvas id="menu-1-item-2" width="100px" height="100px"></canvas></div>
-            <div><canvas id="menu-1-item-3" width="100px" height="100px"></canvas></div>
-        </div>
-        <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-            <div><canvas id="menu-3-item-1" width="100px" height="100px"></canvas></div>
-            <div><canvas id="menu-3-item-2" width="100px" height="100px"></canvas></div>
-            <div><canvas id="menu-3-item-3" width="100px" height="100px"></canvas></div>
+        <div id="menu" style="display: inline-block; vertical-align: top; width: 400px">
+            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                <div><canvas id="menu-2-item-1" width="100px" height="100px"></canvas></div>
+                <div><canvas id="menu-2-item-2" width="100px" height="100px"></canvas></div>
+                <div><canvas id="menu-2-item-3" width="100px" height="100px"></canvas></div>
+            </div>
+            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                <div><canvas id="menu-1-item-1" width="100px" height="100px"></canvas></div>
+                <div><canvas id="menu-1-item-2" width="100px" height="100px"></canvas></div>
+                <div><canvas id="menu-1-item-3" width="100px" height="100px"></canvas></div>
+            </div>
+            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                <div><canvas id="menu-3-item-1" width="100px" height="100px"></canvas></div>
+                <div><canvas id="menu-3-item-2" width="100px" height="100px"></canvas></div>
+                <div><canvas id="menu-3-item-3" width="100px" height="100px"></canvas></div>
+            </div>
+            <div style="margin: 50px 65px;font-size:40px;">
+                <span onclick="help.style.display='inline-block';menu.style.display='none'"
+                    style="cursor: pointer;
+                        float: left;
+                        border: 3px solid white;
+                        border-radius: 50%;
+                        width: 50px;
+                        padding-top: 4px;
+                        height: 50px;
+                        padding-right: 1px;">?</span>
+                <span onclick="help.style.display='inline-block';menu.style.display='none'"
+                    style="cursor: pointer;
+                        float: right;
+                        border: 3px solid lawngreen;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        padding-bottom: 3px;
+                        padding-left: 3px;
+                        color: lawngreen">></span>
+            </div>
         </div>
         <div style="display: inline-block">
             <canvas id="gameCanvas" width="600px" height="600px"/>
@@ -32,6 +94,5 @@
         <script type="text/javascript" src='src/classes/Puzzles/Octahedron.js'></script>
         <script type="text/javascript" src='src/menu.js'></script>
         <script type="text/javascript" src='src/game.js'></script>
-        <!-- <script type="text/javascript" src='src/test.js'></script> -->
     </body>
 </html>

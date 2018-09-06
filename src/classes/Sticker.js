@@ -39,7 +39,7 @@ class Sticker {
 
     render(ctx) {
         ctx.fillStyle = this.color;
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "#202020";
         ctx.beginPath();
         ctx.moveTo(...this.getPointProjection(this.points[0]));
         this.points.forEach(p => ctx.lineTo(...this.getPointProjection(p)));

@@ -52,14 +52,18 @@ class Puzzle {
                 if (this.startTime && this.isSolved()) {
                     window.congratulate((new Date().getTime() - this.startTime) / 1000);
                 }
-                let callback = this.animationState.callback || (() => {});
+                if (this.animationState.callback) {
+                    this.animationState.callback();
+                    if (this.animationState.counter < this.animationState.cycle.animationConfig.steps) {
+                        return this.update();
+                    }
+                }
                 this.animationState = {
                     active: false,
                     counter: 0,
                     direction: undefined,
                     cycle: undefined
                 };
-                callback();
             }
             this.faces.forEach(face => face.update(this.grid, this.angles.theta, this.angles.phi));
             this.faces.sort((f1, f2) => f2.normalVector.z - f1.normalVector.z);

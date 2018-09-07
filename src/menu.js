@@ -42,7 +42,7 @@
 
         elem.onmousedown = () => {
             window.selectedPuzzle = create()
-            window.startbutton.style.display = 'inline-block';
+            window.startbutton.style.visibility = 'visible';
         };
     });
 })();

@@ -1,7 +1,11 @@
 (() => {
 
     const ctx = gameCanvas.getContext('2d');
+    const ctxInverted = gameCanvasInverted.getContext('2d');
     ctx.translate(300, 300);
+    ctxInverted.scale(1 / 3, 1 / 3);
+    ctxInverted.translate(300, 300);
+
 
     const gameCanvasRect = gameCanvas.getBoundingClientRect();
     const eventOffset = {
@@ -9,11 +13,13 @@
         'y': gameCanvasRect.top + 300
     }
 
+    window.explodedStickers = true;
+
     window.selectedPuzzle = new Tetrahedron(3);
-    window.congratulate = time => {
+    window.selectedPuzzle.onFinish = time => {
         window.help.style.display = 'none';
         window.menu.style.display = 'none';
-        window.startbutton.style.display = 'inline-block';
+        window.startbutton.style.visibility = 'visible';
         window.success.style.display = 'inline-block';
         window.message.innerHTML = `You solved it in ${time} seconds.<br/> Good Job.`;
     }
@@ -24,7 +30,26 @@
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
         ctx.restore();
         window.selectedPuzzle.update();
-        window.selectedPuzzle.render(ctx);
+        window.selectedPuzzle.render(ctx, false, window.explodedStickers);
+
+        if (window.showRearView) {
+            ctxInverted.save();
+            ctxInverted.setTransform(1, 0, 0, 1, 0, 0);
+            ctxInverted.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            ctxInverted.restore();    
+            window.selectedPuzzle.render(ctxInverted, true, window.explodedStickers);
+        }
+
+        if (window.selectedPuzzle.startTime) {
+            let timeInSeconds = Math.floor((new Date().getTime() - window.selectedPuzzle.startTime) / 1000);
+            let minutes = `${Math.floor(timeInSeconds / 60)}`;
+            let seconds = `${timeInSeconds % 60}`;
+            if (minutes.length < 2) minutes = '0' + minutes;
+            if (seconds.length < 2) seconds = '0' + seconds;
+            window.stats.innerHTML = `Time Taken: ${minutes}:${seconds}, Moves Made: ${window.selectedPuzzle.movesMade}`
+        } else {
+            window.stats.innerHTML = `Time Taken: --:--, Moves Made: --`
+        }
 
         requestAnimationFrame(loop);
     }

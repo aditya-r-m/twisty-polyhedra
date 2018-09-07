@@ -33,16 +33,22 @@ class Sticker {
         };
     }
 
-    getPointProjection(point) {
-        return [point.x + ((this.attractor.x - point.x) >> 5), point.y + ((this.attractor.y - point.y) >> 5)];
+    getPointProjection(point, inverted, exploded) {
+        let result = [point.x, point.y];
+        if (exploded) {
+            result[0] += ((this.attractor.x - result[0]) >> 5);
+            result[1] += ((this.attractor.y - result[1]) >> 5);
+        }
+        if (inverted) result[0] = -result[0];
+        return result;
     }
 
-    render(ctx) {
+    render(ctx, inverted, exploded) {
         ctx.fillStyle = this.color;
         ctx.strokeStyle = "#202020";
         ctx.beginPath();
-        ctx.moveTo(...this.getPointProjection(this.points[0]));
-        this.points.forEach(p => ctx.lineTo(...this.getPointProjection(p)));
+        ctx.moveTo(...this.getPointProjection(this.points[0], inverted, exploded));
+        this.points.forEach(p => ctx.lineTo(...this.getPointProjection(p, inverted, exploded)));
         ctx.closePath();
         ctx.fill();
         ctx.stroke();

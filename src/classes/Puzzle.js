@@ -16,6 +16,9 @@ class Puzzle {
         };
         this.stickers = [].concat(...this.faces.map(face => face.stickers));
 
+        this.startTime = undefined;
+        this.movesMade = 0;
+
         this.cycleMap = {};
         this.processCycleMap();
         this.startSticker = undefined;
@@ -50,7 +53,11 @@ class Puzzle {
             if (this.animationState.active) {
                 this.animationState.cycle.twist(this.animationState.direction);
                 if (this.startTime && this.isSolved()) {
-                    window.congratulate((new Date().getTime() - this.startTime) / 1000);
+                    this.onFinish && this.onFinish((new Date().getTime() - this.startTime) / 1000);
+                    this.startTime = undefined;
+                    this.movesMade = 0;
+                } else if (this.startTime) {
+                    this.movesMade++;
                 }
                 if (this.animationState.callback) {
                     this.animationState.callback();
@@ -158,11 +165,13 @@ class Puzzle {
         this.animationState = animationConfigs[0];
     }
 
-    render(ctx) {
+    render(ctx, inverted, exploded=true) {
         if (!this.animationState.active) {
-            this.faces.forEach(face => face.render(ctx));
+            let [start, end, step] = !inverted ? [0, this.faces.length, 1] : [this.faces.length - 1, -1, -1];
+            for (var i = start; i !== end; i += step) this.faces[i].render(ctx, inverted, exploded);
         } else {
-            this.stickers.forEach(sticker => sticker.render(ctx));
+            let [start, end, step] = !inverted ? [0, this.stickers.length, 1] : [this.stickers.length - 1, -1, -1];
+            for (var i = start; i !== end; i += step) this.stickers[i].render(ctx, inverted, exploded);
         }
     }
 }

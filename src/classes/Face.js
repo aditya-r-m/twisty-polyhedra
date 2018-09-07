@@ -9,8 +9,8 @@ class Face {
         this.normalVector = this.stickers[0].calculateNormalVector();
     }
 
-    render(ctx) {
-        this.stickers.forEach(sticker => sticker.render(ctx));
+    render(ctx, inverted, exploded) {
+        this.stickers.forEach(sticker => sticker.render(ctx, inverted, exploded));
     }
 }
 

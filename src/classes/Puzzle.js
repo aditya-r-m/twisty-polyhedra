@@ -22,8 +22,8 @@ class Puzzle {
     }
 
     isSolved() {
-        for(let f = 0; f < this.faces.length; f++)
-            for(let s = 0; s < this.faces[f].stickers.length; s++)
+        for (let f = 0; f < this.faces.length; f++)
+            for (let s = 0; s < this.faces[f].stickers.length; s++)
                 if (this.faces[f].stickers[s].color !== this.faces[f].stickers[0].color) return false;
         return true;
     }
@@ -41,8 +41,8 @@ class Puzzle {
             let alpha = this.animationState.direction * this.animationState.counter * this.animationState.cycle.animationConfig.dAlpha;
             this.stickers.forEach(sticker => {
                 sticker.update(
-                this.grid, this.angles.theta, this.angles.phi,
-                ...(this.animationState.cycle.stickerCover[sticker.id] ? [this.animationState.cycle.unitVector, alpha] : []))
+                    this.grid, this.angles.theta, this.angles.phi,
+                    ...(this.animationState.cycle.stickerCover[sticker.id] ? [this.animationState.cycle.unitVector, alpha] : []))
             });
             this.stickers.sort((s1, s2) => s2.attractor.z - s1.attractor.z);
             this.animationState.counter++;
@@ -146,8 +146,8 @@ class Puzzle {
     scramble() {
         const count = this.cycles.length * 3;
         const twists = [];
-        for(let c = 0; c < count; c++)
-            twists.push({ cycle: this.cycles[Math.floor(Math.random() * this.cycles.length)], direction: Math.random() < 0.5 ? -1 : 1});
+        for (let c = 0; c < count; c++)
+            twists.push({ cycle: this.cycles[Math.floor(Math.random() * this.cycles.length)], direction: Math.random() < 0.5 ? -1 : 1 });
         const animationConfigs = [];
         twists.forEach(({ cycle, direction }, index) => {
             animationConfigs.push({

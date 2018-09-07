@@ -1,31 +1,31 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <style>
-            canvas {
-                cursor: pointer;
-            }
-        </style>
-    </head>
-    <body style="background-color: #202020; color: white; text-align: center">
-        <div id="success" style="display: none; vertical-align: top; width: 394px; margin-top: 100px; border: 3px solid skyblue; border-radius: 20px;">
-            <h2 style="font-family: cursive; position: relative;">
-                Congratulations!
-                <div onclick="menu.style.display='inline-block';success.style.display='none'"
-                    style="font-family: fantasy;
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body style="background-color: #202020; color: white; text-align: center">
+    <div id="success" style="display: none; vertical-align: top; width: 394px; margin-top: 100px; border: 3px solid skyblue; border-radius: 20px;">
+        <h2 style="font-family: cursive; position: relative;">
+            Congratulations!
+            <div onclick="menu.style.display='inline-block';success.style.display='none'" style="font-family: fantasy;
                         cursor: pointer;
                         position: absolute;
                         top: 0;
                         right: 20;
                         color: red;">X</button>
-            </h2>
-            <p id="message"></p>
+        </h2>
+        <p id="message"></p>
         </div>
         <div id="help" style="display: none; vertical-align: top; width: 394px; margin-top: 50px; border: 3px solid skyblue; border-radius: 20px;">
             <h2 style="font-family: cursive; position: relative;">
                 HELP
-                <div onclick="menu.style.display='inline-block';help.style.display='none'"
-                    style="font-family: fantasy;
+                <div onclick="menu.style.display='inline-block';help.style.display='none'" style="font-family: fantasy;
                         cursor: pointer;
                         position: absolute;
                         top: 0;
@@ -36,15 +36,16 @@
                 <li style="text-align: left">
                     To rotate the puzzle, press (ctrl + left mouse button) OR right mouse button over puzzle & drag the mouse.
                     <p>
-                        Every puzzle has an implicit axis of rotation.
-                        Mouse movement along the horizontal direction will cause the puzzle to rotate along this axis.
-                        Mouse movement along the vertical direction will cause the puzzle to rotate along the left-right axis.
+                        Every puzzle has an implicit axis of rotation. Mouse movement along the horizontal direction will cause the puzzle to rotate
+                        along this axis. Mouse movement along the vertical direction will cause the puzzle to rotate along
+                        the left-right axis.
                     </p>
                 </li>
                 <li style="text-align: left">
                     To twist a slice, press left mouse button over a sticker & drag the mouse.
                     <p>
-                        Note that for easier handling, It is recommended to keep one of the faces close to the front & use it's stickers to twist slices.
+                        Note that for easier handling, It is recommended to keep one of the faces close to the front & use it's stickers to twist
+                        slices.
                     </p>
                 </li>
                 <li style="text-align: left">
@@ -54,50 +55,45 @@
             <h2 style="font-family: cursive">
                 Happy Solving!
             </h2>
-        </div>
-        <div id="menu" style="display: inline-block; vertical-align: top; width: 400px">
-            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-                <div><canvas id="menu-2-item-1" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-2-item-2" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-2-item-3" width="100px" height="100px"></canvas></div>
             </div>
-            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-                <div><canvas id="menu-1-item-1" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-1-item-2" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-1-item-3" width="100px" height="100px"></canvas></div>
-            </div>
-            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-                <div><canvas id="menu-3-item-1" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-3-item-2" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-3-item-3" width="100px" height="100px"></canvas></div>
-            </div>
-            <div style="margin: 50px 65px;font-size:40px;">
-                <span onclick="help.style.display='inline-block';menu.style.display='none'"
-                    style="cursor: pointer;
+            <div id="menu" style="display: inline-block; vertical-align: top; width: 400px">
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div><canvas id="menu-2-item-1" width="100px" height="100px"></canvas></div>
+                    <div><canvas id="menu-2-item-2" width="100px" height="100px"></canvas></div>
+                    <div><canvas id="menu-2-item-3" width="100px" height="100px"></canvas></div>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div><canvas id="menu-1-item-1" width="100px" height="100px"></canvas></div>
+                    <div><canvas id="menu-1-item-2" width="100px" height="100px"></canvas></div>
+                    <div><canvas id="menu-1-item-3" width="100px" height="100px"></canvas></div>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div><canvas id="menu-3-item-1" width="100px" height="100px"></canvas></div>
+                    <div><canvas id="menu-3-item-2" width="100px" height="100px"></canvas></div>
+                    <div><canvas id="menu-3-item-3" width="100px" height="100px"></canvas></div>
+                </div>
+                <div style="margin: 50px 65px;font-size:40px;">
+                    <span onclick="help.style.display='inline-block';menu.style.display='none'" style="cursor: pointer;
                         float: left;
                         width: 50px;
                         height: 50px;">?</span>
-                <span id="startbutton" onclick="selectedPuzzle.scramble();startbutton.style.display='none'""
-                    style="cursor: pointer;
-                        float: right;
-                        width: 50px;
-                        height: 50px;
-                        color: lawngreen">&#9654;</span>
+                    <span id="startbutton" onclick="selectedPuzzle.scramble();startbutton.style.display='none'" "
+                    style="cursor: pointer; float: right; width: 50px; height: 50px; color: lawngreen ">&#9654;</span>
             </div>
         </div>
-        <div style="display: inline-block">
-            <canvas id="gameCanvas" width="600px" height="600px"/>
+        <div style="display: inline-block ">
+            <canvas id="gameCanvas " width="600px " height="600px "/>
         </div>
-        <script type="text/javascript" src='src/classes/Point.js'></script>
-        <script type="text/javascript" src='src/classes/Vector.js'></script>
-        <script type="text/javascript" src='src/classes/Sticker.js'></script>
-        <script type="text/javascript" src='src/classes/Face.js'></script>
-        <script type="text/javascript" src='src/classes/Cycle.js'></script>
-        <script type="text/javascript" src='src/classes/Puzzle.js'></script>
-        <script type="text/javascript" src='src/classes/Puzzles/Cube.js'></script>
-        <script type="text/javascript" src='src/classes/Puzzles/Tetrahedron.js'></script>
-        <script type="text/javascript" src='src/classes/Puzzles/Octahedron.js'></script>
-        <script type="text/javascript" src='src/menu.js'></script>
-        <script type="text/javascript" src='src/game.js'></script>
+        <script type="text/javascript " src='src/classes/Point.js'></script>
+        <script type="text/javascript " src='src/classes/Vector.js'></script>
+        <script type="text/javascript " src='src/classes/Sticker.js'></script>
+        <script type="text/javascript " src='src/classes/Face.js'></script>
+        <script type="text/javascript " src='src/classes/Cycle.js'></script>
+        <script type="text/javascript " src='src/classes/Puzzle.js'></script>
+        <script type="text/javascript " src='src/classes/Puzzles/Cube.js'></script>
+        <script type="text/javascript " src='src/classes/Puzzles/Tetrahedron.js'></script>
+        <script type="text/javascript " src='src/classes/Puzzles/Octahedron.js'></script>
+        <script type="text/javascript " src='src/menu.js'></script>
+        <script type="text/javascript " src='src/game.js'></script>
     </body>
 </html>

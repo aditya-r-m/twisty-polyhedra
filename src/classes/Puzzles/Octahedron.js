@@ -44,7 +44,7 @@ class Octahedron extends Puzzle {
             'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 1, 1, -1)).unit()
         }, {
             'slices': [
-                { fIndex: 0, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0: 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 0, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0 : 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
                 { fIndex: 4, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1], limJ: row => 1 + 2 * row },
                 { fIndex: 7, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: () => [0, -1], limJ: row => 1 + 2 * (size - row - 1) },
                 { fIndex: 6, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1], limJ: row => 1 + 2 * row },
@@ -58,7 +58,7 @@ class Octahedron extends Puzzle {
             'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 1, -1, -1)).unit()
         }, {
             'slices': [
-                { fIndex: 1, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0: 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 1, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0 : 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
                 { fIndex: 7, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1], limJ: row => 1 + 2 * row },
                 { fIndex: 6, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: () => [0, -1], limJ: row => 1 + 2 * (size - row - 1) },
                 { fIndex: 5, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1], limJ: row => 1 + 2 * row },
@@ -72,7 +72,7 @@ class Octahedron extends Puzzle {
             'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, -1, -1)).unit()
         }, {
             'slices': [
-                { fIndex: 2, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0: 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
+                { fIndex: 2, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0 : 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
                 { fIndex: 6, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1], limJ: row => 1 + 2 * row },
                 { fIndex: 5, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: () => [0, -1], limJ: row => 1 + 2 * (size - row - 1) },
                 { fIndex: 4, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1], limJ: row => 1 + 2 * row },
@@ -181,7 +181,7 @@ class Octahedron extends Puzzle {
                 if (stickerMap[`s-${aFace}-${s}-${s}`]) {
                     cycle.stickerCollections.push([stickerMap[`s-${aFace}-${s}-${s}`]]);
                 }
-                cycle.update(); 
+                cycle.update();
             })
         });
         super(grid, faces, cycles, { theta: - Math.PI / 3, phi: 0 });

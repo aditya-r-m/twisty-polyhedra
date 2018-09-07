@@ -165,7 +165,7 @@ class Puzzle {
         this.animationState = animationConfigs[0];
     }
 
-    render(ctx, inverted, exploded=true) {
+    render(ctx, inverted, exploded = true) {
         if (!this.animationState.active) {
             let [start, end, step] = !inverted ? [0, this.faces.length, 1] : [this.faces.length - 1, -1, -1];
             for (var i = start; i !== end; i += step) this.faces[i].render(ctx, inverted, exploded);

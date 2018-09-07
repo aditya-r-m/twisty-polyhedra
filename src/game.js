@@ -16,7 +16,7 @@
     window.explodedStickers = true;
 
     window.selectedPuzzle = new Tetrahedron(3);
-    window.selectedPuzzle.onFinish = time => {
+    Puzzle.prototype.onFinish = time => {
         window.help.style.display = 'none';
         window.menu.style.display = 'none';
         window.startbutton.style.visibility = 'visible';
@@ -36,7 +36,7 @@
             ctxInverted.save();
             ctxInverted.setTransform(1, 0, 0, 1, 0, 0);
             ctxInverted.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-            ctxInverted.restore();    
+            ctxInverted.restore();
             window.selectedPuzzle.render(ctxInverted, true, window.explodedStickers);
         }
 

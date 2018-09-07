@@ -43,7 +43,7 @@ class Tetrahedron extends Puzzle {
             }, {
                 'slices': [
                     { fIndex: 0, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1] },
-                    { fIndex: 2, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0: 1, col % 2 ? -1 : 1] },
+                    { fIndex: 2, sIJ: row => [size - row - 1, 2 * (size - row - 1)], dIJ: (_row, col) => [col % 2 ? 0 : 1, col % 2 ? -1 : 1] },
                     { fIndex: 3, sIJ: row => [size - 1, 2 * row], dIJ: (_row, col) => [col % 2 ? -1 : 0, -1] }
                 ],
                 'attachedFace': { fIndex: 1, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] },

@@ -8,10 +8,12 @@
     ctxInverted.translate(300, 300);
 
 
-    const gameCanvasRect = gameCanvas.getBoundingClientRect();
-    const eventOffset = {
-        'x': gameCanvasRect.left + 300,
-        'y': gameCanvasRect.top + 300
+    const getEventOffset = () => {
+        const gameCanvasRect = gameCanvas.getBoundingClientRect();
+        return {
+            'x': gameCanvasRect.left + 300,
+            'y': gameCanvasRect.top + 300
+        }
     }
 
     // Initial game configuration
@@ -63,12 +65,14 @@
     gameCanvas.addEventListener('mousedown', e => {
         e.preventDefault();
         e.stopPropagation();
+        const eventOffset = getEventOffset();
         window.selectedPuzzle.grab(e.clientX - eventOffset.x, e.clientY - eventOffset.y, e.ctrlKey ? 2 : e.button);
     })
 
     gameCanvas.addEventListener('mousemove', e => {
         e.preventDefault();
         e.stopPropagation();
+        const eventOffset = getEventOffset();
         window.selectedPuzzle.drag(e.clientX - eventOffset.x, e.clientY - eventOffset.y);
     })
 

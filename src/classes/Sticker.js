@@ -1,3 +1,5 @@
+// A sticker is a collection of points. It's a polygon with a fill color
+// A sticker has a normal vector that points outside the puzzle. This is implied by point order & right hand thumb rule
 class Sticker {
     constructor(id, color, points) {
         this.id = id;
@@ -6,6 +8,10 @@ class Sticker {
         this.attractor = {};
     }
 
+    // To check if a sticker contains a point, we circle around the points
+    // returns true if during the whole traversal the point was in one direction of the current vector (either left or right)
+    // returns false otherwise
+    // The left/right state can be check by performing a cross product of the current edge vector & the vector from current edge start to parameter point
     contains(p) {
         let u = this.points[this.points.length - 1], zProduct = 0, product;
         for (let v of this.points) {
@@ -20,10 +26,13 @@ class Sticker {
         return true;
     }
 
+    // Normal vector implied by point order
     calculateNormalVector() {
         return new Vector(this.points[0], this.points[1]).cross(new Vector(this.points[0], this.points[this.points.length - 1]));
     }
 
+    // Update all the points according to params & calcuclate attractor
+    // Attractor is just the sum of all point vectors. This is used for "exploding" the stickers
     update(grid, theta, phi, unitVector, alpha) {
         this.points.forEach(point => point.update(grid[point.id], theta, phi, unitVector, alpha));
         this.attractor = {
@@ -33,16 +42,19 @@ class Sticker {
         };
     }
 
+    // Simple paralled projection (ignore the z-coordinates)
+    // Also, if sticker is exploded, move it's points a little bit close to the attractor before projecting
     getPointProjection(point, inverted, exploded) {
         let result = [point.x, point.y];
         if (exploded) {
-            result[0] += ((this.attractor.x - result[0]) >> 5);
-            result[1] += ((this.attractor.y - result[1]) >> 5);
+            result[0] += ((this.attractor.x - result[0]) >> 5); // xAttracted = xOriginal + (xAttractor - xOriginal) / 32
+            result[1] += ((this.attractor.y - result[1]) >> 5); // yAttracted = yOriginal + (yAttractor - yOriginal) / 32
         }
-        if (inverted) result[0] = -result[0];
+        if (inverted) result[0] = -result[0]; // Used for rear-view
         return result;
     }
 
+    // Use canvas moveTo & lineTo for drawing projected sticker
     render(ctx, inverted, exploded) {
         ctx.fillStyle = this.color;
         ctx.strokeStyle = "#202020";

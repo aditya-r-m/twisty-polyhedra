@@ -1,3 +1,7 @@
+// Definition of octahedron shaped puzzles
+// Grid : surface of the regular octahedron
+// Faces : 8 equilateral triangles
+// Cycles : (4 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Octahedron extends Puzzle {
     constructor(size = 3, fullSpan = 200) {
         const alphaM = 2 * Math.PI / 3;

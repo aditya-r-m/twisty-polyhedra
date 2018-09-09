@@ -2,18 +2,24 @@
     window.menuConfig = {
         puzzles: []
     }
+
+    // Cube list
     for (let i = 2; i <= 4; i++) {
         window.menuConfig.puzzles.push({
             elem: window[`menu-1-item-${i - 1}`],
             create: isDemo => new Cube(i, isDemo ? 50 : undefined)
         })
     }
+
+    // Tetrahedra list
     for (let i = 3; i <= 5; i++) {
         window.menuConfig.puzzles.push({
             elem: window[`menu-2-item-${i - 2}`],
             create: isDemo => new Tetrahedron(i, isDemo ? 40 : undefined)
         })
     }
+
+    // Octahedra list
     for (let i = 2; i <= 4; i++) {
         window.menuConfig.puzzles.push({
             elem: window[`menu-3-item-${i - 1}`],
@@ -21,6 +27,7 @@
         })
     }
 
+    // Set up update/render loops for menu items with random angular velocities
     window.menuConfig.puzzles.forEach(({ elem, create }) => {
         const ctx = elem.getContext('2d');
         const dT = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;

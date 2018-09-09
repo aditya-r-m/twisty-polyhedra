@@ -1,3 +1,7 @@
+// Puzzle class abstracts out features common to every twisty polyhedra
+// 1) It has a grid which represents static structure of the shape & is in format {...pointId: pointObject...}
+// 2) It has faces, which are just collections of stickers
+// 3) It has cycles, which represent the twistable slices
 class Puzzle {
     constructor(grid, faces, cycles, angles) {
         this.grid = grid;
@@ -14,6 +18,8 @@ class Puzzle {
             direction: undefined,
             cycle: undefined
         };
+
+        // While animating the cycle twists, convex face structures are temporarily broken, so we operate directly on stickers
         this.stickers = [].concat(...this.faces.map(face => face.stickers));
 
         this.startTime = undefined;
@@ -31,6 +37,7 @@ class Puzzle {
         return true;
     }
 
+    // For fast lookups of cycles passing through some sticker
     processCycleMap() {
         this.cycles.forEach(cycle => cycle.stickerCollections[0].forEach(sticker => {
             this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || [];
@@ -39,6 +46,9 @@ class Puzzle {
         );
     }
 
+    // Update works in two modes
+    // 1) When a slice twist is animated, covered stickers are rotated around cycle axis & then sorted by depth (slow)
+    // 2) When the puzzle is not changing, face orientations are updated & sorted by normal vector values (fast)
     update() {
         if (this.animationState.active && this.animationState.counter < this.animationState.cycle.animationConfig.steps) {
             let alpha = this.animationState.direction * this.animationState.counter * this.animationState.cycle.animationConfig.dAlpha;
@@ -77,6 +87,7 @@ class Puzzle {
         }
     }
 
+    // Finds reference to the sticker which is on top & coveres coordinates (x, y)
     findTouchedSticker(x, y) {
         let sticker;
         for (let f = this.faces.length - 1; f >= 0; f--) {
@@ -90,6 +101,7 @@ class Puzzle {
         }
     }
 
+    // Grabs the puzzle for re-orienting / twisting
     grab(x, y, type) {
         this.startEvtCoordinates.x = x;
         this.startEvtCoordinates.y = y;
@@ -102,6 +114,7 @@ class Puzzle {
         }
     }
 
+    // Re-orients / applies the twist
     drag(x, y) {
         if (this.animationState.active) return;
         if (this.rotating) {
@@ -116,6 +129,9 @@ class Puzzle {
         }
     }
 
+    // To detect the cycle to twist, we orient all attached cycle vectors to the state of the puzzle.
+    // Then we create a vector for mouse movement.
+    // The cycle we want to twist passes through the clicked sticker & gives the maximum cross product with cursor vector
     detectCycle(x, y) {
         let v = new Vector(
             new Point('', this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
@@ -143,6 +159,7 @@ class Puzzle {
         this.release();
     }
 
+    // release the puzzle
     release() {
         this.twisting = this.rotating = false;
         this.startEvtCoordinates = {};
@@ -150,6 +167,7 @@ class Puzzle {
         this.startSticker = undefined;
     }
 
+    // Apply random twists
     scramble() {
         const count = this.cycles.length * 3;
         const twists = [];
@@ -165,6 +183,8 @@ class Puzzle {
         this.animationState = animationConfigs[0];
     }
 
+    // If animating, use depth sorted stickers to render
+    // If not animating, use sorted faces to render
     render(ctx, inverted, exploded = true) {
         if (!this.animationState.active) {
             let [start, end, step] = !inverted ? [0, this.faces.length, 1] : [this.faces.length - 1, -1, -1];

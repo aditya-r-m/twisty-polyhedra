@@ -1,5 +1,6 @@
 (() => {
 
+    // Basic context configuration
     const ctx = gameCanvas.getContext('2d');
     const ctxInverted = gameCanvasInverted.getContext('2d');
     ctx.translate(300, 300);
@@ -13,6 +14,7 @@
         'y': gameCanvasRect.top + 300
     }
 
+    // Initial game configuration
     window.explodedStickers = true;
 
     window.selectedPuzzle = new Tetrahedron(3);
@@ -24,6 +26,7 @@
         window.message.innerHTML = `You solved it in ${time} seconds.<br/> Good Job.`;
     }
 
+    // Game loop
     let loop = () => {
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -55,6 +58,7 @@
     }
     requestAnimationFrame(loop);
 
+    // Mouse event handlers
     document.addEventListener('contextmenu', event => event.preventDefault());
     gameCanvas.addEventListener('mousedown', e => {
         e.preventDefault();

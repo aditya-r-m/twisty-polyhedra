@@ -1,5 +1,6 @@
 origin = { x: 0, y: 0, z: 0 };
 
+// Useful Vector operations
 class Vector {
     constructor(p, q) {
         this.x = q.x - p.x;
@@ -7,6 +8,7 @@ class Vector {
         this.z = q.z - p.z;
     }
 
+    // Vector addition
     add(v) {
         return new Vector(
             origin,
@@ -18,10 +20,12 @@ class Vector {
         );
     }
 
+    // Vector subtraction
     subtract(v) {
         return this.add({ x: -v.x, y: -v.y, z: -v.z });
     }
 
+    // Multiplication by a scalar
     multiply(s) {
         return new Vector(
             origin,
@@ -33,14 +37,17 @@ class Vector {
         );
     }
 
+    // Calculate vector length
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
+    // Unit vector in direction of current vector
     unit() {
         return this.multiply(1 / this.magnitude());
     }
 
+    // Cross product with another vector
     cross(v) {
         return new Vector(
             origin,

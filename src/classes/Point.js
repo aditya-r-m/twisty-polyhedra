@@ -1,3 +1,4 @@
+// A point is just a 3d vector which (optionally) contains an id which can be used to map cloned point objects to the static base grid
 class Point {
     constructor(id, x, y, z) {
         this.id = id;
@@ -6,9 +7,12 @@ class Point {
         this.z = z;
     }
 
+    // Update is performed in two steps
+    // 1) Point is rotated about a direction specified by unitVector & angle alpha (Used for animating twists)
+    // 2) Point is rotated around Y-axis & then X-axis by angles theta & phi (Used for orienting the puzzle)
     update(referencePoint, theta, phi, unitVector, alpha) {
         let xn, yn, zn;
-        let { x, y, z } = unitVector ? this.rotate3D(referencePoint, unitVector, alpha) : referencePoint;
+        let { x, y, z } = unitVector ? this.rotateAroundAxis(referencePoint, unitVector, alpha) : referencePoint;
 
         zn = z * Math.cos(-theta) - x * Math.sin(-theta);
         xn = z * Math.sin(-theta) + x * Math.cos(-theta);
@@ -28,7 +32,7 @@ class Point {
 
     // rotate given point about an arbitrary axis, given unit vector in the direction of the axis & angle 'alpha'
     // reference: http://paulbourke.net/geometry/rotate/
-    rotate3D(point, unitVector, alpha) {
+    rotateAroundAxis(point, unitVector, alpha) {
         let q = new Point(this.id, 0, 0, 0);
 
         let c = Math.cos(alpha);

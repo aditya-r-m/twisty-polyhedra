@@ -1,3 +1,8 @@
+// Class representing twistable slices
+// A single cycle contains multiple sticker collections. Each of them is a sub-cycle.
+// By convention, the first of these sub-cycles is the main slice. Other sub-cycles can be used to rotate attached face.
+// The period is the numbe of operations after which the twist operation reverts the puzzle to original state
+// A cycle also contains unit vector normal to it's plane & a set of sticker ids afftected by it for quick lookup.
 class Cycle {
     constructor(stickerCollections, period, unitVector, animationConfig) {
         this.stickerCollections = stickerCollections;

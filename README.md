@@ -3,7 +3,7 @@ The project contains a basic framework to create different 3D twisty puzzles. It
 The contained defnitions can be extended to create variants for other platonic solids or even completely new 3D permutation puzzles with crazy structures!
 
 ### Demo
-Refer to the following link for the demo & instructions,
+Refer to the following link for the demo & instructions:
 https://aditya-r-m.github.io/twisty-polyhedra
 
 ### Requirements

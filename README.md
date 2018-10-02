@@ -8,3 +8,8 @@ https://aditya-r-m.github.io/twisty-polyhedra
 
 ### Requirements
 The project runs best on latest chrome with screen resolutions at least 1366x768 on a reasonably fast machine, but should also work fine on latest Firefox/Safari with screen resolution at least 1024x768.
+
+### Todo
+1. Refactor Point class to eliminate the need of separate static point grid.
+2. Use quaternions for orientation.
+3. Implement puzzles for Dodecahedron & Icosahedron.

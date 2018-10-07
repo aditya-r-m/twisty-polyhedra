@@ -30,8 +30,6 @@
     // Set up update/render loops for menu items with random angular velocities
     window.menuConfig.puzzles.forEach(({ elem, create }) => {
         const ctx = elem.getContext('2d');
-        const dT = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
-        const dP = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
         const puzzle = create(true);
         puzzle.updatedOrientation = {
             'axis': new Vector({ x: 1, y: 1, z: 0 }),

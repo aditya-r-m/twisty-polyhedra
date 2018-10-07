@@ -139,8 +139,7 @@ class Puzzle {
         }
     }
 
-    // To detect the cycle to twist, we orient all attached cycle vectors to the state of the puzzle.
-    // Then we create a vector for mouse movement.
+    // To detect the cycle to twist, We create a vector for mouse movement.
     // The cycle we want to twist passes through the clicked sticker & gives the maximum cross product with cursor vector
     detectCycle(x, y) {
         let v = new Vector(

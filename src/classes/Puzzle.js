@@ -1,16 +1,17 @@
 // Puzzle class abstracts out features common to every twisty polyhedra
-// 1) It has a grid which represents static structure of the shape & is in format {...pointId: pointObject...}
-// 2) It has faces, which are just collections of stickers
-// 3) It has cycles, which represent the twistable slices
+// 1) It has faces, which are just collections of stickers
+// 2) It has cycles, which represent the twistable slices
 class Puzzle {
-    constructor(grid, faces, cycles, angles) {
-        this.grid = grid;
+    constructor(faces, cycles) {
         this.faces = faces;
         this.cycles = cycles;
-        this.baseAngles = this.angles = angles || { 'theta': - Math.PI / 4, 'phi': Math.PI / 8 };
 
         this.twisting = this.rotating = false;
         this.startEvtCoordinates = {};
+        this.baseOrientation = {
+            'axis': new Vector({ x: 1, y: 0, z: 0}),
+            'angle': 0
+        };
         this.twistCounter = 0;
         this.animationState = {
             active: false,
@@ -52,14 +53,17 @@ class Puzzle {
     update() {
         if (this.animationState.active && this.animationState.counter < this.animationState.cycle.animationConfig.steps) {
             let alpha = this.animationState.direction * this.animationState.counter * this.animationState.cycle.animationConfig.dAlpha;
+            let orientation = { 'axis': this.animationState.cycle.unitVector, 'angle': alpha };
             this.stickers.forEach(sticker => {
-                sticker.update(
-                    this.grid, this.angles.theta, this.angles.phi,
-                    ...(this.animationState.cycle.stickerCover[sticker.id] ? [this.animationState.cycle.unitVector, alpha] : []))
+                if (this.animationState.cycle.stickerCover[sticker.id]) {
+                    sticker.update(orientation);
+                }
             });
             this.stickers.sort((s1, s2) => s2.attractor.z - s1.attractor.z);
             this.animationState.counter++;
         } else {
+            this.faces.forEach(face => face.update(this.updatedOrientation || this.baseOrientation));
+            this.faces.sort((f1, f2) => f2.normalVector.z - f1.normalVector.z);
             if (this.animationState.active) {
                 this.animationState.cycle.twist(this.animationState.direction);
                 if (this.startTime && this.isSolved()) {
@@ -82,8 +86,6 @@ class Puzzle {
                     cycle: undefined
                 };
             }
-            this.faces.forEach(face => face.update(this.grid, this.angles.theta, this.angles.phi));
-            this.faces.sort((f1, f2) => f2.normalVector.z - f1.normalVector.z);
         }
     }
 
@@ -107,7 +109,6 @@ class Puzzle {
         this.startEvtCoordinates.y = y;
         if (type == 2) {
             this.rotating = true;
-            this.baseAngles = { ...this.angles };
         } else {
             this.startSticker = this.findTouchedSticker(x, y);
             this.twisting = !!this.startSticker;
@@ -118,8 +119,17 @@ class Puzzle {
     drag(x, y) {
         if (this.animationState.active) return;
         if (this.rotating) {
-            this.angles.theta = this.baseAngles.theta + (x - this.startEvtCoordinates.x) / 100;
-            this.angles.phi = this.baseAngles.phi + (y - this.startEvtCoordinates.y) / 100;
+            let dx = (x - this.startEvtCoordinates.x) / 100;
+            let dy = (y - this.startEvtCoordinates.y) / 100;
+            if (dx || dy) {
+                // rotate the puzzle around normal vector to the cursor vector (in the plane of the screen)
+                // by an angle proportional to it's magnitude
+                let v = new Vector({ x: dy, y: -dx, z: 0 });
+                this.updatedOrientation = {
+                    'axis': v,
+                    'angle': v.magnitude()
+                };
+            }
         } else if (this.twisting) {
             if (this.twistCounter < 9) {
                 this.twistCounter++;
@@ -129,20 +139,18 @@ class Puzzle {
         }
     }
 
-    // To detect the cycle to twist, we orient all attached cycle vectors to the state of the puzzle.
-    // Then we create a vector for mouse movement.
+    // To detect the cycle to twist, We create a vector for mouse movement.
     // The cycle we want to twist passes through the clicked sticker & gives the maximum cross product with cursor vector
     detectCycle(x, y) {
         let v = new Vector(
-            new Point('', this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
-            new Point('', x, y, 0)
+            new Point(this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
+            new Point(x, y, 0)
         );
         let mxMg = 0, mxCycle, mxDirection;
         this.cycleMap[this.startSticker.id].forEach(cycle => {
-            let unitPoint = new Point('', cycle.unitVector.x, cycle.unitVector.y, cycle.unitVector.z);
-            unitPoint.update(unitPoint, this.angles.theta, this.angles.phi);
+            let unitPoint = new Point(cycle.unitVector.x, cycle.unitVector.y, cycle.unitVector.z);
             unitPoint.z = 0;
-            let vC = new Vector({ x: 0, y: 0, z: 0 }, unitPoint).unit();
+            let vC = new Vector(unitPoint).unit();
             let product = v.cross(vC);
             if (mxMg < product.magnitude()) {
                 mxMg = product.magnitude();
@@ -163,8 +171,18 @@ class Puzzle {
     release() {
         this.twisting = this.rotating = false;
         this.startEvtCoordinates = {};
+        if (this.updatedOrientation) {
+            this.saveOrientation(this.updatedOrientation);
+            this.updatedOrientation = undefined;
+        }
         this.twistCounter = 0;
         this.startSticker = undefined;
+    }
+
+    // Set the orientation as the new base orientation for the puzzle
+    saveOrientation(orientation) {
+        this.stickers.forEach(sticker => sticker.points.forEach(point => point.saveOrientation(orientation)));
+        this.cycles.forEach(cycle => cycle.saveOrientation(orientation));
     }
 
     // Apply random twists
@@ -175,6 +193,7 @@ class Puzzle {
             twists.push({ cycle: this.cycles[Math.floor(Math.random() * this.cycles.length)], direction: Math.random() < 0.5 ? -1 : 1 });
         const animationConfigs = [];
         twists.forEach(({ cycle, direction }, index) => {
+            if (index && (cycle === twists[index - 1].cycle)) direction = twists[index - 1].direction;
             animationConfigs.push({
                 active: true, counter: 0, direction, cycle,
                 callback: index < count - 1 ? () => this.animationState = animationConfigs[index + 1] : () => this.startTime = new Date().getTime()

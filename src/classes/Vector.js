@@ -1,8 +1,14 @@
-origin = { x: 0, y: 0, z: 0 };
+const origin = { x: 0, y: 0, z: 0 };
 
 // Useful Vector operations
 class Vector {
+    // Creates vector from point 'p' to point 'q'
+    // If 'q' is not provided, Vector from origin to point 'p' is created instead
     constructor(p, q) {
+        if (!q) {
+            q = p;
+            p = origin;
+        }
         this.x = q.x - p.x;
         this.y = q.y - p.y;
         this.z = q.z - p.z;

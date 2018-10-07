@@ -7,8 +7,8 @@ class Face {
         this.normalVector = this.stickers[0].calculateNormalVector();
     }
 
-    update(grid, theta, phi) {
-        this.stickers.forEach(sticker => sticker.update(grid, theta, phi));
+    update(orientation) {
+        this.stickers.forEach(sticker => sticker.update(orientation));
         this.normalVector = this.stickers[0].calculateNormalVector();
     }
 

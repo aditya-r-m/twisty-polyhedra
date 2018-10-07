@@ -31,7 +31,7 @@ class Cube extends Puzzle {
                     { fIndex: 2, sIndex: 0, sJump: 1, cJump: size }
                 ],
                 'attachedFaces': { ffIndex: 4, lfIndex: 5, iStep: size, jStep: 1 },
-                'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 0, 0, 1))
+                'unitVector': new Vector(new Point(0, 0, 1))
             },
             {
                 'slices': [
@@ -41,7 +41,7 @@ class Cube extends Puzzle {
                     { fIndex: 4, sIndex: 0, sJump: size, cJump: 1 }
                 ],
                 'attachedFaces': { ffIndex: 2, lfIndex: 3, iStep: 1, jStep: size },
-                'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 0, -1, 0))
+                'unitVector': new Vector(new Point(0, -1, 0))
             },
             {
                 'slices': [
@@ -51,7 +51,7 @@ class Cube extends Puzzle {
                     { fIndex: 4, sIndex: size - 1, sJump: -1, cJump: size }
                 ],
                 'attachedFaces': { ffIndex: 0, lfIndex: 1, iStep: 1, jStep: size },
-                'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, 0, 0))
+                'unitVector': new Vector(new Point(-1, 0, 0))
             }
         ];
         const fSliceConfig = [{ key: 'iStep', dir: 1 }, { key: 'jStep', dir: 1 }, { key: 'iStep', dir: -1 }, { key: 'jStep', dir: -1 }];
@@ -68,7 +68,7 @@ class Cube extends Puzzle {
                     pointDef[config.fixed] = config.direction * span;
                     pointDef[config.variable[0]] = v1;
                     pointDef[config.variable[1]] = v2;
-                    grid[pid] = new Point(pid, pointDef.x, pointDef.y, pointDef.z);
+                    grid[pid] = new Point(pointDef.x, pointDef.y, pointDef.z, pid);
                     if (i && j) {
                         sid = `s-${f}-${i}-${j}`;
                         spoints = [
@@ -134,9 +134,18 @@ class Cube extends Puzzle {
                 fCycle.stickerCollections.push([fFace.stickers[(size * size - 1) / 2]]);
                 lCycle.stickerCollections.push([lFace.stickers[(size * size - 1) / 2]]);
             }
-            cycles.forEach(cycle => cycle.update());
+            cycles.forEach(cycle => cycle.computeStickerCover());
         });
-        super(grid, faces, cycles);
+        super(faces, cycles);
+
+        this.saveOrientation({
+            'axis': new Vector({ x: 0, y: 1, z: 0}),
+            'angle': Math.PI / 4
+        });
+        this.saveOrientation({
+            'axis': new Vector({ x: 1, y: 0, z: 0}),
+            'angle': Math.PI / 8
+        });
     }
 }
 

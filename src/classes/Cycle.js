@@ -12,8 +12,14 @@ class Cycle {
         this.stickerCover = {};
     }
 
-    update() {
+    computeStickerCover() {
         this.stickerCollections.forEach(collection => collection.forEach(({ id }) => this.stickerCover[id] = true));
+    }
+
+    saveOrientation(orientation) {
+        const p = new Point(this.unitVector.x, this.unitVector.y, this.unitVector.z);
+        p.update(orientation);
+        this.unitVector = new Vector(p);
     }
 
     mod(n, m) {

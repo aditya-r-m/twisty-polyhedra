@@ -1,5 +1,6 @@
 // A sticker is a collection of points. It's a polygon with a fill color
 // A sticker has a normal vector that points outside the puzzle. This is implied by point order & right hand thumb rule
+// Not that this is the only component of the Puzzle object which is actually rendered on the canvas
 class Sticker {
     constructor(id, color, points) {
         this.id = id;
@@ -33,8 +34,8 @@ class Sticker {
 
     // Update all the points according to params & calcuclate attractor
     // Attractor is just the sum of all point vectors. This is used for "exploding" the stickers
-    update(grid, theta, phi, unitVector, alpha) {
-        this.points.forEach(point => point.update(grid[point.id], theta, phi, unitVector, alpha));
+    update(orientation) {
+        this.points.forEach(point => point.update(orientation));
         this.attractor = {
             'x': this.points.reduce((a, p) => a + p.x, 0),
             'y': this.points.reduce((a, p) => a + p.y, 0),

@@ -15,12 +15,12 @@ class Octahedron extends Puzzle {
         const faces = [];
         const cycles = [];
         const rootPoints = [
-            new Point('', 0, 0, -fullSpan),
-            new Point('', fullSpan, 0, 0),
-            new Point('', 0, fullSpan, 0),
-            new Point('', -fullSpan, 0, 0),
-            new Point('', 0, -fullSpan, 0),
-            new Point('', 0, 0, fullSpan)
+            new Point(0, 0, -fullSpan),
+            new Point(fullSpan, 0, 0),
+            new Point(0, fullSpan, 0),
+            new Point(-fullSpan, 0, 0),
+            new Point(0, -fullSpan, 0),
+            new Point(0, 0, fullSpan)
         ];
         const faceConfig = [
             { 'points': [rootPoints[0], rootPoints[2], rootPoints[1]], 'color': 'white' },
@@ -45,7 +45,7 @@ class Octahedron extends Puzzle {
                 { fIndex: 0, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
                 { fIndex: 6, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
             ],
-            'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 1, 1, -1)).unit()
+            'unitVector': new Vector(new Point(1, 1, -1)).unit()
         }, {
             'slices': [
                 { fIndex: 0, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0 : 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
@@ -59,7 +59,7 @@ class Octahedron extends Puzzle {
                 { fIndex: 1, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
                 { fIndex: 5, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
             ],
-            'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', 1, -1, -1)).unit()
+            'unitVector': new Vector(new Point(1, -1, -1)).unit()
         }, {
             'slices': [
                 { fIndex: 1, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0 : 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
@@ -73,7 +73,7 @@ class Octahedron extends Puzzle {
                 { fIndex: 2, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
                 { fIndex: 4, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
             ],
-            'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, -1, -1)).unit()
+            'unitVector': new Vector(new Point(-1, -1, -1)).unit()
         }, {
             'slices': [
                 { fIndex: 2, sIJ: row => [row, 0], dIJ: (_row, col) => [col % 2 ? 0 : 1, 1], limJ: row => 1 + 2 * (size - row - 1) },
@@ -87,7 +87,7 @@ class Octahedron extends Puzzle {
                 { fIndex: 3, steps: [() => [1, 0], () => [0, 2], () => [-1, -2]] },
                 { fIndex: 7, steps: [() => [1, 2], () => [0, -2], () => [-1, 0]] }
             ],
-            'unitVector': new Vector(new Point('', 0, 0, 0), new Point('', -1, 1, -1)).unit()
+            'unitVector': new Vector(new Point(-1, 1, -1)).unit()
         }];
 
 
@@ -100,10 +100,10 @@ class Octahedron extends Puzzle {
             for (let i = 0; i < size; i++) {
                 nxtArr = [];
                 vC = vI.add(preArr[0]);
-                nxtArr.push(new Point('', vC.x, vC.y, vC.z));
+                nxtArr.push(new Point(vC.x, vC.y, vC.z));
                 for (let j = 0; j <= i; j++) {
                     vC = vJ.add(vC);
-                    nxtArr.push(new Point('', vC.x, vC.y, vC.z));
+                    nxtArr.push(new Point(vC.x, vC.y, vC.z));
                 }
                 preArr.forEach((point, j) => {
                     p = point.clone();
@@ -156,7 +156,7 @@ class Octahedron extends Puzzle {
                 });
                 cycle.stickerCollections.push(stickerCollection);
                 cycles.push(cycle);
-                cycle.update();
+                cycle.computeStickerCover();
             }
             config.attachedFaces.forEach((faceCycleConfig, fci) => {
                 cycle = fci ? cycles[cycles.length - 1] : cycles[cycles.length - size];
@@ -185,10 +185,19 @@ class Octahedron extends Puzzle {
                 if (stickerMap[`s-${aFace}-${s}-${s}`]) {
                     cycle.stickerCollections.push([stickerMap[`s-${aFace}-${s}-${s}`]]);
                 }
-                cycle.update();
+                cycle.computeStickerCover();
             })
         });
-        super(grid, faces, cycles, { theta: - Math.PI / 3, phi: 0 });
+        super(faces, cycles);
+
+        this.saveOrientation({
+            'axis': new Vector({ x: 0, y: 1, z: 0}),
+            'angle': Math.PI / 12
+        });
+        this.saveOrientation({
+            'axis': new Vector({ x: 1, y: 0, z: 0}),
+            'angle': Math.PI / 24
+        });
     }
 }
 

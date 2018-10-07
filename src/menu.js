@@ -33,14 +33,17 @@
         const dT = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
         const dP = ((Math.floor(Math.random() * 5) - 2) || 1) * Math.PI / 500;
         const puzzle = create(true);
+        puzzle.updatedOrientation = {
+            'axis': new Vector({ x: 1, y: 1, z: 0 }),
+            'angle': 0
+        };
         ctx.translate(50, 50);
         let loop = () => {
             ctx.save();
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             ctx.restore();
-            puzzle.baseAngles.theta += dT;
-            puzzle.baseAngles.phi += dP;
+            puzzle.updatedOrientation.angle += 0.015;
             puzzle.update();
             puzzle.render(ctx);
             requestAnimationFrame(loop);

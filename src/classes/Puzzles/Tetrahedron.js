@@ -81,11 +81,8 @@ class Tetrahedron extends Puzzle {
                     q = nxtArr[j].clone();
                     r = nxtArr[j + 1].clone();
                     p.id = `p-${f}-${i}-${j}`;
-                    while (grid[p.id]) p.id += '-n';
                     q.id = `p-${f}-${i + 1}-${j}`;
-                    while (grid[q.id]) q.id += '-n';
                     r.id = `p-${f}-${i + 1}-${j + 1}`;
-                    while (grid[r.id]) r.id += '-n';
                     grid[p.id] = p.clone();
                     grid[q.id] = q.clone();
                     grid[r.id] = r.clone();
@@ -93,12 +90,9 @@ class Tetrahedron extends Puzzle {
                     stickerMap[stickers[stickers.length - 1].id] = stickers[stickers.length - 1];
                     if (j < preArr.length - 1) {
                         p = p.clone();
-                        while (grid[p.id]) p.id += '-n';
                         r = r.clone();
-                        while (grid[r.id]) r.id += '-n';
                         s = preArr[j + 1].clone();
                         s.id = `q-${f}-${i}-${j + 1}`;
-                        while (grid[s.id]) s.id += '-n';
                         grid[p.id] = p.clone();
                         grid[r.id] = r.clone();
                         grid[s.id] = s.clone();

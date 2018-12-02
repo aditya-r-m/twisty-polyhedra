@@ -1,5 +1,5 @@
 class Dodecahedron extends Puzzle {
-    constructor(size = 3, width = 200) {
+    constructor(size = 2, width = 200) {
         const phi = (1 + Math.sqrt(5)) / 2;
         const scale = width / 2;
         const scaledPhi = scale * phi;
@@ -70,8 +70,66 @@ class Dodecahedron extends Puzzle {
                 'color': 'brown'
             }
         ];
+        const grid = {};
         faceConfig.forEach((config, f) => {
-            let stickers = [new Sticker('', config.color, config.points.map(p => p.clone()))];
+            const stickers = [];
+            config.points.forEach((refPoint, p) => {
+                const baseVector = new Vector(refPoint);
+                const vI = new Vector(refPoint, config.points[mod(p + 1, config.points.length)]).multiply(1 / (2 * size));
+                const vJ = new Vector(refPoint, config.points[mod(p - 1, config.points.length)]).multiply(1 / (2 * size));
+                let pointVector, i, j;
+                for (i = 0; i <= size; i++) {
+                    for (j = 0; j <= size; j++) {
+                        pointVector = baseVector.add(vI.multiply(i)).add(vJ.multiply(j));
+                        grid[`p-${f}-${p}-${i}-${j}`] = new Point(pointVector.x, pointVector.y, pointVector.z);
+                        if (i && j) {
+                            stickers.push(new Sticker(
+                                `s-${f}-${p}-${i}-${j}`, config.color,
+                                [
+                                    grid[`p-${f}-${p}-${i}-${j}`].clone(),
+                                    grid[`p-${f}-${p}-${i - 1}-${j}`].clone(),
+                                    grid[`p-${f}-${p}-${i - 1}-${j - 1}`].clone(),
+                                    grid[`p-${f}-${p}-${i}-${j - 1}`].clone()
+
+                                ]
+                            ));
+                        }
+                    }
+                }
+                const vl = new Vector(config.points[mod(p, config.points.length)], config.points[mod(p - 1, config.points.length)]).multiply(1 / (2 * size));
+                const vr = new Vector(config.points[mod(p + 1, config.points.length)], config.points[mod(p + 2, config.points.length)]).multiply(1 / (2 * size));
+                const midVector = baseVector.add(vI.multiply(size));
+                let lVector, rVector;
+                for (i = 0; i <= size; i++) {
+                    lVector = midVector.add(vl.multiply(i));
+                    rVector = midVector.add(vr.multiply(i));
+                    grid[`p-m-${f}-${p}-${i}-l`] = new Point(lVector.x, lVector.y, lVector.z);
+                    grid[`p-m-${f}-${p}-${i}-r`] = new Point(rVector.x, rVector.y, rVector.z);
+                    if (i) {
+                        stickers.push(new Sticker(
+                            `s-${f}-${p}-${i}-${size + 1}`, config.color,
+                            [
+                                grid[`p-m-${f}-${p}-${i}-l`].clone(),
+                                grid[`p-m-${f}-${p}-${i}-r`].clone(),
+                                grid[`p-m-${f}-${p}-${i - 1}-r`].clone(),
+                                grid[`p-m-${f}-${p}-${i - 1}-l`].clone()
+                            ]
+                        ));
+                    }
+                }
+                const cVector = baseVector.add(vI.multiply(size)).add(vJ.multiply(size));
+                grid[`p-${f}-${p}`] = new Point(cVector.x, cVector.y, cVector.z);
+            });
+            stickers.push(new Sticker(
+                `${f}`, config.color,
+                [
+                    grid[`p-${f}-0`].clone(),
+                    grid[`p-${f}-1`].clone(),
+                    grid[`p-${f}-2`].clone(),
+                    grid[`p-${f}-3`].clone(),
+                    grid[`p-${f}-4`].clone(),
+                ]
+            ));
             faces.push(new Face(stickers));
         });
         super(faces, cycles);

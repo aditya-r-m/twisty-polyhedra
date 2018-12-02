@@ -19,7 +19,7 @@
     // Initial game configuration
     window.explodedStickers = true;
 
-    window.selectedPuzzle = new Dodecahedron(3);
+    window.selectedPuzzle = new Dodecahedron();
     Puzzle.prototype.onFinish = time => {
         window.help.style.display = 'none';
         window.menu.style.display = 'none';

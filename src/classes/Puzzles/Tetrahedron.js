@@ -120,7 +120,6 @@ class Tetrahedron extends Puzzle {
                 });
                 cycle.stickerCollections.push(stickerCollection);
                 cycles.push(cycle);
-                cycle.computeStickerCover();
             }
             cycle = cycles[cycles.length - 1];
             aFace = config.attachedFace.fIndex;
@@ -148,7 +147,10 @@ class Tetrahedron extends Puzzle {
             if (stickerMap[`s-${aFace}-${s}-${s}`]) {
                 cycle.stickerCollections.push([stickerMap[`s-${aFace}-${s}-${s}`]]);
             }
-            cycle.computeStickerCover();
+        });
+        cycles.forEach(cycle => {
+            cycle.stickerCollections[0].isPrimary = true;
+            cycle.computeStickerCover()
         });
         super(faces, cycles);
 

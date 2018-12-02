@@ -40,10 +40,15 @@ class Puzzle {
 
     // For fast lookups of cycles passing through some sticker
     processCycleMap() {
-        this.cycles.forEach(cycle => cycle.stickerCollections[0].forEach(sticker => {
-            this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || [];
-            this.cycleMap[sticker.id].push(cycle);
-        })
+        this.cycles.forEach(cycle =>
+            cycle.stickerCollections.forEach(stickerCollection => {
+                if (stickerCollection.isPrimary) {
+                    stickerCollection.forEach(sticker => {
+                        this.cycleMap[sticker.id] = this.cycleMap[sticker.id] || [];
+                        this.cycleMap[sticker.id].push(cycle);
+                    })
+                }
+            })
         );
     }
 
@@ -142,6 +147,7 @@ class Puzzle {
     // To detect the cycle to twist, We create a vector for mouse movement.
     // The cycle we want to twist passes through the clicked sticker & gives the maximum cross product with cursor vector
     detectCycle(x, y) {
+        if (!this.cycleMap[this.startSticker.id]) return;
         let v = new Vector(
             new Point(this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
             new Point(x, y, 0)

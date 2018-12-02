@@ -150,7 +150,6 @@ class Octahedron extends Puzzle {
                 });
                 cycle.stickerCollections.push(stickerCollection);
                 cycles.push(cycle);
-                cycle.computeStickerCover();
             }
             config.attachedFaces.forEach((faceCycleConfig, fci) => {
                 cycle = fci ? cycles[cycles.length - 1] : cycles[cycles.length - size];
@@ -179,8 +178,11 @@ class Octahedron extends Puzzle {
                 if (stickerMap[`s-${aFace}-${s}-${s}`]) {
                     cycle.stickerCollections.push([stickerMap[`s-${aFace}-${s}-${s}`]]);
                 }
-                cycle.computeStickerCover();
             })
+        });
+        cycles.forEach(cycle => {
+            cycle.stickerCollections[0].isPrimary = true;
+            cycle.computeStickerCover()
         });
         super(faces, cycles);
 

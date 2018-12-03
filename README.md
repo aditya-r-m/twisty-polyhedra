@@ -12,4 +12,4 @@ https://aditya-r-m.github.io/twisty-polyhedra
 The project runs best on latest chrome with screen resolutions at least 1366x768 on a reasonably fast machine, but should also work fine on latest Firefox/Safari with screen resolution at least 1024x768.
 
 ### Todo
-Implement puzzles for Dodecahedron & Icosahedron.
+Implement puzzles for Icosahedra

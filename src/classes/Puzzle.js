@@ -136,7 +136,7 @@ class Puzzle {
                 };
             }
         } else if (this.twisting) {
-            if (this.twistCounter < 9) {
+            if (this.twistCounter < 7) {
                 this.twistCounter++;
             } else {
                 this.detectCycle(x, y);

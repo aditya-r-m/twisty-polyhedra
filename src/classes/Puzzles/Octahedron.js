@@ -3,7 +3,7 @@
 // Faces : 8 equilateral triangles
 // Cycles : (4 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Octahedron extends Puzzle {
-    constructor(size = 3, fullSpan = 200) {
+    constructor(size = 2, fullSpan = 200) {
         const alphaM = 2 * Math.PI / 3;
         const animationSteps = 10;
         const animationConfig = {

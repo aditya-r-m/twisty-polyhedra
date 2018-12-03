@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <title>Twisty Polyhedra</title>
     <style>
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
         canvas {
             cursor: pointer;
         }
@@ -51,23 +57,30 @@
     </div>
     <div id="menu" style="display: inline-block; vertical-align: top; width: 400px">
         <div id="puzzlemenu">
-            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-                <div><canvas id="menu-2-item-1" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-2-item-2" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-2-item-3" width="100px" height="100px"></canvas></div>
+            <div id="shapemenu">
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div style="width: 100px; height: 100px;"><canvas id="tetrahedron" width="100px" height="100px"></canvas></div>
+                    <div style="width: 100px; height: 100px;"><canvas id="octahedron" width="100px" height="100px"></canvas></div>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div style="width: 100px; height: 100px;"><canvas id="cube" width="100px" height="100px"></canvas></div>
+                    <div style="width: 100px; height: 100px;"><canvas id="dodecahedron" width="100px" height="100px"></canvas></div>
+                </div>
             </div>
-            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-                <div><canvas id="menu-1-item-1" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-1-item-2" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-1-item-3" width="100px" height="100px"></canvas></div>
-            </div>
-            <div style="display: inline-block; vertical-align: top; margin-top: 100px">
-                <div><canvas id="menu-3-item-1" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-3-item-2" width="100px" height="100px"></canvas></div>
-                <div><canvas id="menu-3-item-3" width="100px" height="100px"></canvas></div>
+            <div id="sizemenu" style="height: 300px;">
+                <div style="width:300px; height:100px; display: inline-block;"></div>
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div style="width: 100px; height: 100px;"><canvas id="size-1" width="100px" height="100px"></canvas></div>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div style="width: 100px; height: 100px;"><canvas id="size-2" width="100px" height="100px"></canvas></div>
+                </div>
+                <div style="display: inline-block; vertical-align: top; margin-top: 100px">
+                    <div style="width: 100px; height: 100px;"><canvas id="size-3" width="100px" height="100px"></canvas></div>
+                </div>
             </div>
         </div>
-        <div id="configurationmenu" style="vertical-align: top; text-align: left; margin-top: 100px; height: 300px; display: none;">
+        <div id="configurationmenu" style="vertical-align: top; text-align: left; height: 300px; display: none;">
             <div style="border: 3px solid white; padding: 40px; margin-top: 100px; border-radius: 10%;">
                 <input autocomplete="off" checked type="checkbox" value="exp" id="exstick" name="exstick" onclick="window.explodedStickers=!window.explodedStickers">
                 <label for="exstick">Explode Stickers</label>
@@ -83,7 +96,7 @@
             <span onclick="help.style.display='inline-block';menu.style.display='none'" style="cursor: pointer; float: left; width: 50px; height: 50px; color: skyblue">?</span>
             <span id="settingsmenubutton" onclick="puzzlemenu.style.display=settingsmenubutton.style.display='none';configurationmenu.style.display=puzzlemenubutton.style.display='inline-block';"
                 style="cursor: pointer; width: 50px; height: 50px">&#9881;</span>
-            <span id="puzzlemenubutton" onclick="configurationmenu.style.display=puzzlemenubutton.style.display='none';puzzlemenu.style.display=settingsmenubutton.style.display='inline-block';"
+            <span id="puzzlemenubutton" onclick="showShapeMenu();"
                 style="cursor: pointer; width: 50px; height: 50px; display: none; color: red">&#9665;</span>
             <span id="startbutton" onclick="selectedPuzzle.scramble();startbutton.style.visibility='hidden'" style="cursor: pointer; float:right; width: 50px; height: 50px; color: lawngreen">&#9654;</span>
         </div>
@@ -95,6 +108,11 @@
     <div id="rearView" style="position: fixed; display: none; right: 0px; top: 20px">
         <canvas id="gameCanvasInverted" width="200px" height="200px"></canvas>
     </div>
+    <script type="text/javascript">
+    window.mod = function(n, m) {
+        return ((n % m) + m) % m;
+    }
+    </script>
     <script type="text/javascript" src='src/classes/Vector.js'></script>
     <script type="text/javascript" src='src/classes/Quaternion.js'></script>
     <script type="text/javascript" src='src/classes/Point.js'></script>
@@ -105,6 +123,7 @@
     <script type="text/javascript" src='src/classes/Puzzles/Cube.js'></script>
     <script type="text/javascript" src='src/classes/Puzzles/Tetrahedron.js'></script>
     <script type="text/javascript" src='src/classes/Puzzles/Octahedron.js'></script>
+    <script type="text/javascript" src='src/classes/Puzzles/Dodecahedron.js'></script>
     <script type="text/javascript" src='src/menu.js'></script>
     <script type="text/javascript" src='src/game.js'></script>
 </body>

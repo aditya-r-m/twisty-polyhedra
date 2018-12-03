@@ -3,7 +3,7 @@
 // Faces : 8 equilateral triangles
 // Cycles : (4 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Octahedron extends Puzzle {
-    constructor(size = 3, fullSpan = 200) {
+    constructor(size = 2, fullSpan = 200) {
         const alphaM = 2 * Math.PI / 3;
         const animationSteps = 10;
         const animationConfig = {
@@ -110,11 +110,8 @@ class Octahedron extends Puzzle {
                     q = nxtArr[j].clone();
                     r = nxtArr[j + 1].clone();
                     p.id = `p-${f}-${i}-${j}`;
-                    while (grid[p.id]) p.id += '-n';
                     q.id = `p-${f}-${i + 1}-${j}`;
-                    while (grid[q.id]) q.id += '-n';
                     r.id = `p-${f}-${i + 1}-${j + 1}`;
-                    while (grid[r.id]) r.id += '-n';
                     grid[p.id] = p.clone();
                     grid[q.id] = q.clone();
                     grid[r.id] = r.clone();
@@ -122,12 +119,9 @@ class Octahedron extends Puzzle {
                     stickerMap[stickers[stickers.length - 1].id] = stickers[stickers.length - 1];
                     if (j < preArr.length - 1) {
                         p = p.clone();
-                        while (grid[p.id]) p.id += '-n';
                         r = r.clone();
-                        while (grid[r.id]) r.id += '-n';
                         s = preArr[j + 1].clone();
                         s.id = `q-${f}-${i}-${j + 1}`;
-                        while (grid[s.id]) s.id += '-n';
                         grid[p.id] = p.clone();
                         grid[r.id] = r.clone();
                         grid[s.id] = s.clone();
@@ -156,7 +150,6 @@ class Octahedron extends Puzzle {
                 });
                 cycle.stickerCollections.push(stickerCollection);
                 cycles.push(cycle);
-                cycle.computeStickerCover();
             }
             config.attachedFaces.forEach((faceCycleConfig, fci) => {
                 cycle = fci ? cycles[cycles.length - 1] : cycles[cycles.length - size];
@@ -185,8 +178,11 @@ class Octahedron extends Puzzle {
                 if (stickerMap[`s-${aFace}-${s}-${s}`]) {
                     cycle.stickerCollections.push([stickerMap[`s-${aFace}-${s}-${s}`]]);
                 }
-                cycle.computeStickerCover();
             })
+        });
+        cycles.forEach(cycle => {
+            cycle.stickerCollections[0].isPrimary = true;
+            cycle.computeStickerCover()
         });
         super(faces, cycles);
 

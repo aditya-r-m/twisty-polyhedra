@@ -22,16 +22,12 @@ class Cycle {
         this.unitVector = new Vector(p);
     }
 
-    mod(n, m) {
-        return ((n % m) + m) % m;
-    }
-
     twist(direction = 1) {
         this.stickerCollections.forEach(collection => {
             if (collection.length === 1) return;
             let increment = direction * collection.length / this.period;
             collection.forEach((sticker, index) => {
-                sticker.newColor = collection[this.mod(index - increment, collection.length)].color;
+                sticker.newColor = collection[mod(index - increment, collection.length)].color;
             });
             collection.forEach(sticker => {
                 sticker.color = sticker.newColor;

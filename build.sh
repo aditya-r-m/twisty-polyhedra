@@ -8,6 +8,7 @@ cat src/classes/Vector.js \
     src/classes/Puzzles/Cube.js \
     src/classes/Puzzles/Tetrahedron.js \
     src/classes/Puzzles/Octahedron.js \
+    src/classes/Puzzles/Dodecahedron.js \
     src/menu.js \
     src/game.js \
 > dist/temp.js

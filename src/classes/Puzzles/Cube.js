@@ -134,7 +134,10 @@ class Cube extends Puzzle {
                 fCycle.stickerCollections.push([fFace.stickers[(size * size - 1) / 2]]);
                 lCycle.stickerCollections.push([lFace.stickers[(size * size - 1) / 2]]);
             }
-            cycles.forEach(cycle => cycle.computeStickerCover());
+        });
+        cycles.forEach(cycle => {
+            cycle.stickerCollections[0].isPrimary = true;
+            cycle.computeStickerCover()
         });
         super(faces, cycles);
 

@@ -48,8 +48,10 @@ class Sticker {
     getPointProjection(point, inverted, exploded) {
         let result = [point.x, point.y];
         if (exploded) {
-            result[0] += ((this.attractor.x - result[0]) >> 5); // xAttracted = xOriginal + (xAttractor - xOriginal) / 32
-            result[1] += ((this.attractor.y - result[1]) >> 5); // yAttracted = yOriginal + (yAttractor - yOriginal) / 32
+            // If in some puzzle some stickers have more points than others, The magnitude of their attractor will be larger.
+            // To normalize the outward-pull, we divide the result by points.length
+            result[0] += ((this.attractor.x - result[0]) / (10 * this.points.length)); // xAttracted = xOriginal + (xAttractor - xOriginal) / (constant * points.length)
+            result[1] += ((this.attractor.y - result[1]) / (10 * this.points.length)); // yAttracted = yOriginal + (yAttractor - yOriginal) / (constant * points.length)
         }
         if (inverted) result[0] = -result[0]; // Used for rear-view
         return result;

@@ -30,7 +30,7 @@ class Point {
     }
 
     // rotate given point about an arbitrary axis, given unit vector in the direction of the axis & angle 'alpha'
-    // reference: https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
+    // references: https://eater.net/quaternions https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
     rotateAroundAxis(point, unitVector, alpha) {
         const cA = Math.cos(alpha / 2);
         const sA = Math.sin(alpha / 2);

@@ -42,10 +42,10 @@ class Dodecahedron extends Puzzle {
         const faceConfig = [
             {
                 'points': [rootPoints[8],rootPoints[1],rootPoints[13],rootPoints[12],rootPoints[0]],
-                'color': 'red'
+                'color': 'purple'
             }, {
                 'points': [rootPoints[9],rootPoints[2],rootPoints[14],rootPoints[15],rootPoints[3]],
-                'color': 'brown'
+                'color': 'magenta'
             }, {
                 'points': [rootPoints[10],rootPoints[4],rootPoints[12],rootPoints[13],rootPoints[5]],
                 'color': 'white'
@@ -54,25 +54,25 @@ class Dodecahedron extends Puzzle {
                 'color': 'yellow'
             }, {
                 'points': [rootPoints[12],rootPoints[4],rootPoints[18],rootPoints[16],rootPoints[0]],
-                'color': 'green'
+                'color': 'pink'
             }, {
                 'points': [rootPoints[13],rootPoints[1],rootPoints[17],rootPoints[19],rootPoints[5]],
                 'color': 'blue'
             }, {
                 'points': [rootPoints[14],rootPoints[2],rootPoints[16],rootPoints[18],rootPoints[6]],
-                'color': 'pink'
+                'color': 'green'
             }, {
                 'points': [rootPoints[15],rootPoints[7],rootPoints[19],rootPoints[17],rootPoints[3]],
-                'color': 'darkviolet'
+                'color': 'crimson'
             }, {
                 'points': [rootPoints[16],rootPoints[2],rootPoints[9],rootPoints[8],rootPoints[0]],
-                'color': 'purple'
+                'color': 'red'
             }, {
                 'points': [rootPoints[17],rootPoints[1],rootPoints[8],rootPoints[9],rootPoints[3]],
                 'color': 'lawngreen'
             }, {
                 'points': [rootPoints[18],rootPoints[4],rootPoints[10],rootPoints[11],rootPoints[6]],
-                'color': 'magenta'
+                'color': 'brown'
             }, {
                 'points': [rootPoints[19],rootPoints[7],rootPoints[11],rootPoints[10],rootPoints[5]],
                 'color': 'skyblue'

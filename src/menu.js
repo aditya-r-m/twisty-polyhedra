@@ -4,13 +4,15 @@
             'tetrahedron': (size, isDemo) => new Tetrahedron(size, isDemo ? 42.5 : undefined),
             'cube': (size, isDemo) => new Cube(size, isDemo ? 50 : undefined),
             'octahedron': (size, isDemo) => new Octahedron(size, isDemo ? 42.5 : undefined),
-            'dodecahedron': (size, isDemo) => new Dodecahedron(size, isDemo ? 42.5 : undefined)
+            'dodecahedron': (size, isDemo) => new Dodecahedron(size, isDemo ? 42.5 : undefined),
+            'icosahedron': (size, isDemo) => new Icosahedron(size, isDemo ? 42.5 : undefined)
         },
         sizes: {
             'tetrahedron': [3,4,5],
             'cube': [2,3,4],
             'octahedron': [2,3,4],
-            'dodecahedron': [1,2,3]
+            'dodecahedron': [1,2,3],
+            'icosahedron': [2,3,4]
         }
     }
 

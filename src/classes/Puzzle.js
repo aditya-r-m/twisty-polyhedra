@@ -12,7 +12,6 @@ class Puzzle {
             'axis': new Vector({ x: 1, y: 0, z: 0}),
             'angle': 0
         };
-        this.twistCounter = 0;
         this.animationState = {
             active: false,
             counter: 0,
@@ -136,27 +135,25 @@ class Puzzle {
                 };
             }
         } else if (this.twisting) {
-            if (this.twistCounter < 7) {
-                this.twistCounter++;
-            } else {
-                this.detectCycle(x, y);
+            let v = new Vector(
+                new Point(this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
+                new Point(x, y, 0)
+            )
+            if (v.magnitude() > 20) {
+                this.detectCycle(v);
             }
         }
     }
 
     // To detect the cycle to twist, We create a vector for mouse movement.
     // The cycle we want to twist passes through the clicked sticker & gives the maximum cross product with cursor vector
-    detectCycle(x, y) {
+    detectCycle(v) {
         if (!this.cycleMap[this.startSticker.id]) return;
-        let v = new Vector(
-            new Point(this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
-            new Point(x, y, 0)
-        );
         let mxMg = 0, mxCycle, mxDirection;
         this.cycleMap[this.startSticker.id].forEach(cycle => {
             let unitPoint = new Point(cycle.unitVector.x, cycle.unitVector.y, cycle.unitVector.z);
             unitPoint.z = 0;
-            let vC = new Vector(unitPoint).unit();
+            let vC = new Vector(unitPoint);
             let product = v.cross(vC);
             if (mxMg < product.magnitude()) {
                 mxMg = product.magnitude();
@@ -181,7 +178,6 @@ class Puzzle {
             this.saveOrientation(this.updatedOrientation);
             this.updatedOrientation = undefined;
         }
-        this.twistCounter = 0;
         this.startSticker = undefined;
     }
 

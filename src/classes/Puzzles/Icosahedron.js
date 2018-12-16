@@ -1,26 +1,32 @@
 class Icosahedron extends Puzzle {
-    constructor(size = 3, fullSpan = 200) {
+    constructor(size = 2, fullSpan = 200) {
         const grid = {};
         const stickerMap = {};
         const faces = [];
         const cycles = [];
+        const alphaM = 2 * Math.PI / 5;
+        const animationSteps = 10;
+        const animationConfig = {
+            steps: animationSteps,
+            dAlpha: alphaM / animationSteps
+        };
         const scaledUnit = fullSpan / 2;
         const scaledPhi = scaledUnit * (1 + Math.sqrt(5)) / 2;
         const rootPoints = [
-            new Point(0, scaledPhi, scaledUnit),
-            new Point(0, scaledPhi, -scaledUnit),
-            new Point(0, -scaledPhi, scaledUnit),
-            new Point(0, -scaledPhi, -scaledUnit),
+            new Point(0, scaledPhi, scaledUnit, 'r0'),
+            new Point(0, scaledPhi, -scaledUnit, 'r1'),
+            new Point(0, -scaledPhi, scaledUnit, 'r2'),
+            new Point(0, -scaledPhi, -scaledUnit, 'r3'),
 
-            new Point(scaledPhi, scaledUnit, 0),
-            new Point(scaledPhi, -scaledUnit, 0),
-            new Point(-scaledPhi, scaledUnit, 0),
-            new Point(-scaledPhi, -scaledUnit, 0),
+            new Point(scaledPhi, scaledUnit, 0, 'r4'),
+            new Point(scaledPhi, -scaledUnit, 0, 'r5'),
+            new Point(-scaledPhi, scaledUnit, 0, 'r6'),
+            new Point(-scaledPhi, -scaledUnit, 0, 'r7'),
 
-            new Point(scaledUnit, 0, scaledPhi),
-            new Point(-scaledUnit, 0, scaledPhi),
-            new Point(scaledUnit, 0, -scaledPhi),
-            new Point(-scaledUnit, 0, -scaledPhi)
+            new Point(scaledUnit, 0, scaledPhi, 'r8'),
+            new Point(-scaledUnit, 0, scaledPhi, 'r9'),
+            new Point(scaledUnit, 0, -scaledPhi, 'r10'),
+            new Point(-scaledUnit, 0, -scaledPhi, 'r11')
         ];
         const faceConfig = [
             { 'points': [rootPoints[0], rootPoints[4], rootPoints[1]], 'color': 'white' },
@@ -47,7 +53,28 @@ class Icosahedron extends Puzzle {
             { 'points': [rootPoints[11], rootPoints[6], rootPoints[1]], 'color': 'darkmagenta' },
             { 'points': [rootPoints[7], rootPoints[9], rootPoints[6]], 'color': 'goldenrod' }
         ];
-
+        faceConfig.forEach((f, i) => f.id = i);
+        const faceSliceConfig = {};
+        const cycleFamilyConfig = [];
+        rootPoints.forEach(point => {
+            const rootID = point.id;
+            const config = { 'root': point, faces: [] };
+            const pointChain = [];
+            let face = faceConfig.find(({ points }) => points.find(p => p.id == rootID));
+            config.faces.push(face);
+            pointChain.push(face.points[mod(face.points.findIndex(p => p.id == rootID) + 2, 3)].id);
+            for (let c = 0; c < 4; c++) {
+                let p0id = rootID;
+                let p1id = face.points[mod(face.points.findIndex(p => p.id == rootID) + 1, 3)].id;
+                let p2id = face.points[mod(face.points.findIndex(p => p.id == rootID) + 2, 3)].id;
+                face = faceConfig.find(({ points }) =>
+                    !points.find(p => p.id == p1id)
+                    && points.find(p => p.id == p0id)
+                    && points.find(p => p.id == p2id));
+                config.faces.push(face);
+            }
+            cycleFamilyConfig.push(config);
+        });
         faceConfig.forEach(({points, color}, f) => {
             const stickers = [];
             const baseVector = new Vector(points[0]);
@@ -60,7 +87,7 @@ class Icosahedron extends Puzzle {
                     grid[`p-${f}-${i}-${j}`] = new Point(pointVector.x, pointVector.y, pointVector.z);
                     if (i && j) {
                         stickers.push(new Sticker(
-                            `s-${f}-${i - 1}-${j - 1}`, color,
+                            `s-${f}-${i}-${j}`, color,
                             [
                                 grid[`p-${f}-${i - 1}-${j - 1}`].clone(),
                                 grid[`p-${f}-${i}-${j - 1}`].clone(),
@@ -83,6 +110,54 @@ class Icosahedron extends Puzzle {
                 }
             }
             faces.push(new Face(stickers));
+
+            const sliceConfig = {};
+            sliceConfig[points[0].id] = [];
+            for (let i = 1; i <= size; i++) {
+                let slice = []
+                for (let j = 1; j <= i; j++) {
+                    slice.push(stickerMap[`s-${f}-${i}-${j}`]);
+                    if (j < i) {
+                        slice.push(stickerMap[`s-${f}-${i}-${j}-r`]);
+                    }
+                }
+                sliceConfig[points[0].id].push(slice);
+            }
+            sliceConfig[points[1].id] = [];
+            for (let i = 1; i <= size; i++) {
+                let slice = []
+                for (let j = 1; j <= i; j++) {
+                    slice.push(stickerMap[`s-${f}-${size - (j - 1)}-${i - (j - 1)}`]);
+                    if (j < i) {
+                        slice.push(stickerMap[`s-${f}-${size - (j - 1)}-${i - j}-r`]);
+                    }
+                }
+                sliceConfig[points[1].id].push(slice);
+            }
+            sliceConfig[points[2].id] = [];
+            for (let i = 1; i <= size; i++) {
+                let slice = []
+                for (let j = 1; j <= i; j++) {
+                    slice.push(stickerMap[`s-${f}-${size + (j - 1) - (i - 1)}-${size - (i - 1)}`]);
+                    if (j < i) {
+                        slice.push(stickerMap[`s-${f}-${size + 1 + (j - 1) - (i - 1)}-${size - (i - 1)}-r`]);
+                    }
+                }
+                sliceConfig[points[2].id].push(slice);
+            }
+            faceSliceConfig[f] = sliceConfig;
+        });
+
+        cycleFamilyConfig.forEach(({ faces, root }) => {
+            for (let c = 0; c < size; c++) {
+                const unitVector = new Vector(root).unit();
+                const stickerCollections = [Array.prototype.concat.apply([], faces.map(({ id }) => faceSliceConfig[id][root.id][c]))];
+                cycles.push(new Cycle(stickerCollections, 5, unitVector, animationConfig));
+            }
+        });
+        cycles.forEach(cycle => {
+            cycle.stickerCollections[0].isPrimary = true;
+            cycle.computeStickerCover()
         });
         super(faces, cycles);
 

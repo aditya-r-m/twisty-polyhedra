@@ -19,7 +19,7 @@
     // Initial game configuration
     window.explodedStickers = true;
 
-    window.selectedPuzzle = new Icosahedron();
+    window.selectedPuzzle = new Tetrahedron();
     Puzzle.prototype.onFinish = time => {
         window.help.style.display = 'none';
         window.menu.style.display = 'none';

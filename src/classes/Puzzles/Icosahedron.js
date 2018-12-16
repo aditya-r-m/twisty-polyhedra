@@ -39,17 +39,50 @@ class Icosahedron extends Puzzle {
             { 'points': [rootPoints[1], rootPoints[10], rootPoints[11]], 'color': 'crimson' },
             { 'points': [rootPoints[6], rootPoints[11], rootPoints[7]], 'color': 'indigo' },
             { 'points': [rootPoints[9], rootPoints[7], rootPoints[2]], 'color': 'brown' },
-            { 'points': [rootPoints[8], rootPoints[2], rootPoints[5]], 'color': 'pink' },
+            { 'points': [rootPoints[8], rootPoints[2], rootPoints[5]], 'color': 'darkblue' },
 
-            { 'points': [rootPoints[2], rootPoints[8], rootPoints[9]], 'color': 'aquamarine' },
+            { 'points': [rootPoints[2], rootPoints[8], rootPoints[9]], 'color': 'pink' },
             { 'points': [rootPoints[5], rootPoints[4], rootPoints[8]], 'color': 'burlywood' },
             { 'points': [rootPoints[10], rootPoints[1], rootPoints[4]], 'color': 'darkcyan' },
             { 'points': [rootPoints[11], rootPoints[6], rootPoints[1]], 'color': 'darkmagenta' },
             { 'points': [rootPoints[7], rootPoints[9], rootPoints[6]], 'color': 'goldenrod' }
         ];
 
-        faceConfig.forEach((config, f) => {
-            faces.push(new Face([new Sticker('', config.color, config.points.map(p => p.clone()))]));
+        faceConfig.forEach(({points, color}, f) => {
+            const stickers = [];
+            const baseVector = new Vector(points[0]);
+            const vI = new Vector(points[0], points[1]).multiply(1 / size);
+            const vJ = new Vector(points[1], points[2]).multiply(1 / size);
+            let pointVector, i, j;
+            for (i = 0; i <= size; i++) {
+                for (j = 0; j <= i; j++) {
+                    pointVector = baseVector.add(vI.multiply(i)).add(vJ.multiply(j));
+                    grid[`p-${f}-${i}-${j}`] = new Point(pointVector.x, pointVector.y, pointVector.z);
+                    if (i && j) {
+                        stickers.push(new Sticker(
+                            `s-${f}-${i - 1}-${j - 1}`, color,
+                            [
+                                grid[`p-${f}-${i - 1}-${j - 1}`].clone(),
+                                grid[`p-${f}-${i}-${j - 1}`].clone(),
+                                grid[`p-${f}-${i}-${j}`].clone(),
+                            ]
+                        ));
+                        stickerMap[stickers[stickers.length - 1].id] = stickers[stickers.length - 1];
+                        if (j < i) {
+                            stickers.push(new Sticker(
+                                `s-${f}-${i}-${j}-r`, color,
+                                [
+                                    grid[`p-${f}-${i}-${j}`].clone(),
+                                    grid[`p-${f}-${i - 1}-${j}`].clone(),
+                                    grid[`p-${f}-${i - 1}-${j - 1}`].clone(),
+                                ]
+                            ));
+                            stickerMap[stickers[stickers.length - 1].id] = stickers[stickers.length - 1];
+                        }
+                    }
+                }
+            }
+            faces.push(new Face(stickers));
         });
         super(faces, cycles);
 

@@ -33,7 +33,7 @@ class Puzzle {
     isSolved() {
         for (let f = 0; f < this.faces.length; f++)
             for (let s = 0; s < this.faces[f].stickers.length; s++)
-                if (this.faces[f].stickers[s].color !== this.faces[f].stickers[0].color) return false;
+                if (this.faces[f].stickers[s].sColor.code !== this.faces[f].stickers[0].sColor.code) return false;
         return true;
     }
 

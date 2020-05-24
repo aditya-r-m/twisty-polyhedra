@@ -167,7 +167,7 @@ class Dodecahedron extends Puzzle {
         cycleFamilyConfig.forEach((config, attachedFace) => {
             let firstCycle;
             for (let i = 0; i < size; i++) {
-                let cycle = new Cycle([], 5, config.unitVector, animationConfig);
+                let cycle = new Cycle(cycles.length, [], 5, config.unitVector, animationConfig);
                 for (let j = 0; j < size; j++) {
                     let stickerCollection = [];
                     config.slices.forEach(slice => {

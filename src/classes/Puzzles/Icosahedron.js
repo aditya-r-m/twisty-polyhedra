@@ -152,7 +152,7 @@ class Icosahedron extends Puzzle {
             for (let c = 0; c < size; c++) {
                 const unitVector = new Vector(root).unit();
                 const stickerCollections = [Array.prototype.concat.apply([], faces.map(({ id }) => faceSliceConfig[id][root.id][c]))];
-                cycles.push(new Cycle(stickerCollections, 5, unitVector, animationConfig));
+                cycles.push(new Cycle(cycles.length, stickerCollections, 5, unitVector, animationConfig));
             }
         });
         cycles.forEach(cycle => {

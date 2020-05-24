@@ -107,7 +107,7 @@ class Tetrahedron extends Puzzle {
         let cycle, aFace, stickerCollection, sI, sJ, dI, dJ;
         cycleFamilyConfig.forEach(config => {
             for (let c = 0; c < size; c++) {
-                cycle = new Cycle([], 3, config.unitVector, animationConfig);
+                cycle = new Cycle(cycles.length, [], 3, config.unitVector, animationConfig);
                 stickerCollection = [];
                 config.slices.forEach(slice => {
                     [sI, sJ] = slice.sIJ(c);

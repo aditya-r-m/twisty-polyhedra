@@ -4,7 +4,8 @@
 // The period is the numbe of operations after which the twist operation reverts the puzzle to original state
 // A cycle also contains unit vector normal to it's plane & a set of sticker ids afftected by it for quick lookup.
 class Cycle {
-    constructor(stickerCollections, period, unitVector, animationConfig) {
+    constructor(id, stickerCollections, period, unitVector, animationConfig) {
+        this.id = id;
         this.stickerCollections = stickerCollections;
         this.period = period;
         this.unitVector = unitVector;
@@ -27,11 +28,11 @@ class Cycle {
             if (collection.length === 1) return;
             let increment = direction * collection.length / this.period;
             collection.forEach((sticker, index) => {
-                sticker.newColor = collection[mod(index - increment, collection.length)].color;
+                sticker.newSColor = collection[mod(index - increment, collection.length)].sColor;
             });
             collection.forEach(sticker => {
-                sticker.color = sticker.newColor;
-                delete sticker.newColor;
+                sticker.sColor = sticker.newSColor;
+                delete sticker.newSColor;
             });
         });
     }

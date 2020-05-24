@@ -93,7 +93,7 @@ class Cube extends Puzzle {
         let cycle, stickerCollection, stickerIndex, fCycle, lCycle, fFace, lFace;
         cycleFamilyConfig.forEach(config => {
             for (let c = 0; c < size; c++) {
-                cycle = new Cycle([], 4, config.unitVector, animationConfig);
+                cycle = new Cycle(cycles.length, [], 4, config.unitVector, animationConfig);
                 stickerCollection = [];
                 config.slices.forEach(slice => {
                     for (let s = 0; s < size; s++) {

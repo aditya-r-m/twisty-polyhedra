@@ -1,7 +1,7 @@
 // A sticker is a collection of points. It's a polygon with a fill color
 // A sticker has a normal vector that points outside the puzzle. This is implied by point order & right hand thumb rule
 // Not that this is the only component of the Puzzle object which is actually rendered on the canvas
-class SColor {
+class ColorData {
     constructor(code, originalStickerId) {
         this.code = code;
         this.originalStickerId = originalStickerId;
@@ -9,9 +9,9 @@ class SColor {
 }
 
 class Sticker {
-    constructor(id, color, points) {
+    constructor(id, colorCode, points) {
         this.id = id;
-        this.sColor = new SColor(color, this.id);
+        this.colorData = new ColorData(colorCode, this.id);
         this.points = points;
         this.attractor = {};
     }
@@ -66,7 +66,7 @@ class Sticker {
 
     // Use canvas moveTo & lineTo for drawing projected sticker
     render(ctx, inverted, exploded) {
-        ctx.fillStyle = this.sColor.code;
+        ctx.fillStyle = this.colorData.code;
         ctx.strokeStyle = "#202020";
         ctx.beginPath();
         ctx.moveTo(...this.getPointProjection(this.points[0], inverted, exploded));

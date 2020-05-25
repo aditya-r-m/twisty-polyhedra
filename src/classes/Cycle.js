@@ -28,11 +28,11 @@ class Cycle {
             if (collection.length === 1) return;
             let increment = direction * collection.length / this.period;
             collection.forEach((sticker, index) => {
-                sticker.newSColor = collection[mod(index - increment, collection.length)].sColor;
+                sticker.$newColorData = collection[mod(index - increment, collection.length)].colorData;
             });
             collection.forEach(sticker => {
-                sticker.sColor = sticker.newSColor;
-                delete sticker.newSColor;
+                sticker.colorData = sticker.$newColorData;
+                delete sticker.$newColorData;
             });
         });
     }

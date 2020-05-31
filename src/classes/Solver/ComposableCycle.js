@@ -1,6 +1,12 @@
-class CompositeCycle {
+class ComposableCycle {
   constructor(swapMap, directedCycles) {
     this.swapMap = swapMap;
+    for (let targetStickerId in swapMap) {
+      let sourceStickerId = swapMap[targetStickerId];
+      if (targetStickerId == sourceStickerId) {
+        delete swapMap[targetStickerId];
+      }
+    };
     this.directedCycles = directedCycles;
     this.size = Object.keys(swapMap).length;
   }
@@ -29,11 +35,11 @@ class CompositeCycle {
     let iDirectedCycles = this.directedCycles
       .map(({cycleIndex, period, direction}) => new DirectedCycle(cycleIndex, period, period - direction))
       .reverse();
-    return new CompositeCycle(iSwapMap, iDirectedCycles);
+    return new ComposableCycle(iSwapMap, iDirectedCycles);
   }
 
-  overlaps(compositeCycle) {
-    for (let key in compositeCycle.swapMap) {
+  overlaps(composableCycle) {
+    for (let key in composableCycle.swapMap) {
       if (this.swapMap[key]) {
         return true;
       }
@@ -42,8 +48,8 @@ class CompositeCycle {
   }
 }
 
-CompositeCycle.fromCycle = cycle => {
-  let compositeCycles = [];
+ComposableCycle.fromCycle = cycle => {
+  let composableCycles = [];
   for (let direction = 1; direction < cycle.period; direction++) {
     let swapMap = {};
     for (let collection of cycle.stickerCollections) {
@@ -54,22 +60,22 @@ CompositeCycle.fromCycle = cycle => {
         swapMap[sticker.id] = collection[mod(index - increment, collection.length)].id;
       };
     };
-    compositeCycles.push(new CompositeCycle(swapMap, [new DirectedCycle(cycle.index, cycle.period, direction)]));
+    composableCycles.push(new ComposableCycle(swapMap, [new DirectedCycle(cycle.index, cycle.period, direction)]));
   }
-  return compositeCycles;
+  return composableCycles;
 };
 
-CompositeCycle.fromCompositeCycles = compositeCycles => {
+ComposableCycle.fromComposableCycles = composableCycles => {
   let swapMap = {};
   let directedCycles = [];
-  compositeCycles.forEach(compositeCycle => {
+  composableCycles.forEach(composableCycle => {
     let newSwapMap = {};
     for (let targetStickerId in swapMap) {
       let sourceStickerId = swapMap[targetStickerId];
       newSwapMap[targetStickerId] = sourceStickerId;
     }
-    for (let targetStickerId in compositeCycle.swapMap) {
-      let sourceStickerId = compositeCycle.swapMap[targetStickerId];
+    for (let targetStickerId in composableCycle.swapMap) {
+      let sourceStickerId = composableCycle.swapMap[targetStickerId];
       if (swapMap[sourceStickerId]) {
         newSwapMap[targetStickerId] = swapMap[sourceStickerId];
       } else {
@@ -77,13 +83,7 @@ CompositeCycle.fromCompositeCycles = compositeCycles => {
       }
     };
     swapMap = newSwapMap;
-    directedCycles = directedCycles.concat(compositeCycle.directedCycles);
+    directedCycles = directedCycles.concat(composableCycle.directedCycles);
   });
-  for (let targetStickerId in swapMap) {
-    let sourceStickerId = swapMap[targetStickerId];
-    if (targetStickerId == sourceStickerId) {
-      delete swapMap[targetStickerId];
-    }
-  };
-  return new CompositeCycle(swapMap, directedCycles);
+  return new ComposableCycle(swapMap, directedCycles);
 };

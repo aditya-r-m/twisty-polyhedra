@@ -1,9 +1,9 @@
 class Commutator {
   constructor (atomicComposableCycles) {
-    this.commutators = this.generate(atomicComposableCycles);
+    this.collection = this.generateComposableCycles(atomicComposableCycles);
   }
 
-  generate(atomicComposableCycles) {
+  generateComposableCycles(atomicComposableCycles) {
     let conjugates = [];
     for (let i = 0; i < atomicComposableCycles.length; i++) {
       for (let j = 0; j < atomicComposableCycles.length; j++) {

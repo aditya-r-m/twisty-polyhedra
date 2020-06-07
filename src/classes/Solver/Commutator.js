@@ -1,5 +1,6 @@
 class Commutator {
-  constructor (atomicComposableCycles) {
+  constructor (atomicComposableCycles, sizeLimit) {
+    this.sizeLimit = sizeLimit;
     this.collection = this.generateComposableCycles(atomicComposableCycles);
   }
 
@@ -20,7 +21,7 @@ class Commutator {
         if (conjugate.overlaps(atomicComposableCycle)) {
           let commutator = ComposableCycle.fromComposableCycles([
             conjugate, atomicComposableCycle, conjugate.inverse(), atomicComposableCycle.inverse()]);
-          if (commutator.size > 0 && commutator.size % 3 == 0 && commutator.size < 13
+          if (commutator.size > 0 && commutator.size % 3 == 0 && commutator.size < this.sizeLimit
               && commutator.size < atomicComposableCycle.size && commutator.size < conjugate.size) {
             let sketch = commutator.getSketch();
             if (!commutatorMap[sketch] || commutatorMap[sketch].size > commutator.size) {

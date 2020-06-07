@@ -7,7 +7,7 @@ class Cube extends Puzzle {
         const width = fullSpan / size;
         const span = fullSpan / 2;
         const alphaM = Math.PI / 2;
-        const animationSteps = 10;
+        const animationSteps = 1;
         const animationConfig = {
             steps: animationSteps,
             dAlpha: alphaM / animationSteps

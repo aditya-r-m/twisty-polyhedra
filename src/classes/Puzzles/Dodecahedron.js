@@ -9,7 +9,7 @@ class Dodecahedron extends Puzzle {
         const grid = {};
         const stickerMap = {};
         const alphaM = 2 * Math.PI / 5;
-        const animationSteps = 10;
+        const animationSteps = 1;
         const animationConfig = {
             steps: animationSteps,
             dAlpha: alphaM / animationSteps

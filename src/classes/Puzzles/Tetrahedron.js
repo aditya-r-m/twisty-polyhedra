@@ -6,7 +6,7 @@ class Tetrahedron extends Puzzle {
     constructor(size = 3, fullSpan = 200) {
         const altitude = fullSpan / Math.sqrt(2);
         const alphaM = 2 * Math.PI / 3;
-        const animationSteps = 1;
+        const animationSteps = 10;
         const animationConfig = {
             steps: animationSteps,
             dAlpha: alphaM / animationSteps

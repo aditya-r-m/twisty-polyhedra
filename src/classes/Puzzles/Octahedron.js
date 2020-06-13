@@ -5,7 +5,7 @@
 class Octahedron extends Puzzle {
     constructor(size = 2, fullSpan = 200) {
         const alphaM = 2 * Math.PI / 3;
-        const animationSteps = 1;
+        const animationSteps = 10;
         const animationConfig = {
             steps: animationSteps,
             dAlpha: alphaM / animationSteps

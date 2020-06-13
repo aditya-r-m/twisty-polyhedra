@@ -2,11 +2,9 @@ importScripts("./utils.js");
 importScripts("./classes/Solver/DirectedCycle.js");
 importScripts("./classes/Solver/ComposableCycle.js");
 importScripts("./classes/Solver/Cluster.js");
-importScripts("./classes/Solver/Commutator.js");
 importScripts("./solver-preliminaries.js");
 importScripts("./solver-core.js");
 
-this.commutatorCache = {};
 this.clusterCache = {};
 this.getPuzzleId = puzzle => `${puzzle.faces.length}-f-${puzzle.cycles.length}-c`;
 
@@ -36,19 +34,13 @@ this.onmessage = (e) => {
   let atomicComposableCycles = Array.prototype.concat.apply([], puzzle.cycles.map(
     cycle => ComposableCycle.fromCycle(cycle)));
   atomicComposableCycles.sort((a, b) => a.size - b.size);
-  if (!this.commutatorCache[puzzleId]) {
-    this.commutatorCache[puzzleId] = new Commutator(atomicComposableCycles, 18);
-  }
   if (!this.clusterCache[puzzleId]) {
     this.clusterCache[puzzleId] = Cluster.fromAtomicComposableCycles(atomicComposableCycles);
   }
-  let commutatorCollection = this.commutatorCache[puzzleId].collection;
   let clusters = this.clusterCache[puzzleId];
   let puzzleStateAsComposableCycle = getPuzzleStateAsComposableCycle(puzzle);
   puzzleStateAsComposableCycle = this.alignFaceCentres(puzzleStateAsComposableCycle, atomicComposableCycles, getFaceCentres(puzzle));
-  clusters.sort((ca, cb) => cb.stickers.length - ca.stickers.length);
   let puzzleStateAsEvenComposableCycle = this.correctParity(puzzleStateAsComposableCycle, atomicComposableCycles, clusters);
-  clusters.reverse();
-  this.postMessage({ status: "INIT", commutatorCache, clusterCache,
-    solution: this.applyCommutators(puzzleStateAsEvenComposableCycle, commutatorCollection, clusters) });
+  this.postMessage({ status: "INIT", clusterCache,
+    solution: solveEvenPuzzleState(puzzleStateAsEvenComposableCycle, clusters) });
 }

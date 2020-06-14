@@ -87,8 +87,8 @@ class Dodecahedron extends Puzzle {
                 if (face != c) {
                     for (let u = 0; u < 5; u++) {
                         for (let v = 0; v < 5; v++) {
-                            if (faceConfig[c].points[u].id == faceConfig[face].points[v].id &&
-                                faceConfig[c].points[mod(u + 1, 5)].id == faceConfig[face].points[mod(v - 1, 5)].id) {
+                            if (faceConfig[c].points[u].id === faceConfig[face].points[v].id &&
+                                faceConfig[c].points[mod(u + 1, 5)].id === faceConfig[face].points[mod(v - 1, 5)].id) {
                                 startV = v;
                                 endV = mod(v - 1, 5);
                                 cycleConfig.slices[u] = { face, startV, endV };

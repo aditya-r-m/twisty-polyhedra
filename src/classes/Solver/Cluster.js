@@ -44,7 +44,7 @@ class Cluster {
                 if (conjugate.overlaps(atomicComposableCycle)) {
                     let commutator = ComposableCycle.fromComposableCycles([
                         conjugate, atomicComposableCycle, conjugate.inverse(), atomicComposableCycle.inverse()]);
-                    if (commutator.size > 0 && commutator.size % 3 == 0
+                    if (commutator.size > 0 && commutator.size % 3 === 0
                         && commutator.size < atomicComposableCycle.size && commutator.size < conjugate.size
                         && this.countCycleOverlap(commutator) && this.countCycleOverlap(commutator) < this.size - 3) {
                         let sketch = commutator.getSketch();
@@ -70,17 +70,7 @@ class Cluster {
     }
 }
 
-Cluster.fromAtomicComposableCycles = atomicComposableCycles => {
-    let stickerToAtomicComposableCycleMap = {};
-    for (let atomicComposableCycle of atomicComposableCycles) {
-        for (let sticker in atomicComposableCycle.swapMap) {
-            if (!stickerToAtomicComposableCycleMap[sticker]) {
-                stickerToAtomicComposableCycleMap[sticker] = [];
-            }
-            stickerToAtomicComposableCycleMap[sticker].push(atomicComposableCycle);
-        }
-    }
-
+Cluster.fromAtomicComposableCycles = (atomicComposableCycles, stickerToAtomicComposableCycleMap) => {
     let clusters = [];
     let stickerGraph = {};
     let addEdge = (sa, sb) => {

@@ -3,7 +3,7 @@ class ComposableCycle {
     this.swapMap = swapMap;
     for (let targetStickerId in swapMap) {
       let sourceStickerId = swapMap[targetStickerId];
-      if (targetStickerId == sourceStickerId) {
+      if (targetStickerId === sourceStickerId) {
         delete swapMap[targetStickerId];
       }
     };

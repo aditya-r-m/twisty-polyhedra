@@ -60,17 +60,17 @@ class Icosahedron extends Puzzle {
             const rootID = point.id;
             const config = { 'root': point, faces: [] };
             const pointChain = [];
-            let face = faceConfig.find(({ points }) => points.find(p => p.id == rootID));
+            let face = faceConfig.find(({ points }) => points.find(p => p.id === rootID));
             config.faces.push(face);
-            pointChain.push(face.points[mod(face.points.findIndex(p => p.id == rootID) + 2, 3)].id);
+            pointChain.push(face.points[mod(face.points.findIndex(p => p.id === rootID) + 2, 3)].id);
             for (let c = 0; c < 4; c++) {
                 let p0id = rootID;
-                let p1id = face.points[mod(face.points.findIndex(p => p.id == rootID) + 1, 3)].id;
-                let p2id = face.points[mod(face.points.findIndex(p => p.id == rootID) + 2, 3)].id;
+                let p1id = face.points[mod(face.points.findIndex(p => p.id === rootID) + 1, 3)].id;
+                let p2id = face.points[mod(face.points.findIndex(p => p.id === rootID) + 2, 3)].id;
                 face = faceConfig.find(({ points }) =>
-                    !points.find(p => p.id == p1id)
-                    && points.find(p => p.id == p0id)
-                    && points.find(p => p.id == p2id));
+                    !points.find(p => p.id === p1id)
+                    && points.find(p => p.id === p0id)
+                    && points.find(p => p.id === p2id));
                 config.faces.push(face);
             }
             cycleFamilyConfig.push(config);

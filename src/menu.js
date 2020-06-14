@@ -41,7 +41,7 @@
                 puzzle.updatedOrientation.angle += 0.015;
                 puzzle.update();
                 puzzle.render(ctx);
-                if (menuStateCounter == localState) {
+                if (menuStateCounter === localState) {
                     requestAnimationFrame(loop);
                 }
             }
@@ -75,7 +75,7 @@
                 puzzle.updatedOrientation.angle += 0.015;
                 puzzle.update();
                 puzzle.render(ctx);
-                if (menuStateCounter == localState) {
+                if (menuStateCounter === localState) {
                     requestAnimationFrame(loop);
                 }
             }

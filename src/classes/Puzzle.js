@@ -111,7 +111,7 @@ class Puzzle {
     grab(x, y, type) {
         this.startEvtCoordinates.x = x;
         this.startEvtCoordinates.y = y;
-        if (type == 2) {
+        if (type === 2) {
             this.rotating = true;
         } else {
             this.startSticker = this.findTouchedSticker(x, y);

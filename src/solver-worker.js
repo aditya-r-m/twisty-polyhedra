@@ -34,8 +34,18 @@ this.onmessage = (e) => {
   let atomicComposableCycles = Array.prototype.concat.apply([], puzzle.cycles.map(
     cycle => ComposableCycle.fromCycle(cycle)));
   atomicComposableCycles.sort((a, b) => a.size - b.size);
+  let stickerToAtomicComposableCycleMap = {};
+  for (let atomicComposableCycle of atomicComposableCycles) {
+      for (let sticker in atomicComposableCycle.swapMap) {
+          if (!stickerToAtomicComposableCycleMap[sticker]) {
+              stickerToAtomicComposableCycleMap[sticker] = [];
+          }
+          stickerToAtomicComposableCycleMap[sticker].push(atomicComposableCycle);
+      }
+  }
+
   if (!this.clusterCache[puzzleId]) {
-    this.clusterCache[puzzleId] = Cluster.fromAtomicComposableCycles(atomicComposableCycles);
+    this.clusterCache[puzzleId] = Cluster.fromAtomicComposableCycles(atomicComposableCycles, stickerToAtomicComposableCycleMap);
   }
   let clusters = this.clusterCache[puzzleId];
   let puzzleStateAsComposableCycle = getPuzzleStateAsComposableCycle(puzzle);

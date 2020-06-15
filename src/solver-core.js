@@ -15,8 +15,8 @@ this.getSpecialClusters = clusters => {
 this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
   let stickerPairToCycleMap = {};
   let specialClusters = this.getSpecialClusters(clusters);
-  clusters.sort((ca, cb) => cb.atomicComposableCycles.length - ca.atomicComposableCycles.length);
-  specialClusters.sort((ca, cb) => cb.atomicComposableCycles.length - ca.atomicComposableCycles.length);
+  clusters.sort((ca, cb) => cb.order - ca.order);
+  specialClusters.sort((ca, cb) => cb.order - ca.order);
   stickerPairToCycleMap = {};
 
   for (let cluster of clusters) {
@@ -144,12 +144,6 @@ this.attemptL2Algorithms = (puzzleStateAsComposableCycle, cluster, sticker, stic
             if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
               return newPuzzleStateAsComposableCycle;
             }
-            newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
-              puzzleStateAsComposableCycle, composableCycleFirst, composableCycleSecond, composableCycleFirst.inverse()
-            ]);
-            if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
-              return newPuzzleStateAsComposableCycle;
-            }
           }
         }
       }
@@ -182,13 +176,6 @@ this.attemptL3Algorithms = (puzzleStateAsComposableCycle, cluster, sticker, stic
               let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
                 puzzleStateAsComposableCycle,
                 atomicComposableCycle, composableCycleFirst, composableCycleSecond, atomicComposableCycle.inverse()
-              ]);
-              if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
-                return newPuzzleStateAsComposableCycle;
-              }
-              newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
-                puzzleStateAsComposableCycle,
-                atomicComposableCycle, composableCycleFirst, composableCycleSecond, composableCycleFirst.inverse(), atomicComposableCycle.inverse()
               ]);
               if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
                 return newPuzzleStateAsComposableCycle;

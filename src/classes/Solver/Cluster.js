@@ -10,6 +10,12 @@ class Cluster {
         this.id += '-cluster';
         this.size = this.stickers.length;
         this.atomicComposableCycles = atomicComposableCycles;
+        this.order = 0;
+        for (let atomicComposableCycle of atomicComposableCycles) {
+            if (atomicComposableCycle.swapMap[stickers[0]]) {
+                this.order++;
+            }
+        }
         this.commutators = this.generateCommutators();
     }
 

@@ -41,21 +41,13 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
         complexityLimit);
     }
   }
-  stillImproving = true;
-  while (stillImproving) {
-    stillImproving = false;
-    for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
-      for (let cluster of clusters) {
-        if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
-        let newPuzzleStateAsComposableCycle = this.solveCluster(
-          puzzleStateAsComposableCycle, cluster, stickerPairToCycleMap,
-          (n, o) => n.size < o.size && o.size - n.size >= cluster.countCycleOverlap(o) - cluster.countCycleOverlap(n),
-          complexityLimit);
-        if (newPuzzleStateAsComposableCycle !== puzzleStateAsComposableCycle) {
-          stillImproving = true;
-          puzzleStateAsComposableCycle = newPuzzleStateAsComposableCycle;
-        }
-      }
+  for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
+    for (let cluster of clusters) {
+      if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
+      puzzleStateAsComposableCycle = this.solveCluster(
+        puzzleStateAsComposableCycle, cluster, stickerPairToCycleMap,
+        (n, o) => n.size < o.size && o.size - n.size >= cluster.countCycleOverlap(o) - cluster.countCycleOverlap(n),
+        complexityLimit);
     }
   }
   return puzzleStateAsComposableCycle;

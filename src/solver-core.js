@@ -144,6 +144,12 @@ this.attemptL2Algorithms = (puzzleStateAsComposableCycle, cluster, sticker, stic
             if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
               return newPuzzleStateAsComposableCycle;
             }
+            newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
+              puzzleStateAsComposableCycle, composableCycleFirst, composableCycleSecond, composableCycleFirst.inverse()
+            ]);
+            if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
+              return newPuzzleStateAsComposableCycle;
+            }
           }
         }
       }
@@ -176,6 +182,13 @@ this.attemptL3Algorithms = (puzzleStateAsComposableCycle, cluster, sticker, stic
               let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
                 puzzleStateAsComposableCycle,
                 atomicComposableCycle, composableCycleFirst, composableCycleSecond, atomicComposableCycle.inverse()
+              ]);
+              if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
+                return newPuzzleStateAsComposableCycle;
+              }
+              newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
+                puzzleStateAsComposableCycle,
+                atomicComposableCycle, composableCycleFirst, composableCycleSecond, composableCycleFirst.inverse(), atomicComposableCycle.inverse()
               ]);
               if (isProgress(newPuzzleStateAsComposableCycle, puzzleStateAsComposableCycle)) {
                 return newPuzzleStateAsComposableCycle;

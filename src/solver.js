@@ -1,4 +1,7 @@
 (() => {
+  if (Worker) {
+    window.solverWorker = new Worker("src/solver-worker.js");
+  }
   let solutionStack = (window.solutionStack = {
     movesMade: [],
     movesToMake: [],
@@ -24,11 +27,11 @@
     window.solutionpanel.style.display = "none";
   };
   window.showSolveButton = () => {
+    if (!window.solverWorker) return;
     window.solvebutton.style.display = "inline-block";
     window.clearSolution();
   };
   let inProgress = false;
-  window.solverWorker = new Worker("src/solver-worker.js");
   window.generateSolution = () => {
     if (inProgress) return;
     inProgress = true;

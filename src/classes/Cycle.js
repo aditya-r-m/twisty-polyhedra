@@ -4,35 +4,43 @@
 // The period is the numbe of operations after which the twist operation reverts the puzzle to original state
 // A cycle also contains unit vector normal to it's plane & a set of sticker ids afftected by it for quick lookup.
 class Cycle {
-    constructor(stickerCollections, period, unitVector, animationConfig) {
-        this.stickerCollections = stickerCollections;
-        this.period = period;
-        this.unitVector = unitVector;
-        this.animationConfig = animationConfig;
-        this.stickerCover = {};
-    }
+  constructor(index, stickerCollections, period, unitVector, animationConfig) {
+    this.index = index;
+    this.stickerCollections = stickerCollections;
+    this.period = period;
+    this.unitVector = unitVector;
+    this.animationConfig = animationConfig;
+    this.stickerCover = {};
+  }
 
-    computeStickerCover() {
-        this.stickerCollections.forEach(collection => collection.forEach(({ id }) => this.stickerCover[id] = true));
-    }
+  computeStickerCover() {
+    this.stickerCollections.forEach((collection) =>
+      collection.forEach(({ id }) => (this.stickerCover[id] = true))
+    );
+  }
 
-    saveOrientation(orientation) {
-        const p = new Point(this.unitVector.x, this.unitVector.y, this.unitVector.z);
-        p.update(orientation);
-        this.unitVector = new Vector(p);
-    }
+  saveOrientation(orientation) {
+    const p = new Point(
+      this.unitVector.x,
+      this.unitVector.y,
+      this.unitVector.z
+    );
+    p.update(orientation);
+    this.unitVector = new Vector(p);
+  }
 
-    twist(direction = 1) {
-        this.stickerCollections.forEach(collection => {
-            if (collection.length === 1) return;
-            let increment = direction * collection.length / this.period;
-            collection.forEach((sticker, index) => {
-                sticker.newColor = collection[mod(index - increment, collection.length)].color;
-            });
-            collection.forEach(sticker => {
-                sticker.color = sticker.newColor;
-                delete sticker.newColor;
-            });
-        });
-    }
+  twist(direction = 1) {
+    this.stickerCollections.forEach((collection) => {
+      if (collection.length === 1) return;
+      let increment = (direction * collection.length) / this.period;
+      collection.forEach((sticker, index) => {
+        sticker.$newColorData =
+          collection[mod(index - increment, collection.length)].colorData;
+      });
+      collection.forEach((sticker) => {
+        sticker.colorData = sticker.$newColorData;
+        delete sticker.$newColorData;
+      });
+    });
+  }
 }

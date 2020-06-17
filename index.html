@@ -14,10 +14,37 @@
         canvas {
             cursor: pointer;
         }
+        #solverloader {
+            display: inline-block;
+            border: 8px solid skyblue;
+            border-radius: 50%;
+            border-top: 8px solid white;
+            width: 12px;
+            height: 12px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .makemovebutton {
+            font-size: 30px;
+            font-weight: bold;
+            padding: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
-<body style="background-color: #202020; color: white; text-align: center; min-width: 1024px;">
+<body style="background-color: #202020; color: white; text-align: center; min-width: 1024px; min-height: 737px;">
     <div id="success" style="display: none; vertical-align: top; width: 394px; margin-top: 100px; border: 3px solid skyblue; border-radius: 20px;">
         <h2 style="position: relative; font-family: cursive">
             Congratulations!
@@ -55,7 +82,7 @@
             Happy Solving!
         </h2>
     </div>
-    <div id="menu" style="display: inline-block; vertical-align: top; margin-top: 50px; width: 400px">
+    <div id="menu" style="display: inline-block; vertical-align: top; text-align: center; margin-top: 50px; width: 400px">
         <div id="puzzlemenu" style="display: inline-block; height: 300px;">
             <div id="shapemenu" style="display: inline-block; height: 300px;">
                 <div style="height: 100px;">
@@ -100,11 +127,35 @@
                 style="cursor: pointer; width: 50px; height: 50px; display: none; color: red">&#9665;</span>
             <span id="startbutton" onclick="selectedPuzzle.scramble();startbutton.style.visibility='hidden'" style="cursor: pointer; float:right; width: 50px; height: 50px; color: lawngreen">&#9654;</span>
         </div>
-        <span id="solvebutton" onclick="generateSolution();" style="cursor: pointer; float:right; width: 50px; height: 50px; color: lawngreen">solve</span>
+        <div id="solvebutton" onclick="generateSolution();" style="
+            display: none;
+            cursor: pointer;
+            color: skyblue;
+            padding: 3px;
+            border: 3px solid skyblue;
+            border-radius: 10px;
+            margin-bottom: 25px">𝓢𝓸𝓵𝓿𝓮</div>
+        <div id="solverstatus" style="
+            display: none;
+            cursor: pointer;
+            color: skyblue;">
+            <div id="solverstatustext" style="padding-bottom: 10px;"></div>
+            <span id="solverloader"></span>
+        </div>
     </div>
-    <div style="display: inline-block">
+    <div style="display: inline-block; color: skyblue;">
         <canvas id="gameCanvas" width="600px" height="600px"></canvas>
-        <span id="stats" style="position: fixed; right: 50px; display: none">Time Taken: --:--, Moves Made: --</span>
+        <div id="solutionpanel" width="600px" style="
+            display: none;">
+            <span class="makemovebutton" onclick="revertAllSolverMoves()">|<</span>
+            <span class="makemovebutton" onclick="revertSolverMoveSequence()"><<</span>
+            <span class="makemovebutton" onclick="revertSolverMove()"><</span>
+            <span id="solutioninfo" style="display: inline-block; width: 150px"></span>
+            <span class="makemovebutton" onclick="makeSolverMove()">></span>
+            <span class="makemovebutton" onclick="makeSolverMoveSequence()">>></span>
+            <span class="makemovebutton" onclick="makeAllSolverMoves()">>|</span>
+        </div>
+        <span id="stats" style="position: fixed; right: 50px; top: 50px; display: none">Time Taken: --:--, Moves Made: --</span>
     </div>
     <div id="rearView" style="position: fixed; display: none; right: 0px; top: 20px">
         <canvas id="gameCanvasInverted" width="200px" height="200px"></canvas>

@@ -65,10 +65,12 @@ ComposableCycle.fromCycle = cycle => {
   return composableCycles;
 };
 
-ComposableCycle.fromComposableCycles = composableCycles => {
+ComposableCycle.fromComposableCycles = (composableCycles, metadata) => {
   let swapMap = {};
   let directedCycles = [];
-  composableCycles.forEach(composableCycle => {
+  for (let i = 0; i < composableCycles.length; i++) {
+    let composableCycle = composableCycles[i];
+    let meta = metadata && metadata[i];
     let newSwapMap = {};
     for (let targetStickerId in swapMap) {
       let sourceStickerId = swapMap[targetStickerId];
@@ -83,7 +85,12 @@ ComposableCycle.fromComposableCycles = composableCycles => {
       }
     };
     swapMap = newSwapMap;
-    directedCycles = directedCycles.concat(composableCycle.directedCycles);
-  });
+    if (!meta) {
+      directedCycles = directedCycles.concat(composableCycle.directedCycles);
+    } else {
+      directedCycles = directedCycles.concat(composableCycle.directedCycles.map(
+        ({cycleIndex, period, direction}) => new DirectedCycle(cycleIndex, period, direction, meta.sequence, meta.subSequence)));
+    }
+  }
   return new ComposableCycle(swapMap, directedCycles);
 };

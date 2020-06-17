@@ -2,7 +2,9 @@
 // 1) It has faces, which are just collections of stickers
 // 2) It has cycles, which represent the twistable slices
 class Puzzle {
-    constructor(faces, cycles) {
+    constructor(displayName, displaySize, faces, cycles) {
+        this.displayName = displayName;
+        this.displaySize = displaySize;
         this.faces = faces;
         this.cycles = cycles;
 
@@ -22,12 +24,16 @@ class Puzzle {
         // While animating the cycle twists, convex face structures are temporarily broken, so we operate directly on stickers
         this.stickers = [].concat(...this.faces.map(face => face.stickers));
 
-        this.startTime = undefined;
-        this.movesMade = 0;
+        this.clearStats()
 
         this.cycleMap = {};
         this.processCycleMap();
         this.startSticker = undefined;
+    }
+
+    clearStats() {
+        this.startTime = undefined;
+        this.movesMade = 0;
     }
 
     isSolved() {
@@ -72,8 +78,7 @@ class Puzzle {
                 this.animationState.cycle.twist(this.animationState.direction);
                 if (this.startTime && this.isSolved()) {
                     this.onFinish && this.onFinish((new Date().getTime() - this.startTime) / 1000);
-                    this.startTime = undefined;
-                    this.movesMade = 0;
+                    this.clearStats();
                 } else if (this.startTime) {
                     this.movesMade++;
                 }
@@ -141,6 +146,7 @@ class Puzzle {
             )
             if (v.magnitude() > 20) {
                 this.detectCycle(v);
+                window.showSolveButton();
             }
         }
     }
@@ -198,7 +204,12 @@ class Puzzle {
             if (index && (cycle === twists[index - 1].cycle)) direction = twists[index - 1].direction;
             animationConfigs.push({
                 active: true, counter: 0, direction, cycle,
-                callback: index < count - 1 ? () => this.animationState = animationConfigs[index + 1] : () => this.startTime = new Date().getTime()
+                callback: index < count - 1
+                    ? () => this.animationState = animationConfigs[index + 1]
+                    : () => {
+                        this.startTime = new Date().getTime();
+                        window.showSolveButton();
+                    }
             })
         });
         this.animationState = animationConfigs[0];

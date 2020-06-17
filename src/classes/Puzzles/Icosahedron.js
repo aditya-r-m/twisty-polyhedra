@@ -159,7 +159,7 @@ class Icosahedron extends Puzzle {
             cycle.stickerCollections[0].isPrimary = true;
             cycle.computeStickerCover()
         });
-        super(faces, cycles);
+        super("Icosahedron", size, faces, cycles);
 
         this.saveOrientation({
             'axis': new Vector({ x: 1, y: 0, z: 0}),

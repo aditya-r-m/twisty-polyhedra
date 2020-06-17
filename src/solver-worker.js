@@ -48,9 +48,12 @@ this.onmessage = (e) => {
     this.clusterCache[puzzleId] = Cluster.fromAtomicComposableCycles(atomicComposableCycles, stickerToAtomicComposableCycleMap);
   }
   let clusters = this.clusterCache[puzzleId];
+  this.postMessage({ status: "INITIALIZED"});
   let puzzleStateAsComposableCycle = getPuzzleStateAsComposableCycle(puzzle);
-  puzzleStateAsComposableCycle = this.alignFaceCentres(puzzleStateAsComposableCycle, atomicComposableCycles, getFaceCentres(puzzle));
-  let puzzleStateAsEvenComposableCycle = this.correctParity(puzzleStateAsComposableCycle, atomicComposableCycles, clusters);
-  this.postMessage({ status: "INIT", clusterCache,
-    solution: solveEvenPuzzleState(puzzleStateAsEvenComposableCycle, clusters) });
+  if (puzzleStateAsComposableCycle.size) {
+    puzzleStateAsComposableCycle = this.alignFaceCentres(puzzleStateAsComposableCycle, atomicComposableCycles, getFaceCentres(puzzle));
+    puzzleStateAsComposableCycle = this.correctParity(puzzleStateAsComposableCycle, atomicComposableCycles, clusters);
+    puzzleStateAsComposableCycle = this.solveEvenPuzzleState(puzzleStateAsComposableCycle, clusters);
+  }
+  this.postMessage({ status: "SOLVED", solution: puzzleStateAsComposableCycle.directedCycles });
 }

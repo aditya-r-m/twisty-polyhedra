@@ -197,7 +197,7 @@ class Dodecahedron extends Puzzle {
             firstCycle.stickerCollections.push([stickerMap[`s-${attachedFace}`]]);
         });
         cycles.forEach(cycle => cycle.computeStickerCover());
-        super(faces, cycles);
+        super("Dodecahedron", size << 1, faces, cycles);
         this.saveOrientation({
             'axis': new Vector({ x: 1, y: 0, z: 0}),
             'angle': - Math.PI / 5

@@ -16,7 +16,7 @@ this.alignFaceCentres = (puzzleStateAsComposableCycle, atomicComposableCycles, f
         if (atomicComposableCycle.swapMap[targetSticker] === sourceSticker) {
           let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
             puzzleStateAsComposableCycle, atomicComposableCycle
-          ]);
+          ], [undefined, { sequence: 'Face center alignment' }]);
           if (countOverlappingFaceCentres(newPuzzleStateAsComposableCycle) <
             countOverlappingFaceCentres(puzzleStateAsComposableCycle)) {
               puzzleStateAsComposableCycle = newPuzzleStateAsComposableCycle;
@@ -53,7 +53,8 @@ this.correctParity = (puzzleStateAsComposableCycle, atomicComposableCycles, clus
       for (let atomicComposableCycle of atomicComposableCycles) {
         if (hasOddOverlap(cluster, atomicComposableCycle)) {
           puzzleStateAsEvenComposableCycle = ComposableCycle.fromComposableCycles([
-            puzzleStateAsEvenComposableCycle, atomicComposableCycle]);
+            puzzleStateAsEvenComposableCycle, atomicComposableCycle], [
+            undefined, {sequence: 'Parity Correction'}]);
           break;
         }
       }

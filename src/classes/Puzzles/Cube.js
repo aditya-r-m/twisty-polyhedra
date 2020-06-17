@@ -139,7 +139,7 @@ class Cube extends Puzzle {
             cycle.stickerCollections[0].isPrimary = true;
             cycle.computeStickerCover()
         });
-        super(faces, cycles);
+        super("Cube", size, faces, cycles);
 
         this.saveOrientation({
             'axis': new Vector({ x: 0, y: 1, z: 0}),

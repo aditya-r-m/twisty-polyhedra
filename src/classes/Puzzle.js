@@ -243,6 +243,7 @@ class Puzzle {
         direction: Math.random() < 0.5 ? -1 : 1,
       });
     const animationConfigs = [];
+    window.clearSolution();
     twists.forEach(({ cycle, direction }, index) => {
       if (index && cycle === twists[index - 1].cycle)
         direction = twists[index - 1].direction;

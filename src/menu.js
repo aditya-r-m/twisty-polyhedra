@@ -90,6 +90,7 @@
       requestAnimationFrame(loop);
 
       window[`size-${i + 1}`].onmousedown = () => {
+        window.clearSolution();
         window.selectedPuzzle = constructor(puzzleSize, false);
         window.startbutton.style.visibility = "visible";
       };

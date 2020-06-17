@@ -20,9 +20,12 @@
     }
         `;
   };
+  window.clearSolution = () => {
+    window.solutionpanel.style.display = "none";
+  }
   window.showSolveButton = () => {
     window.solvebutton.style.display = "inline-block";
-    window.solutionpanel.style.display = "none";
+    window.clearSolution();
   };
   let inProgress = false;
   window.solverWorker = new Worker("src/solver-worker.js");

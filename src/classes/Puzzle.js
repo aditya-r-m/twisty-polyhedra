@@ -107,7 +107,17 @@ class Puzzle {
             }
             sticker = this.faces[f].stickers.find(sticker => sticker.contains({ x, y, z: 0 }));
             if (sticker) {
-                return sticker;
+                if (window.pointAndSwap) {
+                    if (!window.tempS) window.tempS = sticker;
+                    else {
+                        let tempC = sticker.colorData;
+                        sticker.colorData = window.tempS.colorData;
+                        window.tempS.colorData = tempC;
+                        window.tempS = undefined;
+                    }
+                } else {
+                    return sticker;
+                }
             }
         }
     }

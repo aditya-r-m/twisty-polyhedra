@@ -6,13 +6,13 @@ class ComposableCycle {
       if (targetStickerId === sourceStickerId) {
         delete swapMap[targetStickerId];
       }
-    };
+    }
     this.directedCycles = directedCycles;
     this.size = Object.keys(swapMap).length;
   }
 
   getSketch() {
-    let minS = 'z';
+    let minS = "z";
     for (let key in this.swapMap) {
       if (key < minS) {
         minS = key;
@@ -33,7 +33,10 @@ class ComposableCycle {
       iSwapMap[this.swapMap[key]] = key;
     }
     let iDirectedCycles = this.directedCycles
-      .map(({cycleIndex, period, direction}) => new DirectedCycle(cycleIndex, period, period - direction))
+      .map(
+        ({ cycleIndex, period, direction }) =>
+          new DirectedCycle(cycleIndex, period, period - direction)
+      )
       .reverse();
     return new ComposableCycle(iSwapMap, iDirectedCycles);
   }
@@ -48,19 +51,24 @@ class ComposableCycle {
   }
 }
 
-ComposableCycle.fromCycle = cycle => {
+ComposableCycle.fromCycle = (cycle) => {
   let composableCycles = [];
   for (let direction = 1; direction < cycle.period; direction++) {
     let swapMap = {};
     for (let collection of cycle.stickerCollections) {
       if (collection.length === 1) continue;
-      let increment = direction * collection.length / cycle.period;
+      let increment = (direction * collection.length) / cycle.period;
       for (let index = 0; index < collection.length; index++) {
         let sticker = collection[index];
-        swapMap[sticker.id] = collection[mod(index - increment, collection.length)].id;
-      };
-    };
-    composableCycles.push(new ComposableCycle(swapMap, [new DirectedCycle(cycle.index, cycle.period, direction)]));
+        swapMap[sticker.id] =
+          collection[mod(index - increment, collection.length)].id;
+      }
+    }
+    composableCycles.push(
+      new ComposableCycle(swapMap, [
+        new DirectedCycle(cycle.index, cycle.period, direction),
+      ])
+    );
   }
   return composableCycles;
 };
@@ -83,13 +91,23 @@ ComposableCycle.fromComposableCycles = (composableCycles, metadata) => {
       } else {
         newSwapMap[targetStickerId] = sourceStickerId;
       }
-    };
+    }
     swapMap = newSwapMap;
     if (!meta) {
       directedCycles = directedCycles.concat(composableCycle.directedCycles);
     } else {
-      directedCycles = directedCycles.concat(composableCycle.directedCycles.map(
-        ({cycleIndex, period, direction}) => new DirectedCycle(cycleIndex, period, direction, meta.sequence, meta.subSequence)));
+      directedCycles = directedCycles.concat(
+        composableCycle.directedCycles.map(
+          ({ cycleIndex, period, direction }) =>
+            new DirectedCycle(
+              cycleIndex,
+              period,
+              direction,
+              meta.sequence,
+              meta.subSequence
+            )
+        )
+      );
     }
   }
   return new ComposableCycle(swapMap, directedCycles);

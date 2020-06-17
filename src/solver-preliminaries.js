@@ -1,5 +1,9 @@
-this.alignFaceCentres = (puzzleStateAsComposableCycle, atomicComposableCycles, faceCentres) => {
-  let countOverlappingFaceCentres = composableCycle => {
+this.alignFaceCentres = (
+  puzzleStateAsComposableCycle,
+  atomicComposableCycles,
+  faceCentres
+) => {
+  let countOverlappingFaceCentres = (composableCycle) => {
     let result = 0;
     for (let sticker of faceCentres) {
       if (composableCycle.swapMap[sticker]) {
@@ -7,19 +11,22 @@ this.alignFaceCentres = (puzzleStateAsComposableCycle, atomicComposableCycles, f
       }
     }
     return result;
-  }
+  };
   for (let sticker of faceCentres) {
     if (puzzleStateAsComposableCycle.swapMap[sticker]) {
       let sourceSticker = sticker;
       let targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
       for (let atomicComposableCycle of atomicComposableCycles) {
         if (atomicComposableCycle.swapMap[targetSticker] === sourceSticker) {
-          let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles([
-            puzzleStateAsComposableCycle, atomicComposableCycle
-          ], [undefined, { sequence: 'Face center alignment' }]);
-          if (countOverlappingFaceCentres(newPuzzleStateAsComposableCycle) <
-            countOverlappingFaceCentres(puzzleStateAsComposableCycle)) {
-              puzzleStateAsComposableCycle = newPuzzleStateAsComposableCycle;
+          let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
+            [puzzleStateAsComposableCycle, atomicComposableCycle],
+            [undefined, { sequence: "Face center alignment" }]
+          );
+          if (
+            countOverlappingFaceCentres(newPuzzleStateAsComposableCycle) <
+            countOverlappingFaceCentres(puzzleStateAsComposableCycle)
+          ) {
+            puzzleStateAsComposableCycle = newPuzzleStateAsComposableCycle;
           }
         }
       }
@@ -28,13 +35,20 @@ this.alignFaceCentres = (puzzleStateAsComposableCycle, atomicComposableCycles, f
   return puzzleStateAsComposableCycle;
 };
 
-this.correctParity = (puzzleStateAsComposableCycle, atomicComposableCycles, clusters) => {
+this.correctParity = (
+  puzzleStateAsComposableCycle,
+  atomicComposableCycles,
+  clusters
+) => {
   let hasOddOverlap = (cluster, composableCycle) => {
     let isVisited = {};
     let swapCount = 0;
     for (let sticker of cluster.stickers) {
       let currentSticker = sticker;
-      if (!composableCycle.swapMap[currentSticker] || isVisited[currentSticker]) {
+      if (
+        !composableCycle.swapMap[currentSticker] ||
+        isVisited[currentSticker]
+      ) {
         continue;
       }
       swapCount--;
@@ -52,9 +66,10 @@ this.correctParity = (puzzleStateAsComposableCycle, atomicComposableCycles, clus
     if (hasOddOverlap(cluster, puzzleStateAsEvenComposableCycle)) {
       for (let atomicComposableCycle of atomicComposableCycles) {
         if (hasOddOverlap(cluster, atomicComposableCycle)) {
-          puzzleStateAsEvenComposableCycle = ComposableCycle.fromComposableCycles([
-            puzzleStateAsEvenComposableCycle, atomicComposableCycle], [
-            undefined, {sequence: 'Parity Correction'}]);
+          puzzleStateAsEvenComposableCycle = ComposableCycle.fromComposableCycles(
+            [puzzleStateAsEvenComposableCycle, atomicComposableCycle],
+            [undefined, { sequence: "Parity Correction" }]
+          );
           break;
         }
       }

@@ -218,7 +218,7 @@ class Tetrahedron extends Puzzle {
         l -= d;
         d = d === 2 ? 1 : 2;
       }
-      if (stickerMap[`s-${aFace}-${s}-${s}`]) {
+      if (stickerMap[`s-${aFace}-${s}-${s}`] && size % 3) {
         cycle.stickerCollections.push([stickerMap[`s-${aFace}-${s}-${s}`]]);
       }
     });

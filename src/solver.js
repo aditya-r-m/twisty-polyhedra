@@ -22,7 +22,7 @@
   };
   window.clearSolution = () => {
     window.solutionpanel.style.display = "none";
-  }
+  };
   window.showSolveButton = () => {
     window.solvebutton.style.display = "inline-block";
     window.clearSolution();
@@ -60,18 +60,38 @@
   window.makeSolverMove = () => {
     if (!solutionStack.movesToMake.length) return;
     let moveToMake = solutionStack.movesToMake.pop();
-    window.selectedPuzzle.cycles[moveToMake.cycleIndex].twist(
-      moveToMake.direction
-    );
+    let direction =
+      moveToMake.direction > moveToMake.period >> 1
+        ? moveToMake.direction - moveToMake.period
+        : moveToMake.direction;
+    if (
+      !window.selectedPuzzle.animateAndTwist(
+        window.selectedPuzzle.cycles[moveToMake.cycleIndex],
+        direction
+      )
+    ) {
+      solutionStack.movesToMake.push(moveToMake);
+      return;
+    }
     solutionStack.movesMade.push(moveToMake);
     updateSolutionPanel();
   };
   window.revertSolverMove = () => {
     if (!solutionStack.movesMade.length) return;
     let moveToRevert = solutionStack.movesMade.pop();
-    window.selectedPuzzle.cycles[moveToRevert.cycleIndex].twist(
-      -moveToRevert.direction
-    );
+    let direction =
+      moveToRevert.direction > moveToRevert.period >> 1
+        ? moveToRevert.direction - moveToRevert.period
+        : moveToRevert.direction;
+    if (
+      !window.selectedPuzzle.animateAndTwist(
+        window.selectedPuzzle.cycles[moveToRevert.cycleIndex],
+        -direction
+      )
+    ) {
+      solutionStack.movesMade.push(moveToRevert);
+      return;
+    }
     solutionStack.movesToMake.push(moveToRevert);
     updateSolutionPanel();
   };

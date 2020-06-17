@@ -205,13 +205,19 @@ class Puzzle {
         mxDirection = product.z > 0 ? -1 : 1;
       }
     });
+    this.animateAndTwist(mxCycle, mxDirection);
+    this.release();
+  }
+
+  animateAndTwist(cycle, direction) {
+    if (this.animationState.active) return false;
     this.animationState = {
       active: true,
       counter: 0,
-      direction: mxDirection,
-      cycle: mxCycle,
+      direction: direction,
+      cycle: cycle,
     };
-    this.release();
+    return true;
   }
 
   // release the puzzle

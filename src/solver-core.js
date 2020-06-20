@@ -2,9 +2,13 @@ this.getPairId = (t, s) => `${t}:${s}`;
 this.getSubSequenceDescription = (cluster) =>
   cluster.commutators.length ? "Commutator" : "Twist";
 
+// Special clusters are one of the following 2 cases,
+// 1. The cluster does not have any commutators (ex. - Tetrahedron corner & "near-corner" clusters).
+// 2. The best commutators on the cluster spill onto other clusters (ex. - Dodecahedron "star" clusters).
+// These need to be solved before any other cluster is solved.
 this.getSpecialClusters = (clusters) => {
-  let specialClusters = [];
-  for (let cluster of clusters) {
+  const specialClusters = [];
+  for (const cluster of clusters) {
     if (
       !cluster.commutators.length ||
       !cluster.commutators.some(({ swapMap }) =>
@@ -19,22 +23,25 @@ this.getSpecialClusters = (clusters) => {
   return specialClusters;
 };
 
+// The core assumes that the given permutation is even.
+// The aim is to compose puzzleStateAsComposableCycle permutation with commutators & atomic twists to make it's size 0.
 this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
   this.moveCounter = 1;
   let stickerPairToCycleMap = {};
-  let specialClusters = this.getSpecialClusters(clusters);
+  const specialClusters = this.getSpecialClusters(clusters);
   clusters.sort((ca, cb) => cb.order - ca.order);
   specialClusters.sort((ca, cb) => cb.order - ca.order);
   stickerPairToCycleMap = {};
 
-  for (let cluster of clusters) {
-    let composableCycles = cluster.commutators.length
+  // Map sticker pairs to corresponding cycles for fast lookups
+  for (const cluster of clusters) {
+    const composableCycles = cluster.commutators.length
       ? cluster.commutators
       : cluster.atomicComposableCycles;
-    for (let composableCycle of composableCycles) {
-      for (let targetStickerId in composableCycle.swapMap) {
+    for (const composableCycle of composableCycles) {
+      for (const targetStickerId in composableCycle.swapMap) {
         if (!cluster.stickers.find((s) => s === targetStickerId)) continue;
-        let pairId = this.getPairId(
+        const pairId = this.getPairId(
           targetStickerId,
           composableCycle.swapMap[targetStickerId]
         );
@@ -45,9 +52,13 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
       }
     }
   }
+  // We optimize the approach by using simpler algorithms as much as possible.
+  // The solver only attempts L0 & L1 algorithms which are low cost.
+  // If any clusters remaing, only then it starts considering L2 & L3 type compositions which consume a lot of time.
   for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
-    for (let cluster of specialClusters) {
+    for (const cluster of specialClusters) {
       if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
+      // Solve special clusters first.
       puzzleStateAsComposableCycle = this.solveCluster(
         puzzleStateAsComposableCycle,
         cluster,
@@ -58,8 +69,9 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
     }
   }
   for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
-    for (let cluster of clusters) {
+    for (const cluster of clusters) {
       if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
+      // Solve simpler clusters later.
       puzzleStateAsComposableCycle = this.solveCluster(
         puzzleStateAsComposableCycle,
         cluster,
@@ -84,7 +96,7 @@ this.solveCluster = (
 ) => {
   let stillFindingImprovements = true;
   let newPuzzleStateAsComposableCycle;
-  let clusterSolvers = [
+  const clusterSolvers = [
     this.attemptL0Algorithms,
     this.attemptL1Algorithms,
     this.attemptL2Algorithms,
@@ -92,7 +104,7 @@ this.solveCluster = (
   ];
   while (stillFindingImprovements && puzzleStateAsComposableCycle.size) {
     stillFindingImprovements = false;
-    for (let sticker of cluster.stickers) {
+    for (const sticker of cluster.stickers) {
       if (puzzleStateAsComposableCycle.swapMap[sticker]) {
         for (
           let solverComplexity = 0;
@@ -120,6 +132,7 @@ this.solveCluster = (
   return puzzleStateAsComposableCycle;
 };
 
+// Attempts simple twists/commutators
 this.attemptL0Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -127,13 +140,13 @@ this.attemptL0Algorithms = (
   stickerPairToCycleMap,
   isProgress
 ) => {
-  let pairToFix = this.getPairId(
+  const pairToFix = this.getPairId(
     puzzleStateAsComposableCycle.swapMap[sticker],
     sticker
   );
   if (stickerPairToCycleMap[pairToFix]) {
-    for (let composableCycle of stickerPairToCycleMap[pairToFix]) {
-      let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
+    for (const composableCycle of stickerPairToCycleMap[pairToFix]) {
+      const newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
         [puzzleStateAsComposableCycle, composableCycle],
         [
           undefined,
@@ -157,6 +170,7 @@ this.attemptL0Algorithms = (
   return puzzleStateAsComposableCycle;
 };
 
+// Attempts conjugated twists / commutators
 this.attemptL1Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -164,11 +178,11 @@ this.attemptL1Algorithms = (
   stickerPairToCycleMap,
   isProgress
 ) => {
-  for (let atomicComposableCycle of cluster.atomicComposableCycles) {
+  for (const atomicComposableCycle of cluster.atomicComposableCycles) {
     if (!atomicComposableCycle.swapMap[sticker]) continue;
     let linkingSticker;
     let targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
-    for (let curSticker in atomicComposableCycle.swapMap) {
+    for (const curSticker in atomicComposableCycle.swapMap) {
       if (atomicComposableCycle.swapMap[curSticker] === sticker) {
         linkingSticker = curSticker;
       }
@@ -179,10 +193,10 @@ this.attemptL1Algorithms = (
         targetSticker = curSticker;
       }
     }
-    let pairToFix = this.getPairId(targetSticker, linkingSticker);
+    const pairToFix = this.getPairId(targetSticker, linkingSticker);
     if (stickerPairToCycleMap[pairToFix]) {
-      for (let composableCycle of stickerPairToCycleMap[pairToFix]) {
-        let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
+      for (const composableCycle of stickerPairToCycleMap[pairToFix]) {
+        const newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
           [
             puzzleStateAsComposableCycle,
             atomicComposableCycle,
@@ -220,6 +234,7 @@ this.attemptL1Algorithms = (
   return puzzleStateAsComposableCycle;
 };
 
+// Atempts to pair up commutators - also, tries to conujugate second commutator by the first since it's practically free
 this.attemptL2Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -227,19 +242,20 @@ this.attemptL2Algorithms = (
   stickerPairToCycleMap,
   isProgress
 ) => {
-  let sourceSticker = sticker;
-  let targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
-  for (let linkingSticker of cluster.stickers) {
-    let pairToFixInitial = this.getPairId(linkingSticker, sourceSticker);
-    let pairToFixFinal = this.getPairId(targetSticker, linkingSticker);
-    if (linkingSticker === sourceSticker || linkingSticker === targetSticker)
+  const sourceSticker = sticker;
+  const targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
+  for (const linkingSticker of cluster.stickers) {
+    const pairToFixInitial = this.getPairId(linkingSticker, sourceSticker);
+    const pairToFixFinal = this.getPairId(targetSticker, linkingSticker);
+    if (linkingSticker === sourceSticker || linkingSticker === targetSticker) {
       continue;
+    }
     if (stickerPairToCycleMap[pairToFixInitial]) {
-      for (let composableCycleFirst of stickerPairToCycleMap[
+      for (const composableCycleFirst of stickerPairToCycleMap[
         pairToFixInitial
       ]) {
         if (stickerPairToCycleMap[pairToFixFinal]) {
-          for (let composableCycleSecond of stickerPairToCycleMap[
+          for (const composableCycleSecond of stickerPairToCycleMap[
             pairToFixFinal
           ]) {
             let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
@@ -311,6 +327,7 @@ this.attemptL2Algorithms = (
   return puzzleStateAsComposableCycle;
 };
 
+// Attempts to conjuagte L2 type sequences with atomic twists
 this.attemptL3Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -318,11 +335,12 @@ this.attemptL3Algorithms = (
   stickerPairToCycleMap,
   isProgress
 ) => {
-  for (let atomicComposableCycle of cluster.atomicComposableCycles) {
+  for (const atomicComposableCycle of cluster.atomicComposableCycles) {
     if (!atomicComposableCycle.swapMap[sticker]) continue;
-    let preLinkingSticker, preTargetSticker;
-    let targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
-    for (let curSticker in atomicComposableCycle.swapMap) {
+    let preLinkingSticker;
+    let preTargetSticker;
+    const targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
+    for (const curSticker in atomicComposableCycle.swapMap) {
       if (atomicComposableCycle.swapMap[curSticker] === sticker) {
         preLinkingSticker = curSticker;
       }
@@ -330,21 +348,25 @@ this.attemptL3Algorithms = (
         preTargetSticker = curSticker;
       }
     }
-    for (let linkingSticker of cluster.stickers) {
-      let pairToFixInitial = this.getPairId(linkingSticker, preLinkingSticker);
-      let pairToFixFinal = this.getPairId(preTargetSticker, linkingSticker);
+    for (const linkingSticker of cluster.stickers) {
+      const pairToFixInitial = this.getPairId(
+        linkingSticker,
+        preLinkingSticker
+      );
+      const pairToFixFinal = this.getPairId(preTargetSticker, linkingSticker);
       if (
         linkingSticker === preLinkingSticker ||
         linkingSticker === preTargetSticker ||
         atomicComposableCycle.swapMap[linkingSticker]
-      )
+      ) {
         continue;
+      }
       if (stickerPairToCycleMap[pairToFixInitial]) {
-        for (let composableCycleFirst of stickerPairToCycleMap[
+        for (const composableCycleFirst of stickerPairToCycleMap[
           pairToFixInitial
         ]) {
           if (stickerPairToCycleMap[pairToFixFinal]) {
-            for (let composableCycleSecond of stickerPairToCycleMap[
+            for (const composableCycleSecond of stickerPairToCycleMap[
               pairToFixFinal
             ]) {
               let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(

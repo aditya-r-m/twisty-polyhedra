@@ -1,7 +1,3 @@
-// Definition of octahedron shaped puzzles
-// Grid : surface of the regular octahedron
-// Faces : 8 equilateral triangles
-// Cycles : (4 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Octahedron extends Puzzle {
   constructor(size = 2, fullSpan = 200) {
     const alphaM = (2 * Math.PI) / 3;
@@ -47,7 +43,7 @@ class Octahedron extends Puzzle {
         color: "yellow",
       },
     ];
-    let cycleFamilyConfig = [
+    const cycleFamilyConfig = [
       {
         slices: [
           {
@@ -231,17 +227,17 @@ class Octahedron extends Puzzle {
     ];
 
     faceConfig.forEach((config, f) => {
-      let stickers = [];
-      let preArr = [config.points[0].clone()],
-        nxtArr,
-        p,
-        q,
-        r,
-        s;
-      let vI = new Vector(config.points[0], config.points[1]).multiply(
+      const stickers = [];
+      let preArr = [config.points[0].clone()];
+      let nxtArr;
+      let p;
+      let q;
+      let r;
+      let s;
+      const vI = new Vector(config.points[0], config.points[1]).multiply(
         1 / size
       );
-      let vJ = new Vector(config.points[1], config.points[2]).multiply(
+      const vJ = new Vector(config.points[1], config.points[2]).multiply(
         1 / size
       );
       let vC;
@@ -287,7 +283,14 @@ class Octahedron extends Puzzle {
       }
       faces.push(new Face(stickers));
     });
-    let cycle, aFace, stickerCollection, sI, sJ, dI, dJ, lJ;
+    let cycle;
+    let aFace;
+    let stickerCollection;
+    let sI;
+    let sJ;
+    let dI;
+    let dJ;
+    let lJ;
     cycleFamilyConfig.forEach((config) => {
       for (let c = 0; c < size; c++) {
         cycle = new Cycle(
@@ -316,17 +319,17 @@ class Octahedron extends Puzzle {
         aFace = faceCycleConfig.fIndex;
         let l = size - 1;
         let d = 1;
-        let s = 0,
-          t,
-          i,
-          j;
+        let s = 0;
+        let t;
+        let i;
+        let j;
         while (l > 0) {
           i = j = s;
           stickerCollection = [];
           faceCycleConfig.steps.forEach((stepConfigGetter) => {
             t = 0;
             for (let x = 0; x < l; x++) {
-              let [stepI, stepJ] = stepConfigGetter(s, t);
+              const [stepI, stepJ] = stepConfigGetter(s, t);
               stickerCollection.push(stickerMap[`s-${aFace}-${i}-${j}`]);
               i += stepI;
               j += stepJ;

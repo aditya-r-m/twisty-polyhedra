@@ -30,10 +30,12 @@ class Quaternion {
 
   multiply(q) {
     const product = new Quaternion(0, 0, 0, 0);
-    for (let x = 0; x < 4; x++)
-      for (let y = 0; y < 4; y++)
+    for (let x = 0; x < 4; x++) {
+      for (let y = 0; y < 4; y++) {
         product[qDimensions[qProductAxis[x][y]]] +=
           qProductSign[x][y] * this[qDimensions[x]] * q[qDimensions[y]];
+      }
+    }
     return product;
   }
 }

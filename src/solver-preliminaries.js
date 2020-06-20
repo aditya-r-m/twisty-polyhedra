@@ -1,24 +1,25 @@
+// Greedy approach to align face centers
 this.alignFaceCentres = (
   puzzleStateAsComposableCycle,
   atomicComposableCycles,
   faceCentres
 ) => {
-  let countOverlappingFaceCentres = (composableCycle) => {
+  const countOverlappingFaceCentres = (composableCycle) => {
     let result = 0;
-    for (let sticker of faceCentres) {
+    for (const sticker of faceCentres) {
       if (composableCycle.swapMap[sticker]) {
         result++;
       }
     }
     return result;
   };
-  for (let sticker of faceCentres) {
+  for (const sticker of faceCentres) {
     if (puzzleStateAsComposableCycle.swapMap[sticker]) {
-      let sourceSticker = sticker;
-      let targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
-      for (let atomicComposableCycle of atomicComposableCycles) {
+      const sourceSticker = sticker;
+      const targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
+      for (const atomicComposableCycle of atomicComposableCycles) {
         if (atomicComposableCycle.swapMap[targetSticker] === sourceSticker) {
-          let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
+          const newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
             [puzzleStateAsComposableCycle, atomicComposableCycle],
             [undefined, { sequence: "Face center alignment" }]
           );
@@ -35,15 +36,16 @@ this.alignFaceCentres = (
   return puzzleStateAsComposableCycle;
 };
 
+// Checks which clusters are "odd" swaps away from solved state. Applied "odd" atomic twists to them to bring them to even distances
 this.correctParity = (
   puzzleStateAsComposableCycle,
   atomicComposableCycles,
   clusters
 ) => {
-  let hasOddOverlap = (cluster, composableCycle) => {
-    let isVisited = {};
+  const hasOddOverlap = (cluster, composableCycle) => {
+    const isVisited = {};
     let swapCount = 0;
-    for (let sticker of cluster.stickers) {
+    for (const sticker of cluster.stickers) {
       let currentSticker = sticker;
       if (
         !composableCycle.swapMap[currentSticker] ||
@@ -62,9 +64,9 @@ this.correctParity = (
   };
 
   let puzzleStateAsEvenComposableCycle = puzzleStateAsComposableCycle;
-  for (let cluster of clusters) {
+  for (const cluster of clusters) {
     if (hasOddOverlap(cluster, puzzleStateAsEvenComposableCycle)) {
-      for (let atomicComposableCycle of atomicComposableCycles) {
+      for (const atomicComposableCycle of atomicComposableCycles) {
         if (hasOddOverlap(cluster, atomicComposableCycle)) {
           puzzleStateAsEvenComposableCycle = ComposableCycle.fromComposableCycles(
             [puzzleStateAsEvenComposableCycle, atomicComposableCycle],

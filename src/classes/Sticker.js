@@ -21,10 +21,10 @@ class Sticker {
   // returns false otherwise
   // The left/right state can be check by performing a cross product of the current edge vector & the vector from current edge start to parameter point
   contains(p) {
-    let u = this.points[this.points.length - 1],
-      zProduct = 0,
-      product;
-    for (let v of this.points) {
+    let u = this.points[this.points.length - 1];
+    let zProduct = 0;
+    let product;
+    for (const v of this.points) {
       product = new Vector(u, v).cross(new Vector(u, p));
       if ((zProduct < 0 && product.z > 0) || (zProduct > 0 && product.z < 0)) {
         return false;
@@ -57,7 +57,7 @@ class Sticker {
   // Simple paralled projection (ignore the z-coordinates)
   // Also, if sticker is exploded, move it's points a little bit close to the attractor before projecting
   getPointProjection(point, inverted, exploded) {
-    let result = [point.x, point.y];
+    const result = [point.x, point.y];
     if (exploded) {
       // If in some puzzle some stickers have more points than others, The magnitude of their attractor will be larger.
       // To normalize the outward-pull, we divide the result by points.length

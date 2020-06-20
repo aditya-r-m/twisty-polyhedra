@@ -28,7 +28,7 @@
   };
 
   // Game loop
-  let loop = () => {
+  const loop = () => {
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -45,7 +45,7 @@
     }
 
     if (window.selectedPuzzle.startTime) {
-      let timeInSeconds = Math.floor(
+      const timeInSeconds = Math.floor(
         (new Date().getTime() - window.selectedPuzzle.startTime) / 1000
       );
       let minutes = `${Math.floor(timeInSeconds / 60)}`;

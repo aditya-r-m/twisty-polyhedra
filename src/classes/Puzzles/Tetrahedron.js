@@ -1,7 +1,3 @@
-// Definition of tetrahedron shaped puzzles
-// Grid : surface of the regular tetrahedron
-// Faces : 4 equilateral triangles
-// Cycles : (4 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Tetrahedron extends Puzzle {
   constructor(size = 3, fullSpan = 200) {
     const altitude = fullSpan / Math.sqrt(2);
@@ -113,17 +109,17 @@ class Tetrahedron extends Puzzle {
       },
     ];
     faceConfig.forEach((config, f) => {
-      let stickers = [];
-      let preArr = [config.points[0].clone()],
-        nxtArr,
-        p,
-        q,
-        r,
-        s;
-      let vI = new Vector(config.points[0], config.points[1]).multiply(
+      const stickers = [];
+      let preArr = [config.points[0].clone()];
+      let nxtArr;
+      let p;
+      let q;
+      let r;
+      let s;
+      const vI = new Vector(config.points[0], config.points[1]).multiply(
         1 / size
       );
-      let vJ = new Vector(config.points[1], config.points[2]).multiply(
+      const vJ = new Vector(config.points[1], config.points[2]).multiply(
         1 / size
       );
       let vC;
@@ -169,7 +165,13 @@ class Tetrahedron extends Puzzle {
       }
       faces.push(new Face(stickers));
     });
-    let cycle, aFace, stickerCollection, sI, sJ, dI, dJ;
+    let cycle;
+    let aFace;
+    let stickerCollection;
+    let sI;
+    let sJ;
+    let dI;
+    let dJ;
     cycleFamilyConfig.forEach((config) => {
       for (let c = 0; c < size; c++) {
         cycle = new Cycle(
@@ -196,17 +198,17 @@ class Tetrahedron extends Puzzle {
       aFace = config.attachedFace.fIndex;
       let l = size - 1;
       let d = 1;
-      let s = 0,
-        t,
-        i,
-        j;
+      let s = 0;
+      let t;
+      let i;
+      let j;
       while (l > 0) {
         i = j = s;
         stickerCollection = [];
         config.attachedFace.steps.forEach((stepConfigGetter) => {
           t = 0;
           for (let x = 0; x < l; x++) {
-            let [stepI, stepJ] = stepConfigGetter(s, t);
+            const [stepI, stepJ] = stepConfigGetter(s, t);
             stickerCollection.push(stickerMap[`s-${aFace}-${i}-${j}`]);
             i += stepI;
             j += stepJ;

@@ -1,11 +1,16 @@
 (() => {
-  if (Worker) {
+  if (window.Worker) {
     window.solverWorker = new Worker("src/solver-worker.js");
+  } else {
+    window.solverunsupported.style.display = "block";
+    window.solvewrapper.style.display = "none";
   }
+
   let solutionStack = (window.solutionStack = {
     movesMade: [],
     movesToMake: [],
   });
+
   window.updateSolutionPanel = () => {
     let sequence = solutionStack.movesToMake.length
       ? solutionStack.movesToMake[solutionStack.movesToMake.length - 1].sequence
@@ -23,43 +28,63 @@
     }
         `;
   };
-  window.clearSolution = () => {
-    window.solutionpanel.style.display = "none";
-  };
-  window.showSolveButton = () => {
-    if (!window.solverWorker) return;
-    window.solvebutton.style.display = "inline-block";
-    window.clearSolution();
-  };
+
   let inProgress = false;
+  let isStale = false;
+  let isDisabled = false;
+
+  window.clearSolution = () => {
+    if (inProgress) {
+      isStale = true;
+    } else {
+      window.solutionpanel.style.display = "none";
+    }
+  };
+
+  window.disableSolveButton = () => {
+    window.solvebutton.style.color = "grey";
+    window.solvebutton.style.borderColor = "grey";
+    isDisabled = true;
+  };
+
+  window.enableSolveButton = () => {
+    window.solvebutton.style.color = "skyblue";
+    window.solvebutton.style.borderColor = "skyblue";
+    isDisabled = false;
+  };
+
   window.generateSolution = () => {
-    if (inProgress) return;
+    if (inProgress || isDisabled) return;
     inProgress = true;
     window.selectedPuzzle.clearStats();
     window.solverWorker.postMessage(window.selectedPuzzle);
     window.solvebutton.style.display = "none";
-    window.solvebutton.style.color = "grey";
-    window.solvebutton.style.borderColor = "grey";
     window.solverstatus.style.display = "block";
     window.solverstatustext.innerHTML = `Initializing solver for ${window.selectedPuzzle.displayName} of size ${window.selectedPuzzle.displaySize}
             <br/>(This may take minutes for large puzzles)
             `;
   };
-  window.solverWorker.onmessage = (e) => {
-    if (e.data.status === "INITIALIZED") {
-      window.solverstatustext.innerText = `Solving ${window.selectedPuzzle.displayName} of size ${window.selectedPuzzle.displaySize}`;
-    }
-    if (e.data.status === "SOLVED") {
-      window.solutionStack.movesMade = [];
-      window.solutionStack.movesToMake = e.data.solution.reverse();
-      updateSolutionPanel();
-      window.solvebutton.style.color = "skyblue";
-      window.solvebutton.style.borderColor = "skyblue";
-      window.solverstatus.style.display = "none";
-      window.solutionpanel.style.display = "block";
-      inProgress = false;
-    }
-  };
+
+  if (window.solverWorker) {
+    window.solverWorker.onmessage = (e) => {
+      if (e.data.status === "INITIALIZED") {
+        window.solverstatustext.innerText = `Solving ${window.selectedPuzzle.displayName} of size ${window.selectedPuzzle.displaySize}`;
+      }
+      if (e.data.status === "SOLVED") {
+        window.solverstatus.style.display = "none";
+        window.solvebutton.style.display = "inline-block";
+        if (!isStale) {
+          window.solutionStack.movesMade = [];
+          window.solutionStack.movesToMake = e.data.solution.reverse();
+          window.solutionpanel.style.display = "block";
+          updateSolutionPanel();
+        }
+        isStale = false;
+        inProgress = false;
+      }
+    };
+  }
+
   window.makeSolverMove = () => {
     if (!solutionStack.movesToMake.length) return;
     let moveToMake = solutionStack.movesToMake.pop();
@@ -115,6 +140,7 @@
     }
     updateSolutionPanel();
   };
+
   window.revertSolverMoveSequence = () => {
     if (!solutionStack.movesMade.length) return;
     let sequenceToCover =
@@ -132,6 +158,7 @@
     }
     updateSolutionPanel();
   };
+
   window.makeAllSolverMoves = () => {
     while (solutionStack.movesToMake.length) {
       let moveToMake = solutionStack.movesToMake.pop();
@@ -142,6 +169,7 @@
     }
     updateSolutionPanel();
   };
+
   window.revertAllSolverMoves = () => {
     while (solutionStack.movesMade.length) {
       let moveToRevert = solutionStack.movesMade.pop();

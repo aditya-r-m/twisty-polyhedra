@@ -1,13 +1,8 @@
 class Cluster {
   constructor(stickers, atomicComposableCycles) {
     this.stickers = stickers;
-    this.id = "z";
-    for (let sticker of stickers) {
-      if (this.id > sticker) {
-        this.id = sticker;
-      }
-    }
-    this.id += "-cluster";
+    this.stickers.sort();
+    this.id = `${this.stickers[0]}-cluster`;
     this.size = this.stickers.length;
     this.atomicComposableCycles = atomicComposableCycles;
     this.order = 0;
@@ -53,6 +48,7 @@ class Cluster {
       }
     }
     let commutatorMap = {};
+    let minOverlap = Infinity;
     for (let conjugate of conjugates) {
       for (let atomicComposableCycle of this.atomicComposableCycles) {
         if (conjugate.overlaps(atomicComposableCycle)) {
@@ -62,20 +58,21 @@ class Cluster {
             conjugate.inverse(),
             atomicComposableCycle.inverse(),
           ]);
+          let overlap = this.countCycleOverlap(commutator);
+          if (!overlap) continue;
+          minOverlap = Math.min(overlap, minOverlap);
           if (
-            commutator.size > 0 &&
-            commutator.size % 3 === 0 &&
             commutator.size < atomicComposableCycle.size &&
             commutator.size < conjugate.size &&
-            this.countCycleOverlap(commutator) &&
-            this.countCycleOverlap(commutator) < this.size - 3
+            overlap == minOverlap &&
+            overlap < this.size - 3
           ) {
-            let sketch = commutator.getSketch();
+            let sketch = commutator.getSketchFromRootStickers(this.stickers);
             if (
               !commutatorMap[sketch] ||
               commutatorMap[sketch].size > commutator.size
             ) {
-              commutatorMap[commutator.getSketch()] = commutator;
+              commutatorMap[sketch] = commutator;
             }
           }
         }
@@ -83,13 +80,6 @@ class Cluster {
     }
     let commutators = Object.values(commutatorMap);
     if (!commutators.length) return [];
-    let minOverlap = this.countCycleOverlap(commutators[0]);
-    for (let commutator of commutators) {
-      let curOverlap = this.countCycleOverlap(commutator);
-      if (curOverlap < minOverlap) {
-        minOverlap = curOverlap;
-      }
-    }
     return commutators
       .filter((c) => this.countCycleOverlap(c) === minOverlap)
       .sort((ca, cb) => ca.size - cb.size);

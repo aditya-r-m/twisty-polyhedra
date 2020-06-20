@@ -68,7 +68,7 @@ class Puzzle {
     if (
       this.animationState.active &&
       this.animationState.counter <
-        this.animationState.cycle.animationConfig.steps
+        (window.animate ? this.animationState.cycle.animationConfig.steps : 1)
     ) {
       let alpha =
         this.animationState.direction *
@@ -103,7 +103,9 @@ class Puzzle {
           this.animationState.callback();
           if (
             this.animationState.counter <
-            this.animationState.cycle.animationConfig.steps
+            (window.animate
+              ? this.animationState.cycle.animationConfig.steps
+              : 1)
           ) {
             return this.update();
           }
@@ -177,8 +179,8 @@ class Puzzle {
         new Point(x, y, 0)
       );
       if (v.magnitude() > 20) {
+        window.clearSolution();
         this.detectCycle(v);
-        window.showSolveButton();
       }
     }
   }
@@ -250,6 +252,7 @@ class Puzzle {
       });
     const animationConfigs = [];
     window.clearSolution();
+    window.disableSolveButton();
     twists.forEach(({ cycle, direction }, index) => {
       if (index && cycle === twists[index - 1].cycle)
         direction = twists[index - 1].direction;
@@ -262,8 +265,8 @@ class Puzzle {
           index < count - 1
             ? () => (this.animationState = animationConfigs[index + 1])
             : () => {
+                window.enableSolveButton();
                 this.startTime = new Date().getTime();
-                window.showSolveButton();
               },
       });
     });

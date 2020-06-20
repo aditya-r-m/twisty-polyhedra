@@ -258,6 +258,16 @@
           <input
             autocomplete="off"
             type="checkbox"
+            value="anim"
+            id="anim"
+            name="anim"
+            onclick="window.animate=!window.animate;"
+          />
+          <label for="anim">Disable twist animations</label>
+          <br />
+          <input
+            autocomplete="off"
+            type="checkbox"
             value="pns"
             id="pns"
             name="pns"
@@ -309,27 +319,32 @@
           >&#9654;</span
         >
       </div>
-      <div
-        id="solvebutton"
-        onclick="generateSolution();"
-        style="
-          display: none;
-          cursor: pointer;
-          color: skyblue;
-          padding: 3px;
-          border: 3px solid skyblue;
-          border-radius: 10px;
-          margin-bottom: 25px;
-        "
-      >
-        𝓢𝓸𝓵𝓿𝓮
+      <div id="solverunsupported" style="color:skyblue; display: none;">
+        Solver could not be instantiated due to lack of background worker support. Please upgrade your browser to use the solver.
       </div>
-      <div
-        id="solverstatus"
-        style="display: none; cursor: pointer; color: skyblue;"
-      >
-        <div id="solverstatustext" style="padding-bottom: 10px;"></div>
-        <span id="solverloader"></span>
+      <div id="solvewrapper">
+        <div
+          id="solvebutton"
+          onclick="generateSolution();"
+          style="
+            display: inline-block;
+            cursor: pointer;
+            color: skyblue;
+            padding: 3px;
+            border: 3px solid skyblue;
+            border-radius: 10px;
+            margin-bottom: 25px;
+          "
+        >
+          𝓢𝓸𝓵𝓿𝓮
+        </div>
+        <div
+          id="solverstatus"
+          style="display: none; cursor: pointer; color: skyblue;"
+        >
+          <div id="solverstatustext" style="padding-bottom: 10px;"></div>
+          <span id="solverloader"></span>
+        </div>
       </div>
     </div>
     <div style="display: inline-block; color: skyblue;">

@@ -16,6 +16,7 @@
 
   // Initial game configuration
   window.explodedStickers = true;
+  window.animate = true;
 
   window.selectedPuzzle = new Tetrahedron();
   Puzzle.prototype.onFinish = (time) => {

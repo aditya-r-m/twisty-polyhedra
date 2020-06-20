@@ -11,20 +11,32 @@ class ComposableCycle {
     this.size = Object.keys(swapMap).length;
   }
 
-  getSketch() {
-    let minS = "z";
-    for (let key in this.swapMap) {
-      if (key < minS) {
-        minS = key;
+  getSketchFromRootStickers(rootStickers) {
+    let isVisited = {};
+    let orderedStickerSets = [];
+    for (let rootSticker of rootStickers) {
+      if (!this.swapMap[rootSticker]) {
+        continue;
+      }
+      let curSticker = rootSticker;
+      if (this.swapMap[curSticker] && !isVisited[curSticker]) {
+        let orderedStickers = [];
+        let minSticker = curSticker;
+        while (!isVisited[curSticker]) {
+          isVisited[curSticker] = true;
+          orderedStickers.push(curSticker);
+          if (curSticker < minSticker) minSticker = curSticker;
+          curSticker = this.swapMap[curSticker];
+        }
+        let minIndex = orderedStickers.lastIndexOf(minSticker);
+        orderedStickers = orderedStickers
+          .slice(minIndex)
+          .concat(orderedStickers.slice(0, minIndex));
+        orderedStickerSets.push(orderedStickers.join("|"));
       }
     }
-    let orderedSs = [];
-    let curS = minS;
-    do {
-      orderedSs.push(curS);
-      curS = this.swapMap[curS];
-    } while (curS != minS);
-    return orderedSs.join("-");
+    orderedStickerSets.sort();
+    return orderedStickerSets.join("$");
   }
 
   inverse() {

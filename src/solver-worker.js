@@ -15,17 +15,17 @@ this.getPuzzleId = (puzzle) =>
   `${puzzle.faces.length}-f-${puzzle.cycles.length}-c`;
 
 this.getPuzzleStateAsComposableCycle = (puzzle) => {
-  let puzzlePermutation = {};
-  for (let sticker of puzzle.stickers) {
+  const puzzlePermutation = {};
+  for (const sticker of puzzle.stickers) {
     puzzlePermutation[sticker.id] = sticker.colorData.originalStickerId;
   }
   return new ComposableCycle(puzzlePermutation, []);
 };
 
 this.getFaceCentres = (puzzle) => {
-  let faceCentres = [];
-  for (let cycle of puzzle.cycles) {
-    for (let collection of cycle.stickerCollections) {
+  const faceCentres = [];
+  for (const cycle of puzzle.cycles) {
+    for (const collection of cycle.stickerCollections) {
       if (collection.length === 1) {
         faceCentres.push(collection[0].id);
       }
@@ -35,16 +35,16 @@ this.getFaceCentres = (puzzle) => {
 };
 
 this.onmessage = (e) => {
-  let puzzle = e.data;
-  let puzzleId = this.getPuzzleId(puzzle);
-  let atomicComposableCycles = Array.prototype.concat.apply(
+  const puzzle = e.data;
+  const puzzleId = this.getPuzzleId(puzzle);
+  const atomicComposableCycles = Array.prototype.concat.apply(
     [],
     puzzle.cycles.map((cycle) => ComposableCycle.fromCycle(cycle))
   );
   atomicComposableCycles.sort((a, b) => a.size - b.size);
-  let stickerToAtomicComposableCycleMap = {};
-  for (let atomicComposableCycle of atomicComposableCycles) {
-    for (let sticker in atomicComposableCycle.swapMap) {
+  const stickerToAtomicComposableCycleMap = {};
+  for (const atomicComposableCycle of atomicComposableCycles) {
+    for (const sticker in atomicComposableCycle.swapMap) {
       if (!stickerToAtomicComposableCycleMap[sticker]) {
         stickerToAtomicComposableCycleMap[sticker] = [];
       }
@@ -58,7 +58,7 @@ this.onmessage = (e) => {
       stickerToAtomicComposableCycleMap
     );
   }
-  let clusters = this.clusterCache[puzzleId];
+  const clusters = this.clusterCache[puzzleId];
   this.postMessage({ status: "INITIALIZED" });
   // The initial state of puzzle contains a permutation but no DirectedCycle
   let puzzleStateAsComposableCycle = getPuzzleStateAsComposableCycle(puzzle);

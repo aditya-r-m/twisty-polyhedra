@@ -168,11 +168,13 @@ class Dodecahedron extends Puzzle {
       );
     const cycleFamilyConfig = [];
     for (let c = 0; c < 12; c++) {
-      let cycleConfig = {
+      const cycleConfig = {
         unitVector: getCycleVector(c),
         slices: { length: 5 },
       };
-      let face, startV, endV;
+      let face;
+      let startV;
+      let endV;
       for (face = 0; face < 12; face++) {
         if (face != c) {
           for (let u = 0; u < 5; u++) {
@@ -205,7 +207,9 @@ class Dodecahedron extends Puzzle {
           refPoint,
           config.points[mod(p - 1, config.points.length)]
         ).multiply(1 / (2 * size));
-        let pointVector, i, j;
+        let pointVector;
+        let i;
+        let j;
         for (i = 0; i <= size; i++) {
           for (j = 0; j <= size; j++) {
             pointVector = baseVector.add(vI.multiply(i)).add(vJ.multiply(j));
@@ -237,7 +241,8 @@ class Dodecahedron extends Puzzle {
           config.points[mod(p + 2, config.points.length)]
         ).multiply(1 / (2 * size));
         const midVector = baseVector.add(vI.multiply(size));
-        let lVector, rVector;
+        let lVector;
+        let rVector;
         for (i = 0; i <= size; i++) {
           lVector = midVector.add(vl.multiply(i));
           rVector = midVector.add(vr.multiply(i));
@@ -285,7 +290,7 @@ class Dodecahedron extends Puzzle {
     cycleFamilyConfig.forEach((config, attachedFace) => {
       let firstCycle;
       for (let i = 0; i < size; i++) {
-        let cycle = new Cycle(
+        const cycle = new Cycle(
           cycles.length,
           [],
           5,
@@ -293,7 +298,7 @@ class Dodecahedron extends Puzzle {
           animationConfig
         );
         for (let j = 0; j < size; j++) {
-          let stickerCollection = [];
+          const stickerCollection = [];
           config.slices.forEach((slice) => {
             stickerCollection.push(
               stickerMap[`s-${slice.face}-${slice.startV}-${i}-${j}`]
@@ -304,7 +309,7 @@ class Dodecahedron extends Puzzle {
           });
           cycle.stickerCollections.push(stickerCollection);
         }
-        let stickerCollection = [];
+        const stickerCollection = [];
         config.slices.forEach((slice) => {
           stickerCollection.push(
             stickerMap[`s-${slice.face}-${slice.endV}-${i}-${size}`]
@@ -319,7 +324,7 @@ class Dodecahedron extends Puzzle {
       }
       for (let i = 0; i < size; i++) {
         for (let j = 0; j <= size; j++) {
-          let stickerCollection = [];
+          const stickerCollection = [];
           for (let p = 0; p < 5; p++) {
             stickerCollection.push(
               stickerMap[`s-${attachedFace}-${p}-${i}-${j}`]

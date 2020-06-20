@@ -11,7 +11,7 @@ class Point {
 
   // Updates the point by re-orienting it according to the given axis & angle
   update(orientation) {
-    let { x, y, z } = this.rotateAroundAxis(
+    const { x, y, z } = this.rotateAroundAxis(
       this.base,
       orientation.axis.unit(),
       orientation.angle

@@ -57,9 +57,14 @@ class Cube extends Puzzle {
       { key: "jStep", dir: -1 },
     ];
 
-    let v1, v2, pointDef, pid, sid, spoints;
+    let v1;
+    let v2;
+    let pointDef;
+    let pid;
+    let sid;
+    let spoints;
     faceConfig.forEach((config, f) => {
-      let stickers = [];
+      const stickers = [];
       v1 = -span;
       for (let i = 0; i <= size; i++) {
         v2 = -span;
@@ -91,7 +96,13 @@ class Cube extends Puzzle {
     });
 
     const cycles = [];
-    let cycle, stickerCollection, stickerIndex, fCycle, lCycle, fFace, lFace;
+    let cycle;
+    let stickerCollection;
+    let stickerIndex;
+    let fCycle;
+    let lCycle;
+    let fFace;
+    let lFace;
     cycleFamilyConfig.forEach((config) => {
       for (let c = 0; c < size; c++) {
         cycle = new Cycle(

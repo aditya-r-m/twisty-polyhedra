@@ -1,8 +1,10 @@
 // Class representing twistable slices
-// A single cycle contains multiple sticker collections. Each of them is a sub-cycle.
-// By convention, the first of these sub-cycles is the main slice. Other sub-cycles can be used to rotate attached face.
-// The period is the numbe of operations after which the twist operation reverts the puzzle to original state
-// A cycle also contains unit vector normal to it's plane & a set of sticker ids afftected by it for quick lookup.
+// A single cycle contains multiple sticker collections.
+// Each of them is a sub-cycle. By convention, the first of these sub-cycles
+// is the main slice. Other sub-cycles can be used to rotate attached face.
+// The period is the numbe of operations after which the twist operation
+// reverts the puzzle to it's original state. A cycle also contains unit vector
+// normal to it's plane & a set of sticker ids afftected by it for quick lookup.
 class Cycle {
   constructor(index, stickerCollections, period, unitVector, animationConfig) {
     this.index = index;
@@ -32,7 +34,7 @@ class Cycle {
   twist(direction = 1) {
     this.stickerCollections.forEach((collection) => {
       if (collection.length === 1) return;
-      let increment = (direction * collection.length) / this.period;
+      const increment = (direction * collection.length) / this.period;
       collection.forEach((sticker, index) => {
         sticker.$newColorData =
           collection[mod(index - increment, collection.length)].colorData;

@@ -8,16 +8,16 @@
   }
 
   // Generated solution can be traverses using 2 stacks.
-  let solutionStack = (window.solutionStack = {
+  const solutionStack = (window.solutionStack = {
     movesMade: [],
     movesToMake: [],
   });
 
   window.updateSolutionPanel = () => {
-    let sequence = solutionStack.movesToMake.length
+    const sequence = solutionStack.movesToMake.length
       ? solutionStack.movesToMake[solutionStack.movesToMake.length - 1].sequence
       : "Solved!";
-    let subSequence = solutionStack.movesToMake.length
+    const subSequence = solutionStack.movesToMake.length
       ? solutionStack.movesToMake[solutionStack.movesToMake.length - 1]
           .subSequence
       : "";
@@ -89,8 +89,8 @@
 
   window.makeSolverMove = () => {
     if (!solutionStack.movesToMake.length) return;
-    let moveToMake = solutionStack.movesToMake.pop();
-    let direction =
+    const moveToMake = solutionStack.movesToMake.pop();
+    const direction =
       moveToMake.direction > moveToMake.period >> 1
         ? moveToMake.direction - moveToMake.period
         : moveToMake.direction;
@@ -108,8 +108,8 @@
   };
   window.revertSolverMove = () => {
     if (!solutionStack.movesMade.length) return;
-    let moveToRevert = solutionStack.movesMade.pop();
-    let direction =
+    const moveToRevert = solutionStack.movesMade.pop();
+    const direction =
       moveToRevert.direction > moveToRevert.period >> 1
         ? moveToRevert.direction - moveToRevert.period
         : moveToRevert.direction;
@@ -127,14 +127,14 @@
   };
   window.makeSolverMoveSequence = () => {
     if (!solutionStack.movesToMake.length) return;
-    let sequenceToCover =
+    const sequenceToCover =
       solutionStack.movesToMake[solutionStack.movesToMake.length - 1].sequence;
     while (
       solutionStack.movesToMake.length &&
       solutionStack.movesToMake[solutionStack.movesToMake.length - 1]
         .sequence === sequenceToCover
     ) {
-      let moveToMake = solutionStack.movesToMake.pop();
+      const moveToMake = solutionStack.movesToMake.pop();
       window.selectedPuzzle.cycles[moveToMake.cycleIndex].twist(
         moveToMake.direction
       );
@@ -145,14 +145,14 @@
 
   window.revertSolverMoveSequence = () => {
     if (!solutionStack.movesMade.length) return;
-    let sequenceToCover =
+    const sequenceToCover =
       solutionStack.movesMade[solutionStack.movesMade.length - 1].sequence;
     while (
       solutionStack.movesMade.length &&
       solutionStack.movesMade[solutionStack.movesMade.length - 1].sequence ===
         sequenceToCover
     ) {
-      let moveToRevert = solutionStack.movesMade.pop();
+      const moveToRevert = solutionStack.movesMade.pop();
       window.selectedPuzzle.cycles[moveToRevert.cycleIndex].twist(
         -moveToRevert.direction
       );
@@ -163,7 +163,7 @@
 
   window.makeAllSolverMoves = () => {
     while (solutionStack.movesToMake.length) {
-      let moveToMake = solutionStack.movesToMake.pop();
+      const moveToMake = solutionStack.movesToMake.pop();
       window.selectedPuzzle.cycles[moveToMake.cycleIndex].twist(
         moveToMake.direction
       );
@@ -174,7 +174,7 @@
 
   window.revertAllSolverMoves = () => {
     while (solutionStack.movesMade.length) {
-      let moveToRevert = solutionStack.movesMade.pop();
+      const moveToRevert = solutionStack.movesMade.pop();
       window.selectedPuzzle.cycles[moveToRevert.cycleIndex].twist(
         -moveToRevert.direction
       );

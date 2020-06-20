@@ -114,11 +114,11 @@ class Icosahedron extends Puzzle {
           .id
       );
       for (let c = 0; c < 4; c++) {
-        let p0id = rootID;
-        let p1id =
+        const p0id = rootID;
+        const p1id =
           face.points[mod(face.points.findIndex((p) => p.id === rootID) + 1, 3)]
             .id;
-        let p2id =
+        const p2id =
           face.points[mod(face.points.findIndex((p) => p.id === rootID) + 2, 3)]
             .id;
         face = faceConfig.find(
@@ -136,7 +136,9 @@ class Icosahedron extends Puzzle {
       const baseVector = new Vector(points[0]);
       const vI = new Vector(points[0], points[1]).multiply(1 / size);
       const vJ = new Vector(points[1], points[2]).multiply(1 / size);
-      let pointVector, i, j;
+      let pointVector;
+      let i;
+      let j;
       for (i = 0; i <= size; i++) {
         for (j = 0; j <= i; j++) {
           pointVector = baseVector.add(vI.multiply(i)).add(vJ.multiply(j));
@@ -174,7 +176,7 @@ class Icosahedron extends Puzzle {
       const sliceConfig = {};
       sliceConfig[points[0].id] = [];
       for (let i = 1; i <= size; i++) {
-        let slice = [];
+        const slice = [];
         for (let j = 1; j <= i; j++) {
           slice.push(stickerMap[`s-${f}-${i}-${j}`]);
           if (j < i) {
@@ -185,7 +187,7 @@ class Icosahedron extends Puzzle {
       }
       sliceConfig[points[1].id] = [];
       for (let i = 1; i <= size; i++) {
-        let slice = [];
+        const slice = [];
         for (let j = 1; j <= i; j++) {
           slice.push(stickerMap[`s-${f}-${size - (j - 1)}-${i - (j - 1)}`]);
           if (j < i) {
@@ -196,7 +198,7 @@ class Icosahedron extends Puzzle {
       }
       sliceConfig[points[2].id] = [];
       for (let i = 1; i <= size; i++) {
-        let slice = [];
+        const slice = [];
         for (let j = 1; j <= i; j++) {
           slice.push(
             stickerMap[`s-${f}-${size + (j - 1) - (i - 1)}-${size - (i - 1)}`]

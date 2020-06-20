@@ -37,13 +37,16 @@ class Puzzle {
   }
 
   isSolved() {
-    for (let f = 0; f < this.faces.length; f++)
-      for (let s = 0; s < this.faces[f].stickers.length; s++)
+    for (let f = 0; f < this.faces.length; f++) {
+      for (let s = 0; s < this.faces[f].stickers.length; s++) {
         if (
           this.faces[f].stickers[s].colorData.code !==
           this.faces[f].stickers[0].colorData.code
-        )
+        ) {
           return false;
+        }
+      }
+    }
     return true;
   }
 
@@ -70,11 +73,11 @@ class Puzzle {
       this.animationState.counter <
         (window.animate ? this.animationState.cycle.animationConfig.steps : 1)
     ) {
-      let alpha =
+      const alpha =
         this.animationState.direction *
         this.animationState.counter *
         this.animationState.cycle.animationConfig.dAlpha;
-      let orientation = {
+      const orientation = {
         axis: this.animationState.cycle.unitVector,
         angle: alpha,
       };
@@ -134,7 +137,7 @@ class Puzzle {
         if (window.pointAndSwap) {
           if (!window.tempS) window.tempS = sticker;
           else {
-            let tempC = sticker.colorData;
+            const tempC = sticker.colorData;
             sticker.colorData = window.tempS.colorData;
             window.tempS.colorData = tempC;
             window.tempS = undefined;
@@ -162,19 +165,19 @@ class Puzzle {
   drag(x, y) {
     if (this.animationState.active) return;
     if (this.rotating) {
-      let dx = (x - this.startEvtCoordinates.x) / 100;
-      let dy = (y - this.startEvtCoordinates.y) / 100;
+      const dx = (x - this.startEvtCoordinates.x) / 100;
+      const dy = (y - this.startEvtCoordinates.y) / 100;
       if (dx || dy) {
         // rotate the puzzle around normal vector to the cursor vector (in the plane of the screen)
         // by an angle proportional to it's magnitude
-        let v = new Vector({ x: dy, y: -dx, z: 0 });
+        const v = new Vector({ x: dy, y: -dx, z: 0 });
         this.updatedOrientation = {
           axis: v,
           angle: v.magnitude(),
         };
       }
     } else if (this.twisting) {
-      let v = new Vector(
+      const v = new Vector(
         new Point(this.startEvtCoordinates.x, this.startEvtCoordinates.y, 0),
         new Point(x, y, 0)
       );
@@ -189,18 +192,18 @@ class Puzzle {
   // The cycle we want to twist passes through the clicked sticker & gives the maximum cross product with cursor vector
   detectCycle(v) {
     if (!this.cycleMap[this.startSticker.id]) return;
-    let mxMg = 0,
-      mxCycle,
-      mxDirection;
+    let mxMg = 0;
+    let mxCycle;
+    let mxDirection;
     this.cycleMap[this.startSticker.id].forEach((cycle) => {
-      let unitPoint = new Point(
+      const unitPoint = new Point(
         cycle.unitVector.x,
         cycle.unitVector.y,
         cycle.unitVector.z
       );
       unitPoint.z = 0;
-      let vC = new Vector(unitPoint);
-      let product = v.cross(vC);
+      const vC = new Vector(unitPoint);
+      const product = v.cross(vC);
       if (mxMg < product.magnitude()) {
         mxMg = product.magnitude();
         mxCycle = cycle;
@@ -245,17 +248,19 @@ class Puzzle {
   scramble() {
     const count = this.cycles.length * 3;
     const twists = [];
-    for (let c = 0; c < count; c++)
+    for (let c = 0; c < count; c++) {
       twists.push({
         cycle: this.cycles[Math.floor(Math.random() * this.cycles.length)],
         direction: Math.random() < 0.5 ? -1 : 1,
       });
+    }
     const animationConfigs = [];
     window.clearSolution();
     window.disableSolveButton();
     twists.forEach(({ cycle, direction }, index) => {
-      if (index && cycle === twists[index - 1].cycle)
+      if (index && cycle === twists[index - 1].cycle) {
         direction = twists[index - 1].direction;
+      }
       animationConfigs.push({
         active: true,
         counter: 0,
@@ -277,17 +282,19 @@ class Puzzle {
   // If not animating, use sorted faces to render
   render(ctx, inverted, exploded = true) {
     if (!this.animationState.active) {
-      let [start, end, step] = !inverted
+      const [start, end, step] = !inverted
         ? [0, this.faces.length, 1]
         : [this.faces.length - 1, -1, -1];
-      for (var i = start; i !== end; i += step)
+      for (var i = start; i !== end; i += step) {
         this.faces[i].render(ctx, inverted, exploded);
+      }
     } else {
-      let [start, end, step] = !inverted
+      const [start, end, step] = !inverted
         ? [0, this.stickers.length, 1]
         : [this.stickers.length - 1, -1, -1];
-      for (var i = start; i !== end; i += step)
+      for (var i = start; i !== end; i += step) {
         this.stickers[i].render(ctx, inverted, exploded);
+      }
     }
   }
 }

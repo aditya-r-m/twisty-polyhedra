@@ -8,7 +8,7 @@ class Cluster {
     this.size = this.stickers.length;
     this.atomicComposableCycles = atomicComposableCycles;
     this.order = 0;
-    for (let atomicComposableCycle of atomicComposableCycles) {
+    for (const atomicComposableCycle of atomicComposableCycles) {
       if (atomicComposableCycle.swapMap[stickers[0]]) {
         this.order++;
       }
@@ -18,7 +18,7 @@ class Cluster {
 
   countCycleOverlap(cycle) {
     let overlap = 0;
-    for (let sticker of this.stickers) {
+    for (const sticker of this.stickers) {
       if (cycle.swapMap[sticker]) {
         overlap++;
       }
@@ -27,7 +27,7 @@ class Cluster {
   }
 
   generateCommutators() {
-    let conjugates = [];
+    const conjugates = [];
     for (let i = 0; i < this.atomicComposableCycles.length; i++) {
       for (let j = 0; j < this.atomicComposableCycles.length; j++) {
         if (
@@ -37,7 +37,7 @@ class Cluster {
             this.atomicComposableCycles[j]
           )
         ) {
-          let conjugate = ComposableCycle.fromComposableCycles([
+          const conjugate = ComposableCycle.fromComposableCycles([
             this.atomicComposableCycles[i],
             this.atomicComposableCycles[j],
             this.atomicComposableCycles[i].inverse(),
@@ -48,18 +48,18 @@ class Cluster {
         }
       }
     }
-    let commutatorMap = {};
+    const commutatorMap = {};
     let minOverlap = Infinity;
-    for (let conjugate of conjugates) {
-      for (let atomicComposableCycle of this.atomicComposableCycles) {
+    for (const conjugate of conjugates) {
+      for (const atomicComposableCycle of this.atomicComposableCycles) {
         if (conjugate.overlaps(atomicComposableCycle)) {
-          let commutator = ComposableCycle.fromComposableCycles([
+          const commutator = ComposableCycle.fromComposableCycles([
             conjugate,
             atomicComposableCycle,
             conjugate.inverse(),
             atomicComposableCycle.inverse(),
           ]);
-          let overlap = this.countCycleOverlap(commutator);
+          const overlap = this.countCycleOverlap(commutator);
           if (!overlap) continue;
           minOverlap = Math.min(overlap, minOverlap);
           if (
@@ -68,7 +68,7 @@ class Cluster {
             overlap == minOverlap &&
             overlap < this.size - 3
           ) {
-            let sketch = commutator.getSketchFromRootStickers(this.stickers);
+            const sketch = commutator.getSketchFromRootStickers(this.stickers);
             if (
               !commutatorMap[sketch] ||
               commutatorMap[sketch].size > commutator.size
@@ -79,7 +79,7 @@ class Cluster {
         }
       }
     }
-    let commutators = Object.values(commutatorMap);
+    const commutators = Object.values(commutatorMap);
     if (!commutators.length) return [];
     return commutators
       .filter((c) => this.countCycleOverlap(c) === minOverlap)
@@ -91,40 +91,40 @@ Cluster.fromAtomicComposableCycles = (
   atomicComposableCycles,
   stickerToAtomicComposableCycleMap
 ) => {
-  let clusters = [];
-  let stickerGraph = {};
-  let addEdge = (sa, sb) => {
+  const clusters = [];
+  const stickerGraph = {};
+  const addEdge = (sa, sb) => {
     if (!stickerGraph[sa]) stickerGraph[sa] = [];
     stickerGraph[sa].push(sb);
   };
-  for (let atomicComposableCycle of atomicComposableCycles) {
-    for (let targetStickerId in atomicComposableCycle.swapMap) {
+  for (const atomicComposableCycle of atomicComposableCycles) {
+    for (const targetStickerId in atomicComposableCycle.swapMap) {
       addEdge(atomicComposableCycle.swapMap[targetStickerId], targetStickerId);
     }
   }
-  let nodes = Object.keys(stickerGraph);
-  let visited = [];
-  let dfs = (u, connectedComponent = []) => {
+  const nodes = Object.keys(stickerGraph);
+  const visited = [];
+  const dfs = (u, connectedComponent = []) => {
     visited[u] = true;
     connectedComponent.push(u);
-    for (let v of stickerGraph[u]) {
+    for (const v of stickerGraph[u]) {
       if (!visited[v]) {
         dfs(v, connectedComponent);
       }
     }
     return connectedComponent;
   };
-  for (let node of nodes) {
+  for (const node of nodes) {
     if (!visited[node]) {
-      let connectedComponent = dfs(node);
-      let atomicComposableCycles = [];
-      let addedACCs = {};
-      for (let sticker of connectedComponent) {
-        for (let atomicComposableCycle of stickerToAtomicComposableCycleMap[
+      const connectedComponent = dfs(node);
+      const atomicComposableCycles = [];
+      const addedACCs = {};
+      for (const sticker of connectedComponent) {
+        for (const atomicComposableCycle of stickerToAtomicComposableCycleMap[
           sticker
         ]) {
-          let dCycle = atomicComposableCycle.directedCycles[0];
-          let acc = dCycle.cycleIndex + "-" + dCycle.direction;
+          const dCycle = atomicComposableCycle.directedCycles[0];
+          const acc = dCycle.cycleIndex + "-" + dCycle.direction;
           if (!addedACCs[acc]) {
             addedACCs[acc] = true;
             atomicComposableCycles.push(atomicComposableCycle);

@@ -29,8 +29,8 @@
       "inline-block";
     window.configurationmenu.style.display = window.puzzlemenubutton.style.display = window.sizemenu.style.display =
       "none";
-    let localState = menuStateCounter;
-    for (let elemId in window.menuConfig.puzzles) {
+    const localState = menuStateCounter;
+    for (const elemId in window.menuConfig.puzzles) {
       const ctx = window[elemId].getContext("2d");
       const constructor = window.menuConfig.puzzles[elemId];
       const puzzle = constructor(undefined, true);
@@ -40,7 +40,7 @@
       };
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.translate(50, 50);
-      let loop = () => {
+      const loop = () => {
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -60,7 +60,7 @@
 
   window.showSizeMenu = (elemId) => {
     menuStateCounter++;
-    let localState = menuStateCounter;
+    const localState = menuStateCounter;
     window.shapemenu.style.display = window.settingsmenubutton.style.display =
       "none";
     window.sizemenu.style.display = window.puzzlemenubutton.style.display =
@@ -76,7 +76,7 @@
       };
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.translate(50, 50);
-      let loop = () => {
+      const loop = () => {
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);

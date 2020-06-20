@@ -20,10 +20,10 @@ Processing the given state
 1. Identify & align the face centers
 2. Identify & fix odd parity clusters
 3. Use pre-built commutators (or atomic twists if no commutators found) to solve clusters piece by piece
-  3.1 (L0) Attempt application of simple commutators & look for improvements
-  3.2 (L1) Attempt application of commutators conjugated by atomic twists & look for improvements (X . Cm . X') where X is atomic twist & Cm is a commutator
-  3.3 (L2) Find pairs of commutators whose chained application results in improvement (Cm . Cn) where Cm & Cn are different commutators
-  3.4 (L3) Find pairs of commutators conjugated by atomic twists & look for improvements (X . Cm . Cn . X') where X is atomic twist & Cm, Cn are different commutators
+    * (L0) Attempt application of simple commutators & look for improvements
+    * (L1) Attempt application of commutators conjugated by atomic twists & look for improvements (X . Cm . X') where X is atomic twist & Cm is a commutator
+    * (L2) Find pairs of commutators whose chained application results in improvement (Cm . Cn) where Cm & Cn are different commutators
+    * (L3) Find pairs of commutators conjugated by atomic twists & look for improvements (X . Cm . Cn . X') where X is atomic twist & Cm, Cn are different commutators
 
 In all these steps, the central part is composing different permutations & trying to move towards smaller & smaller permutations.
 

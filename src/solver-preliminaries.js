@@ -1,3 +1,4 @@
+// Greedy approach to align face centers
 this.alignFaceCentres = (
   puzzleStateAsComposableCycle,
   atomicComposableCycles,
@@ -35,6 +36,7 @@ this.alignFaceCentres = (
   return puzzleStateAsComposableCycle;
 };
 
+// Checks which clusters are "odd" swaps away from solved state. Applied "odd" atomic twists to them to bring them to even distances
 this.correctParity = (
   puzzleStateAsComposableCycle,
   atomicComposableCycles,

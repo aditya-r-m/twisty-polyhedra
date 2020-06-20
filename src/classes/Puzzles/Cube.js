@@ -1,7 +1,3 @@
-// Definition of cube shaped puzzles
-// Grid : surface of the cube
-// Faces : 6 Square faces
-// Cycles : (3 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Cube extends Puzzle {
   constructor(size = 2, fullSpan = 250) {
     const width = fullSpan / size;

@@ -1,3 +1,5 @@
+// A cluster is a collection of stickers which can be swapped with each other by a sequence of valid moves.
+// We also use this class to find out commutator patterns with can swap a small number of pieces in the cluster.
 class Cluster {
   constructor(stickers, atomicComposableCycles) {
     this.stickers = stickers;
@@ -26,7 +28,6 @@ class Cluster {
 
   generateCommutators() {
     let conjugates = [];
-
     for (let i = 0; i < this.atomicComposableCycles.length; i++) {
       for (let j = 0; j < this.atomicComposableCycles.length; j++) {
         if (
@@ -103,22 +104,22 @@ Cluster.fromAtomicComposableCycles = (
   }
   let nodes = Object.keys(stickerGraph);
   let visited = [];
-  let dfs = (u, scc = []) => {
+  let dfs = (u, connectedComponent = []) => {
     visited[u] = true;
-    scc.push(u);
+    connectedComponent.push(u);
     for (let v of stickerGraph[u]) {
       if (!visited[v]) {
-        dfs(v, scc);
+        dfs(v, connectedComponent);
       }
     }
-    return scc;
+    return connectedComponent;
   };
   for (let node of nodes) {
     if (!visited[node]) {
-      stronglyConnectedComponent = dfs(node);
+      let connectedComponent = dfs(node);
       let atomicComposableCycles = [];
       let addedACCs = {};
-      for (let sticker of stronglyConnectedComponent) {
+      for (let sticker of connectedComponent) {
         for (let atomicComposableCycle of stickerToAtomicComposableCycleMap[
           sticker
         ]) {
@@ -130,9 +131,7 @@ Cluster.fromAtomicComposableCycles = (
           }
         }
       }
-      clusters.push(
-        new Cluster(stronglyConnectedComponent, atomicComposableCycles)
-      );
+      clusters.push(new Cluster(connectedComponent, atomicComposableCycles));
     }
   }
   return clusters;

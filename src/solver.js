@@ -1,4 +1,5 @@
 (() => {
+  // The interface from the UI thread to the solver worker.
   if (window.Worker) {
     window.solverWorker = new Worker("src/solver-worker.js");
   } else {
@@ -6,6 +7,7 @@
     window.solvewrapper.style.display = "none";
   }
 
+  // Generated solution can be traverses using 2 stacks.
   let solutionStack = (window.solutionStack = {
     movesMade: [],
     movesToMake: [],
@@ -57,12 +59,12 @@
     if (inProgress || isDisabled) return;
     inProgress = true;
     window.selectedPuzzle.clearStats();
-    window.solverWorker.postMessage(window.selectedPuzzle);
     window.solvebutton.style.display = "none";
     window.solverstatus.style.display = "block";
     window.solverstatustext.innerHTML = `Initializing solver for ${window.selectedPuzzle.displayName} of size ${window.selectedPuzzle.displaySize}
             <br/>(This may take minutes for large puzzles)
             `;
+    window.solverWorker.postMessage(window.selectedPuzzle);
   };
 
   if (window.solverWorker) {

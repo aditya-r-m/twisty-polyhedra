@@ -1,3 +1,7 @@
+// Composable cycles represent permutations of stickers & can be used to compose other permutations
+// swapMap : Object of the form { targetStickerId : sourceStickerId }
+// directedCycles : Full list of cycleIndex & direction of the original sticker "Cycles" that make up a specific composition
+// When all the directed Cycles are applied on the original puzzle, it will make colorData from all the sourceStickers moving to corresponding targetStickers.
 class ComposableCycle {
   constructor(swapMap, directedCycles) {
     this.swapMap = swapMap;

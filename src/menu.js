@@ -1,4 +1,5 @@
 (() => {
+  // Configuration of different settings & user interaction handlers for the same
   window.menuConfig = {
     puzzles: {
       tetrahedron: (size, isDemo) =>

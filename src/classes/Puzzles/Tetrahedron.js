@@ -1,7 +1,3 @@
-// Definition of tetrahedron shaped puzzles
-// Grid : surface of the regular tetrahedron
-// Faces : 4 equilateral triangles
-// Cycles : (4 * size) number of cycles consisting of 1 sub cycle for the slice & possibly others for attached face
 class Tetrahedron extends Puzzle {
   constructor(size = 3, fullSpan = 200) {
     const altitude = fullSpan / Math.sqrt(2);

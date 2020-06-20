@@ -1,3 +1,8 @@
+// The interface from the web-worker to the UI
+// The goal of the solver is to represent the puzzle state as a permutation (ComposableCycle)
+// & to compose it with other ComposableCycles till the result is the Identity permutation
+// The "DirectedCycles" contained within the final "Identity permutation" make up the solution.
+
 importScripts("./utils.js");
 importScripts("./classes/Solver/DirectedCycle.js");
 importScripts("./classes/Solver/ComposableCycle.js");
@@ -55,6 +60,7 @@ this.onmessage = (e) => {
   }
   let clusters = this.clusterCache[puzzleId];
   this.postMessage({ status: "INITIALIZED" });
+  // The initial state of puzzle contains a permutation but no DirectedCycle
   let puzzleStateAsComposableCycle = getPuzzleStateAsComposableCycle(puzzle);
   if (puzzleStateAsComposableCycle.size) {
     puzzleStateAsComposableCycle = this.alignFaceCentres(
@@ -72,6 +78,8 @@ this.onmessage = (e) => {
       clusters
     );
   }
+  // The final state of the puzzle will contain many directedCycles, but will have swapMap of size 0.
+  // This "identity permutation" represents the solved state
   this.postMessage({
     status: "SOLVED",
     solution: puzzleStateAsComposableCycle.directedCycles,

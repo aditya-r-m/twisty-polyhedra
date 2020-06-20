@@ -2,6 +2,10 @@ this.getPairId = (t, s) => `${t}:${s}`;
 this.getSubSequenceDescription = (cluster) =>
   cluster.commutators.length ? "Commutator" : "Twist";
 
+// Special clusters are one of the following 2 cases,
+// 1. The cluster does not have any commutators (ex. - Tetrahedron corner & "near-corner" clusters).
+// 2. The best commutators on the cluster spill onto other clusters (ex. - Dodecahedron "star" clusters).
+// These need to be solved before any other cluster is solved.
 this.getSpecialClusters = (clusters) => {
   let specialClusters = [];
   for (let cluster of clusters) {
@@ -19,6 +23,8 @@ this.getSpecialClusters = (clusters) => {
   return specialClusters;
 };
 
+// The core assumes that the given permutation is even.
+// The aim is to compose puzzleStateAsComposableCycle permutation with commutators & atomic twists to make it's size 0.
 this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
   this.moveCounter = 1;
   let stickerPairToCycleMap = {};
@@ -27,6 +33,7 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
   specialClusters.sort((ca, cb) => cb.order - ca.order);
   stickerPairToCycleMap = {};
 
+  // Map sticker pairs to corresponding cycles for fast lookups
   for (let cluster of clusters) {
     let composableCycles = cluster.commutators.length
       ? cluster.commutators
@@ -45,9 +52,13 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
       }
     }
   }
+  // We optimize the approach by using simpler algorithms as much as possible.
+  // The solver only attempts L0 & L1 algorithms which are low cost.
+  // If any clusters remaing, only then it starts considering L2 & L3 type compositions which consume a lot of time.
   for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
     for (let cluster of specialClusters) {
       if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
+      // Solve special clusters first.
       puzzleStateAsComposableCycle = this.solveCluster(
         puzzleStateAsComposableCycle,
         cluster,
@@ -60,6 +71,7 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
   for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
     for (let cluster of clusters) {
       if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
+      // Solve simpler clusters later.
       puzzleStateAsComposableCycle = this.solveCluster(
         puzzleStateAsComposableCycle,
         cluster,
@@ -120,6 +132,7 @@ this.solveCluster = (
   return puzzleStateAsComposableCycle;
 };
 
+// Attempts simple twists/commutators
 this.attemptL0Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -157,6 +170,7 @@ this.attemptL0Algorithms = (
   return puzzleStateAsComposableCycle;
 };
 
+// Attempts conjugated twists / commutators
 this.attemptL1Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -220,6 +234,7 @@ this.attemptL1Algorithms = (
   return puzzleStateAsComposableCycle;
 };
 
+// Atempts to pair up commutators - also, tries to conujugate second commutator by the first since it's practically free
 this.attemptL2Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,
@@ -311,6 +326,7 @@ this.attemptL2Algorithms = (
   return puzzleStateAsComposableCycle;
 };
 
+// Attempts to conjuagte L2 type sequences with atomic twists
 this.attemptL3Algorithms = (
   puzzleStateAsComposableCycle,
   cluster,

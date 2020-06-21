@@ -54,7 +54,7 @@ In all these steps, the central part is composing different permutations & tryin
 
 ### Benchmarks (Intel i7-9750H @2.60GHz) <a name="benchmarks"></a>
 
-Puzzle        | Edge size | Preprocessing time (ms) | processing time (ms) | Solution length
+Puzzle        | Edge size | Preprocessing time (ms) | Processing time (ms) | Solution length
 --------------|-----------|-------------------------|----------------------|------------------
 Tetrahedron   | 3         | 468                     | 11                   | 38
 Tetrahedron   | 4         | 1837                    | 15                   | 106

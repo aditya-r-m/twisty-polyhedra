@@ -52,7 +52,7 @@ We identify which cluster fall in these categories just by looking at the result
 
 In all these steps, the central part is composing different permutations & trying to move towards smaller & smaller permutations.
 
-### Benchmarks (Intel i7-9750H @2.60GHz) <a name="benchmarks"></a>
+### Benchmarks (Chrome 83 64-bit | Intel i7-9750H @2.60GHz) <a name="benchmarks"></a>
 
 Puzzle        | Edge size | Preprocessing time (ms) | Processing time (ms) | Solution length
 --------------|-----------|-------------------------|----------------------|------------------

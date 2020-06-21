@@ -29,8 +29,8 @@ The project contains a polynomial time solver for the 5 platonic solids. The sol
 The solver proceeds cluster by cluster. It breaks down the stickers into connected components & then does the following,
 
 Pre-processing the puzzle
-1. Generate Conjugates from simple twists. These are of the form **(X . Y . X')** where **X** & **Y** are simple twists.
-2. Generate Commutators by merging Conjugates & simple twists. These are of the form **(C . X . C' . X')** where **C** is a conjugate & **X** is a simple twist.
+1. Generate Conjugates from simple twists. These are of the form `X . Y . X'` where **X** & **Y** are simple twists.
+2. Generate Commutators by merging Conjugates & simple twists. These are of the form `C . X . C' . X'` where **C** is a conjugate & **X** is a simple twist.
 
 The solver preserves the commutators which perform very small swaps - for example, 3 sticker cycles which leave all other stickers unaffected.
 Once a puzzle is pre-processed, the information stays cached & need not be computed again until the tab is killed.
@@ -39,10 +39,10 @@ Processing the given state
 1. Identify & align the face centers.
 2. Identify & fix odd parity clusters.
 3. Use pre-built commutators to solve clusters piece by piece.
-    * (L0) Attempt application of simple commutators & look for improvements.
-    * (L1) Attempt application of commutators conjugated by simple twists & look for improvements. These are of the form **(X . Cm . X')** where **X** is simple twist & **Cm** is a commutator.
-    * (L2) Find pairs of commutators whose chained application results in improvement. These are of the form **(Cm . Cn)** where **Cm** & **Cn** are different commutators.
-    * (L3) Find pairs of commutators conjugated by simple twists & look for improvements. These are of the form **(X . Cm . Cn . X')** where **X** is simple twist & **Cm**, **Cn** are different commutators.
+    * **(L0)** Attempt application of simple commutators & look for improvements.
+    * **(L1)** Attempt application of commutators conjugated by simple twists & look for improvements. These are of the form `X . Cm . X'` where **X** is simple twist & **Cm** is a commutator.
+    * **(L2)** Find pairs of commutators whose chained application results in improvement. These are of the form `Cm . Cn` where **Cm** & **Cn** are different commutators.
+    * **(L3)** Find pairs of commutators conjugated by simple twists & look for improvements. These are of the form `X . Cm . Cn . X'` where **X** is simple twist & **Cm**, **Cn** are different commutators.
 
 Note: We have to be careful with special clusters of the following kind,
 1. No commutators result in small cycles for the cluster (ex. - corner & near-corner clusters of the Tetrahedra).

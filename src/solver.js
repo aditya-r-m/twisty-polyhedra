@@ -16,7 +16,9 @@
   window.updateSolutionPanel = () => {
     const sequence = solutionStack.movesToMake.length
       ? solutionStack.movesToMake[solutionStack.movesToMake.length - 1].sequence
-      : "Solved!";
+      : solutionStack.movesMade.length
+      ? "Solved!"
+      : "Already Solved!";
     const subSequence = solutionStack.movesToMake.length
       ? solutionStack.movesToMake[solutionStack.movesToMake.length - 1]
           .subSequence
@@ -27,8 +29,17 @@
             ${subSequence ? `${subSequence}<br/>` : ""}
             ${solutionStack.movesMade.length}/${
       solutionStack.movesMade.length + solutionStack.movesToMake.length
+    }`;
+    if (solutionStack.movesToMake.length) {
+      window.applysolutionpanel.style.visibility = "visible";
+    } else {
+      window.applysolutionpanel.style.visibility = "hidden";
     }
-        `;
+    if (solutionStack.movesMade.length) {
+      window.revertsolutionpanel.style.visibility = "visible";
+    } else {
+      window.revertsolutionpanel.style.visibility = "hidden";
+    }
   };
 
   let inProgress = false;

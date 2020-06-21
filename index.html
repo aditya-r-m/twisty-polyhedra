@@ -287,7 +287,7 @@
           <label for="pns">Point & Swap mode</label>
         </div>
       </div>
-      <div style="margin: 50px 65px; font-size: 40px;">
+      <div style="margin: 50px 65px; height: 35px; font-size: 40px;">
         <span
           onclick="help.style.display='inline-block';menu.style.display='none'"
           style="
@@ -302,7 +302,7 @@
         <span
           id="settingsmenubutton"
           onclick="puzzlemenu.style.display=settingsmenubutton.style.display='none';configurationmenu.style.display=puzzlemenubutton.style.display='inline-block';"
-          style="cursor: pointer; width: 50px; height: 50px;"
+          style="cursor: pointer; width: 50px; margin-top: -3px; height: 50px;"
           >&#9881;</span
         >
         <span
@@ -312,6 +312,7 @@
             cursor: pointer;
             width: 50px;
             height: 50px;
+            margin-top: 2px;
             display: none;
             color: red;
           "
@@ -361,20 +362,24 @@
     <div style="display: inline-block; color: skyblue;">
       <canvas id="gameCanvas" width="600px" height="600px"></canvas>
       <div id="solutionpanel" width="600px" style="display: none;">
-        <span class="makemovebutton" onclick="revertAllSolverMoves()">|<</span>
-        <span class="makemovebutton" onclick="revertSolverMoveSequence()"
-          ><<</span
-        >
-        <span class="makemovebutton" onclick="revertSolverMove()"><</span>
+        <span id="revertsolutionpanel">
+          <span class="makemovebutton" onclick="revertAllSolverMoves()">|<</span>
+          <span class="makemovebutton" onclick="revertSolverMoveSequence()"
+            ><<</span
+          >
+          <span class="makemovebutton" onclick="revertSolverMove()"><</span>
+        </span>
         <span
           id="solutioninfo"
           style="display: inline-block; width: 150px;"
         ></span>
-        <span class="makemovebutton" onclick="makeSolverMove()">></span>
-        <span class="makemovebutton" onclick="makeSolverMoveSequence()"
-          >>></span
-        >
-        <span class="makemovebutton" onclick="makeAllSolverMoves()">>|</span>
+        <span id="applysolutionpanel">
+          <span class="makemovebutton" onclick="makeSolverMove()">></span>
+          <span class="makemovebutton" onclick="makeSolverMoveSequence()"
+            >>></span
+          >
+          <span class="makemovebutton" onclick="makeAllSolverMoves()">>|</span>
+        </span>
       </div>
       <span
         id="stats"

@@ -361,20 +361,24 @@
     <div style="display: inline-block; color: skyblue;">
       <canvas id="gameCanvas" width="600px" height="600px"></canvas>
       <div id="solutionpanel" width="600px" style="display: none;">
-        <span class="makemovebutton" onclick="revertAllSolverMoves()">|<</span>
-        <span class="makemovebutton" onclick="revertSolverMoveSequence()"
-          ><<</span
-        >
-        <span class="makemovebutton" onclick="revertSolverMove()"><</span>
+        <span id="revertsolutionpanel">
+          <span class="makemovebutton" onclick="revertAllSolverMoves()">|<</span>
+          <span class="makemovebutton" onclick="revertSolverMoveSequence()"
+            ><<</span
+          >
+          <span class="makemovebutton" onclick="revertSolverMove()"><</span>
+        </span>
         <span
           id="solutioninfo"
           style="display: inline-block; width: 150px;"
         ></span>
-        <span class="makemovebutton" onclick="makeSolverMove()">></span>
-        <span class="makemovebutton" onclick="makeSolverMoveSequence()"
-          >>></span
-        >
-        <span class="makemovebutton" onclick="makeAllSolverMoves()">>|</span>
+        <span id="applysolutionpanel">
+          <span class="makemovebutton" onclick="makeSolverMove()">></span>
+          <span class="makemovebutton" onclick="makeSolverMoveSequence()"
+            >>></span
+          >
+          <span class="makemovebutton" onclick="makeAllSolverMoves()">>|</span>
+        </span>
       </div>
       <span
         id="stats"

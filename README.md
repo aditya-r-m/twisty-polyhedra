@@ -44,6 +44,8 @@ Processing the given state
     * **(L2)** Find pairs of commutators whose chained application results in improvement. These are of the form `Cm . Cn` where **Cm** & **Cn** are different commutators.
     * **(L3)** Find pairs of commutators conjugated by simple twists & look for improvements. These are of the form `X . Cm . Cn . X'` where **X** is simple twist & **Cm**, **Cn** are different commutators.
 
+For (L2) & (L3) algorithms, we can also consider the conjugates built by the two commutators without any significant overhead.
+
 Note: We have to be careful with special clusters of the following kind,
 1. No commutators result in small cycles for the cluster (ex. - corner & near-corner clusters of the Tetrahedra).
 2. Commutators result in small cycles within the cluster, but all of them dislocate pieces of other clusters (ex. - star clusters on Dodecahedra).

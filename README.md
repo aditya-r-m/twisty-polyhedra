@@ -52,7 +52,9 @@ Note: We have to be careful with special clusters of the following kind,
 
 We identify which cluster fall in these categories just by looking at the results of the preprocessing & solve these before considering the normal clusters. Since there are no useful commutators for type (1) special clusters, we substitute their simple atomic twists into the patterns which generally apply commutators to improve puzzle state.
 
-In all these steps, the central part is composing different permutations & trying to move towards smaller & smaller permutations.
+At the code level, any given puzzle state can be represented by a permutation (ComposableCycle) & any allowed twist is a permutation itself.
+The solved state i.e. state with no swapped pieces is naturally represented by the identity permutation.
+The key task is composing the starting state with different permutations while constantly moving towards smaller & smaller permutations.
 
 ### Benchmarks (Chrome 83 | Intel i7-9750H @2.60GHz) <a name="benchmarks"></a>
 

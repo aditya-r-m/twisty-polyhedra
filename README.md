@@ -53,7 +53,7 @@ Note: We have to be careful with special clusters of the following kind,
 We identify which cluster fall in these categories just by looking at the results of the preprocessing & solve these before considering the normal clusters. Since there are no useful commutators for type (1) special clusters, we substitute their simple atomic twists into the patterns which generally apply commutators to improve puzzle state.
 
 At the code level, any given puzzle state can be represented by a permutation (ComposableCycle) & any allowed twist is a permutation itself.
-The solved state i.e. state with no swapped pieces is naturally represented by the identity permutation.
+The solved state is naturally represented by the identity permutation.
 The key task is composing the starting state with different permutations while constantly moving towards smaller & smaller permutations.
 
 ### Benchmarks (Chrome 83 | Intel i7-9750H @2.60GHz) <a name="benchmarks"></a>
@@ -77,7 +77,7 @@ Icosahedron   | 3         | 26648                   | 272                  | 131
 Icosahedron   | 4         | 104973                  | 563                  | 2252
 
 Most puzzles are well behaved, but Dodecahedra are especially problematic for 3 reasons,
-1. Triangular faces can be incremented in size by adding 1 new layer of alternating triangular tiles on 1 of the sides. Square faces can be incremented in size by adding 1 new layer of square tiles on 2 of the sides. Pentagonal faces take 1 new layer of square tiles on all 5 sides for the least increment. Thus, the least increment we can do on Dodecahedra edge size is a jump of 2.
+1. Triangular faces can be incremented in size by adding 1 new layer of alternating triangular tiles on 1 of the sides. Square faces can be incremented in size by adding 1 new layer of square tiles on 2 of the sides. Pentagonal faces take 1 new layer of rhobus tiles on all 5 sides for the least increment. Thus, the least increment we can do on Dodecahedra edge size is a jump of 2.
 2. It takes many simple twists to move any piece on a dodecahedra to the opposite end.
 3. The "star" clusters on dodecahedra inherently dislocate other pieces, so even the best commutators on them are much larger in size to maintain & process.
 

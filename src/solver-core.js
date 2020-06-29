@@ -8,15 +8,32 @@ this.getSubSequenceDescription = (cluster) =>
 // These need to be solved before any other cluster is solved.
 this.getSpecialClusters = (clusters) => {
   const specialClusters = [];
+  const stickerToClusterMap = {};
   for (const cluster of clusters) {
-    if (
-      !cluster.commutators.length ||
-      !cluster.commutators.some(({ swapMap }) =>
-        Object.keys(swapMap).every((sticker) =>
-          cluster.stickers.find((s) => s === sticker)
-        )
-      )
-    ) {
+    for (const sticker of cluster.stickers) {
+      stickerToClusterMap[sticker] = cluster.id;
+    }
+  }
+  const clusterDependencies = {};
+  for (const cluster of clusters) {
+    clusterDependencies[cluster.id] = {};
+    for (const commutator of cluster.commutators) {
+      for (const sticker in commutator.swapMap) {
+        clusterDependencies[cluster.id][stickerToClusterMap[sticker]] = true;
+      }
+    }
+  }
+  for (const cluster of clusters) {
+    let isSpecial = !cluster.commutators.length;
+    if (!isSpecial) {
+      for (let dependentCluster in clusterDependencies[cluster.id]) {
+        if (!clusterDependencies[dependentCluster][cluster.id]) {
+          isSpecial = true;
+          break;
+        }
+      }
+    }
+    if (isSpecial) {
       specialClusters.push(cluster);
     }
   }

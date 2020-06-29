@@ -50,6 +50,7 @@ class Cluster {
     }
     const commutatorMap = {};
     let minOverlap = Infinity;
+    let minSize = Infinity;
     for (const conjugate of conjugates) {
       for (const atomicComposableCycle of this.atomicComposableCycles) {
         if (conjugate.overlaps(atomicComposableCycle)) {
@@ -62,11 +63,13 @@ class Cluster {
           const overlap = this.countCycleOverlap(commutator);
           if (!overlap) continue;
           minOverlap = Math.min(overlap, minOverlap);
+          minSize = Math.min(commutator.size, minSize);
           if (
             commutator.size < atomicComposableCycle.size &&
             commutator.size < conjugate.size &&
-            overlap == minOverlap &&
-            overlap < this.size - 3
+            overlap === minOverlap &&
+            overlap < this.size - 3 &&
+            commutator.size === minSize
           ) {
             const sketch = commutator.getSketchFromRootStickers(this.stickers);
             if (
@@ -82,7 +85,7 @@ class Cluster {
     const commutators = Object.values(commutatorMap);
     if (!commutators.length) return [];
     return commutators
-      .filter((c) => this.countCycleOverlap(c) === minOverlap)
+      .filter((c) => this.countCycleOverlap(c) === minOverlap && c.size === minSize)
       .sort((ca, cb) => ca.size - cb.size);
   }
 }

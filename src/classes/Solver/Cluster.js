@@ -85,7 +85,9 @@ class Cluster {
     const commutators = Object.values(commutatorMap);
     if (!commutators.length) return [];
     return commutators
-      .filter((c) => this.countCycleOverlap(c) === minOverlap && c.size === minSize)
+      .filter(
+        (c) => this.countCycleOverlap(c) === minOverlap && c.size === minSize
+      )
       .sort((ca, cb) => ca.size - cb.size);
   }
 }

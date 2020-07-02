@@ -40,9 +40,12 @@ Processing the given state
 2. Identify & fix odd parity clusters.
 3. Use pre-built commutators to solve clusters piece by piece.
     * **(L0)** Attempt application of simple commutators & look for improvements.
-    * **(L1)** Attempt application of commutators conjugated by simple twists & look for improvements. These are of the form `X . Cm . X'` where **X** is simple twist & **Cm** is a commutator.
-    * **(L2)** Find pairs of commutators whose chained application results in improvement. These are of the form `Cm . Cn` where **Cm** & **Cn** are different commutators.
-    * **(L3)** Find pairs of commutators conjugated by simple twists & look for improvements. These are of the form `X . Cm . Cn . X'` where **X** is simple twist & **Cm**, **Cn** are different commutators.
+    * **(L1)** Attempt application of commutators conjugated by simple twists & look for improvements.  
+    These are of the form `X . Cm . X'` where **X** is simple twist & **Cm** is a commutator.
+    * **(L2)** Find pairs of commutators whose chained application results in improvement.  
+    These are of the form `Cm . Cn` where **Cm** & **Cn** are different commutators.
+    * **(L3)** Find pairs of commutators conjugated by simple twists & look for improvements.  
+    These are of the form `X . Cm . Cn . X'` where **X** is simple twist & **Cm**, **Cn** are different commutators.
 
 For (L2) & (L3) algorithms, we can also consider the conjugates built by the two commutators without any significant overhead.
 
@@ -71,15 +74,10 @@ Octahedron    | 3         | 2301                    | 13                   | 172
 Octahedron    | 4         | 9839                    | 19                   | 366
 Dodecahedron  | 2         | 3729                    | 499                  | 388
 Dodecahedron  | 4         | 88374                   | 804                  | 2202
-Dodecahedron  | 6         | 506571                  | 14709                | 4870
+Dodecahedron  | 6         | 441504                  | 2837                 | 4050
 Icosahedron   | 2         | 4317                    | 130                  | 568
 Icosahedron   | 3         | 26648                   | 272                  | 1312
 Icosahedron   | 4         | 104973                  | 563                  | 2252
-
-Most puzzles are well behaved, but Dodecahedra are especially problematic for 3 reasons,
-1. Triangular faces can be incremented in size by adding 1 new layer of alternating triangular tiles on 1 of the sides. Square faces can be incremented in size by adding 1 new layer of square tiles on 2 of the sides. Pentagonal faces take 1 new layer of rhobus tiles on all 5 sides for the least increment. Thus, the least increment we can do on Dodecahedra edge size is a jump of 2.
-2. It takes many simple twists to move any piece on a dodecahedra to the opposite end.
-3. The "star" clusters on dodecahedra inherently dislocate other pieces, so even the best commutators on them are much larger in size to maintain & process.
 
 ### Potential Improvements <a name="improvements"></a>
 

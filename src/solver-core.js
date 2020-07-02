@@ -8,15 +8,32 @@ this.getSubSequenceDescription = (cluster) =>
 // These need to be solved before any other cluster is solved.
 this.getSpecialClusters = (clusters) => {
   const specialClusters = [];
+  const stickerToClusterMap = {};
   for (const cluster of clusters) {
-    if (
-      !cluster.commutators.length ||
-      !cluster.commutators.some(({ swapMap }) =>
-        Object.keys(swapMap).every((sticker) =>
-          cluster.stickers.find((s) => s === sticker)
-        )
-      )
-    ) {
+    for (const sticker of cluster.stickers) {
+      stickerToClusterMap[sticker] = cluster.id;
+    }
+  }
+  const clusterDependencies = {};
+  for (const cluster of clusters) {
+    clusterDependencies[cluster.id] = {};
+    for (const commutator of cluster.commutators) {
+      for (const sticker in commutator.swapMap) {
+        clusterDependencies[cluster.id][stickerToClusterMap[sticker]] = true;
+      }
+    }
+  }
+  for (const cluster of clusters) {
+    let isSpecial = !cluster.commutators.length;
+    if (!isSpecial) {
+      for (let dependentCluster in clusterDependencies[cluster.id]) {
+        if (!clusterDependencies[dependentCluster][cluster.id]) {
+          isSpecial = true;
+          break;
+        }
+      }
+    }
+    if (isSpecial) {
       specialClusters.push(cluster);
     }
   }
@@ -55,7 +72,7 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
   // We optimize the approach by using simpler algorithms as much as possible.
   // The solver only attempts L0 & L1 algorithms which are low cost.
   // If any clusters remaing, only then it starts considering L2 & L3 type compositions which consume a lot of time.
-  for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
+  for (let complexityLimit of [2, 5]) {
     for (const cluster of specialClusters) {
       if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
       // Solve special clusters first.
@@ -68,7 +85,7 @@ this.solveEvenPuzzleState = (puzzleStateAsComposableCycle, clusters) => {
       );
     }
   }
-  for (let complexityLimit = 2; complexityLimit <= 4; complexityLimit += 2) {
+  for (let complexityLimit of [2, 5]) {
     for (const cluster of clusters) {
       if (!cluster.countCycleOverlap(puzzleStateAsComposableCycle)) continue;
       // Solve simpler clusters later.
@@ -101,6 +118,7 @@ this.solveCluster = (
     this.attemptL1Algorithms,
     this.attemptL2Algorithms,
     this.attemptL3Algorithms,
+    this.attemptL4Algorithms,
   ];
   while (stillFindingImprovements && puzzleStateAsComposableCycle.size) {
     stillFindingImprovements = false;
@@ -448,6 +466,140 @@ this.attemptL3Algorithms = (
                 )
               ) {
                 return newPuzzleStateAsComposableCycle;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return puzzleStateAsComposableCycle;
+};
+
+// Attempts to conjuagte L2 type sequences with 2 atomic twists
+this.attemptL4Algorithms = (
+  puzzleStateAsComposableCycle,
+  cluster,
+  sticker,
+  stickerPairToCycleMap,
+  isProgress
+) => {
+  for (const firstAtomicComposableCycle of cluster.atomicComposableCycles) {
+    if (!firstAtomicComposableCycle.swapMap[sticker]) continue;
+    for (const secondAtomicComposableCycle of cluster.atomicComposableCycles) {
+      let setupMove = ComposableCycle.fromComposableCycles([firstAtomicComposableCycle, secondAtomicComposableCycle]);
+      let preLinkingSticker;
+      let preTargetSticker;
+      const targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
+      for (const curSticker in setupMove.swapMap) {
+        if (setupMove.swapMap[curSticker] === sticker) {
+          preLinkingSticker = curSticker;
+        }
+        if (setupMove.swapMap[curSticker] === targetSticker) {
+          preTargetSticker = curSticker;
+        }
+      }
+      for (const linkingSticker of cluster.stickers) {
+        const pairToFixInitial = this.getPairId(
+          linkingSticker,
+          preLinkingSticker
+        );
+        const pairToFixFinal = this.getPairId(preTargetSticker, linkingSticker);
+        if (
+          linkingSticker === preLinkingSticker ||
+          linkingSticker === preTargetSticker ||
+          setupMove.swapMap[linkingSticker]
+        ) {
+          continue;
+        }
+        if (stickerPairToCycleMap[pairToFixInitial]) {
+          for (const composableCycleFirst of stickerPairToCycleMap[
+            pairToFixInitial
+          ]) {
+            if (stickerPairToCycleMap[pairToFixFinal]) {
+              for (const composableCycleSecond of stickerPairToCycleMap[
+                pairToFixFinal
+              ]) {
+                let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
+                  [
+                    puzzleStateAsComposableCycle,
+                    setupMove,
+                    composableCycleFirst,
+                    composableCycleSecond,
+                    setupMove.inverse(),
+                  ],
+                  [
+                    undefined,
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `Setup move`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `First ${getSubSequenceDescription(cluster)}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `Second ${getSubSequenceDescription(cluster)}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `Setup move inverse`,
+                    },
+                  ]
+                );
+                if (
+                  isProgress(
+                    newPuzzleStateAsComposableCycle,
+                    puzzleStateAsComposableCycle
+                  )
+                ) {
+                  this.moveCounter++;
+                  return newPuzzleStateAsComposableCycle;
+                }
+                newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
+                  [
+                    puzzleStateAsComposableCycle,
+                    setupMove,
+                    composableCycleFirst,
+                    composableCycleSecond,
+                    composableCycleFirst.inverse(),
+                    setupMove.inverse(),
+                  ],
+                  [
+                    undefined,
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `Setup move`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `First ${getSubSequenceDescription(cluster)}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `Second ${getSubSequenceDescription(cluster)}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `First ${getSubSequenceDescription(
+                        cluster
+                      )} inverse`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `Setup move inverse`,
+                    },
+                  ]
+                );
+                if (
+                  isProgress(
+                    newPuzzleStateAsComposableCycle,
+                    puzzleStateAsComposableCycle
+                  )
+                ) {
+                  return newPuzzleStateAsComposableCycle;
+                }
               }
             }
           }

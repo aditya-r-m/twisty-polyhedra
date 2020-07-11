@@ -487,7 +487,10 @@ this.attemptL4Algorithms = (
   for (const firstAtomicComposableCycle of cluster.atomicComposableCycles) {
     if (!firstAtomicComposableCycle.swapMap[sticker]) continue;
     for (const secondAtomicComposableCycle of cluster.atomicComposableCycles) {
-      let setupMove = ComposableCycle.fromComposableCycles([firstAtomicComposableCycle, secondAtomicComposableCycle]);
+      let setupMove = ComposableCycle.fromComposableCycles([
+        firstAtomicComposableCycle,
+        secondAtomicComposableCycle,
+      ]);
       let preLinkingSticker;
       let preTargetSticker;
       const targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
@@ -536,11 +539,15 @@ this.attemptL4Algorithms = (
                     },
                     {
                       sequence: `${this.moveCounter}) Conjugated Pair`,
-                      subSequence: `First ${getSubSequenceDescription(cluster)}`,
+                      subSequence: `First ${getSubSequenceDescription(
+                        cluster
+                      )}`,
                     },
                     {
                       sequence: `${this.moveCounter}) Conjugated Pair`,
-                      subSequence: `Second ${getSubSequenceDescription(cluster)}`,
+                      subSequence: `Second ${getSubSequenceDescription(
+                        cluster
+                      )}`,
                     },
                     {
                       sequence: `${this.moveCounter}) Conjugated Pair`,
@@ -574,11 +581,15 @@ this.attemptL4Algorithms = (
                     },
                     {
                       sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `First ${getSubSequenceDescription(cluster)}`,
+                      subSequence: `First ${getSubSequenceDescription(
+                        cluster
+                      )}`,
                     },
                     {
                       sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `Second ${getSubSequenceDescription(cluster)}`,
+                      subSequence: `Second ${getSubSequenceDescription(
+                        cluster
+                      )}`,
                     },
                     {
                       sequence: `${this.moveCounter}) Nested Conjugated Pair`,

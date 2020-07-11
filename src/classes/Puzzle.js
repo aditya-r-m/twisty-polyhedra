@@ -246,6 +246,8 @@ class Puzzle {
 
   // Apply random twists
   scramble() {
+    this.clearStats();
+    window.hideStartButton();
     const count = this.cycles.length * 3;
     const twists = [];
     for (let c = 0; c < count; c++) {
@@ -270,6 +272,7 @@ class Puzzle {
           index < count - 1
             ? () => (this.animationState = animationConfigs[index + 1])
             : () => {
+                window.showStartButton();
                 window.enableSolveButton();
                 this.startTime = new Date().getTime();
               },

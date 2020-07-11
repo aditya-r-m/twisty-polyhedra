@@ -93,7 +93,7 @@
       window[`size-${i + 1}`].onmousedown = () => {
         window.clearSolution();
         window.selectedPuzzle = constructor(puzzleSize, false);
-        window.startbutton.style.visibility = "visible";
+        window.showStartButton();
       };
     }
   };
@@ -103,6 +103,14 @@
       "none";
     window.configurationmenu.style.display = window.puzzlemenubutton.style.display =
       "inline-block";
+  };
+
+  window.hideStartButton = () => {
+    window.startbutton.style.visibility = "hidden";
+  };
+
+  window.showStartButton = () => {
+    window.startbutton.style.visibility = "visible";
   };
 
   window.showShapeMenu();

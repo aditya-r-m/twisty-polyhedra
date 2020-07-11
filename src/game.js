@@ -22,7 +22,6 @@
   Puzzle.prototype.onFinish = (time) => {
     window.help.style.display = "none";
     window.menu.style.display = "none";
-    window.startbutton.style.visibility = "visible";
     window.success.style.display = "inline-block";
     window.message.innerHTML = `You solved it in ${time} seconds.<br/> Good Job.`;
   };

@@ -29,6 +29,9 @@ class Cluster {
   generateCommutators() {
     const conjugates = [];
     for (let i = 0; i < this.atomicComposableCycles.length; i++) {
+      if (this.countCycleOverlap(this.atomicComposableCycles[i])) {
+        conjugates.push(this.atomicComposableCycles[i]);
+      }
       for (let j = 0; j < this.atomicComposableCycles.length; j++) {
         if (
           this.atomicComposableCycles[i].directedCycles[0].cycleIndex !=

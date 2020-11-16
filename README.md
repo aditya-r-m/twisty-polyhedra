@@ -18,7 +18,7 @@ https://aditya-r-m.github.io/twisty-polyhedra
 Techniques used to build the interface:
 https://medium.com/@adityam.rtm/creating-3d-twisty-puzzles-using-programming-5800fb7eaab8
 
-The interface relies on cursor gestures & works best with latest chrome on a desktop/laptop having screen resolutions at least 1366x768 on a reasonably fast machine, but it should also work fine on latest Firefox/Safari with screen resolution at least 1024x768.
+The interface relies on cursor/touch gestures and works well with pc/mobile setups running chrome/firefox/etc.
 
 ## Solver <a name="solver"></a>
 

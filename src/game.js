@@ -92,4 +92,36 @@
   gameCanvas.addEventListener("mouseleave", (e) => {
     window.selectedPuzzle.release();
   });
+
+  // Touch event handlers
+  gameCanvas.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const eventOffset = getEventOffset();
+    window.selectedPuzzle.grab(
+      e.touches[0].clientX - eventOffset.x,
+      e.touches[0].clientY - eventOffset.y,
+      1
+    );
+  });
+
+  gameCanvas.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const eventOffset = getEventOffset();
+    window.selectedPuzzle.drag(
+      e.touches[0].clientX - eventOffset.x,
+      e.touches[0].clientY - eventOffset.y
+    );
+  });
+
+  gameCanvas.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.selectedPuzzle.release();
+  });
+
+  gameCanvas.addEventListener("touchcancel", (e) => {
+    window.selectedPuzzle.release();
+  });
 })();

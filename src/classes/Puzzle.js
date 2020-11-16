@@ -158,6 +158,7 @@ class Puzzle {
     } else {
       this.startSticker = this.findTouchedSticker(x, y);
       this.twisting = !!this.startSticker;
+      this.rotating = !this.startSticker;
     }
   }
 

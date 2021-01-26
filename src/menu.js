@@ -40,6 +40,7 @@
       };
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.translate(50, 50);
+      const animationFPSThrottler = createAnimationFPSThrottler();
       const loop = () => {
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -49,10 +50,10 @@
         puzzle.update();
         puzzle.render(ctx);
         if (menuStateCounter === localState) {
-          requestAnimationFrame(loop);
+          animationFPSThrottler.requestAnimationFrame(loop);
         }
       };
-      requestAnimationFrame(loop);
+      animationFPSThrottler.requestAnimationFrame(loop);
 
       window[elemId].onmousedown = () => showSizeMenu(elemId);
     }
@@ -76,6 +77,7 @@
       };
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.translate(50, 50);
+      animationFPSThrottler = createAnimationFPSThrottler();
       const loop = () => {
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -85,10 +87,10 @@
         puzzle.update();
         puzzle.render(ctx);
         if (menuStateCounter === localState) {
-          requestAnimationFrame(loop);
+          animationFPSThrottler.requestAnimationFrame(loop);
         }
       };
-      requestAnimationFrame(loop);
+      animationFPSThrottler.requestAnimationFrame(loop);
 
       window[`size-${i + 1}`].onmousedown = () => {
         window.clearSolution();

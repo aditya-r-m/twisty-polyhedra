@@ -26,6 +26,7 @@
     window.message.innerHTML = `You solved it in ${time} seconds.<br/> Good Job.`;
   };
 
+  const animationFPSThrottler = createAnimationFPSThrottler();
   // Game loop
   const loop = () => {
     ctx.save();
@@ -56,9 +57,9 @@
       window.stats.innerHTML = `Time Taken: --:--, Moves Made: --`;
     }
 
-    requestAnimationFrame(loop);
+    animationFPSThrottler.requestAnimationFrame(loop);
   };
-  requestAnimationFrame(loop);
+  animationFPSThrottler.requestAnimationFrame(loop);
 
   // Mouse event handlers
   document.addEventListener("contextmenu", (event) => event.preventDefault());

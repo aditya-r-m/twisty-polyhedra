@@ -19,11 +19,25 @@
       dodecahedron: [1, 2, 3],
       icosahedron: [2, 3, 4],
     },
+    baseSizes: {
+      tetrahedron: [3, 4, 5],
+      cube: [2, 3, 4],
+      octahedron: [2, 3, 4],
+      dodecahedron: [1, 2, 3],
+      icosahedron: [2, 3, 4],
+    },
+    extraDims: 0,
   };
 
   let menuStateCounter = 0;
 
   window.showShapeMenu = () => {
+
+    // Update sizes.
+    for (const [key, ary] of Object.entries(window.menuConfig.baseSizes)) {
+      window.menuConfig.sizes[key] = ary.map(val => val + window.menuConfig.extraDims);
+    }
+
     menuStateCounter++;
     window.puzzlemenu.style.display = window.shapemenu.style.display = window.settingsmenubutton.style.display =
       "inline-block";

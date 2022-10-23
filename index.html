@@ -136,27 +136,27 @@
       <ul style="margin-right: 10px;">
         <li style="text-align: left; margin-bottom: 10px;">
           To twist a slice,
-          <br/>press (left-mouse-button OR touch-screen) over a sticker & drag.
+          <br/>press (left-mouse-button OR touch-screen) over a sticker &amp; drag.
         </li>
         <li style="text-align: left; margin-bottom: 10px;">
           To rotate the puzzle,
-          <br/>press (left-mouse-button OR touch-screen) on the empty-space near the puzzle & drag.
+          <br/>press (left-mouse-button OR touch-screen) on the empty-space near the puzzle &amp; drag.
           <br/><br/>Alternatively (on PC),
-          <br/>press (right-bouse-button OR ctrl+left-mouse-button) anywhere on puzzle canvas & drag.
+          <br/>press (right-bouse-button OR ctrl+left-mouse-button) anywhere on puzzle canvas &amp; drag.
         </li>
         <li style="text-align: left; margin-bottom: 10px;">
-          Click on any puzzle in the menu to select it & Trigger automatic
+          Click on any puzzle in the menu to select it &amp; Trigger automatic
           scramble using the play button.
         </li>
         <li style="text-align: left; margin-bottom: 10px;">
           You can use the solve button to auto-generate solutions for differnt puzzles to learn from.
         </li>
         <li style="text-align: left; margin-bottom: 10px;">
-          Before a given puzzle state can be solved by the algorithm, preprocessing must be done for the shape & size. The preprocessed data stays in memory till the tab is killed, so subsequent solves are much faster than the first one.
+          Before a given puzzle state can be solved by the algorithm, preprocessing must be done for the shape &amp; size. The preprocessed data stays in memory till the tab is killed, so subsequent solves are much faster than the first one.
         </li>
         <li style="text-align: left; margin-bottom: 10px;">
-          The interface has an advanced feature to point & swap stickers.
-          This can be helpful to analyze differnt positions & how the solver tackels them.
+          The interface has an advanced feature to point &amp; swap stickers.
+          This can be helpful to analyze different positions &amp; how the solver tackles them.
           Note that it is very easy to bring the puzzle to unsolvable states by using this feature. The automated solver will do best effort fixing of such states.
         </li>
       </ul>
@@ -302,7 +302,30 @@
             name="pns"
             onclick="window.pointAndSwap=!window.pointAndSwap; window.tempS = undefined;"
           />
-          <label for="pns">Point & Swap mode</label>
+          <label for="pns">Point &amp; Swap mode</label>
+          <br />
+
+          <input
+            type="button"
+            value="-"
+            onclick="updateExtraDims(document.getElementById('xsz'), -1)"
+          />
+          <input
+            autocomplete="off"
+            type="textbox"
+            value="0"
+            id="xsz"
+            name="xsz"
+            size="1"
+            onblur="updateExtraDims(this, 0)"
+          />
+          <input
+            type="button"
+            value="+"
+            onclick="updateExtraDims(document.getElementById('xsz'), 1)"
+          />
+          <label>Extra dimensions</label>
+
         </div>
       </div>
       <div style="margin: 50px 65px; height: 35px; font-size: 40px;">

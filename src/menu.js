@@ -12,13 +12,6 @@
       icosahedron: (size, isDemo) =>
         new Icosahedron(size, isDemo ? 42.5 : undefined),
     },
-    sizes: {
-      tetrahedron: [3, 4, 5],
-      cube: [2, 3, 4],
-      octahedron: [2, 3, 4],
-      dodecahedron: [1, 2, 3],
-      icosahedron: [2, 3, 4],
-    },
     baseSizes: {
       tetrahedron: [3, 4, 5],
       cube: [2, 3, 4],
@@ -26,12 +19,12 @@
       dodecahedron: [1, 2, 3],
       icosahedron: [2, 3, 4],
     },
-    extraDims: 0,
+    sizeOffset: 0,
   };
 
   let menuStateCounter = 0;
 
-  window.updateExtraDims = (elem, count) => {
+  window.updateSizeOffset = (elem, count) => {
     const val = Math.max((parseInt(elem.value) || 0) + count, 0);
     elem.value = val;
     window.menuConfig.extraDims = val;
@@ -39,7 +32,8 @@
 
   window.showShapeMenu = () => {
 
-    // Update sizes.
+    // Create sizes.
+    window.menuConfig.sizes = [];
     for (const [key, ary] of Object.entries(window.menuConfig.baseSizes)) {
       window.menuConfig.sizes[key] = ary.map(val => val + window.menuConfig.extraDims);
     }

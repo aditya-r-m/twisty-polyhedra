@@ -308,23 +308,23 @@
           <input
             type="button"
             value="-"
-            onclick="updateExtraDims(document.getElementById('xsz'), -1)"
+            onclick="updateSizeOffset(document.getElementById('soff'), -1)"
           />
           <input
             autocomplete="off"
             type="textbox"
             value="0"
-            id="xsz"
-            name="xsz"
+            id="soff"
+            name="soff"
             size="1"
-            onblur="updateExtraDims(this, 0)"
+            onblur="updateSizeOffset(this, 0)"
           />
           <input
             type="button"
             value="+"
-            onclick="updateExtraDims(document.getElementById('xsz'), 1)"
+            onclick="updateSizeOffset(document.getElementById('soff'), 1)"
           />
-          <label>Extra dimensions</label>
+          <label>Size Offset</label>
 
         </div>
       </div>

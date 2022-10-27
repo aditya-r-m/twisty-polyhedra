@@ -27,7 +27,7 @@
   window.updateSizeOffset = (elem, count) => {
     const val = Math.max((parseInt(elem.value) || 0) + count, 0);
     elem.value = val;
-    window.menuConfig.extraDims = val;
+    window.menuConfig.sizeOffset = val;
   }
 
   window.showShapeMenu = () => {
@@ -35,7 +35,7 @@
     // Create sizes.
     window.menuConfig.sizes = [];
     for (const [key, ary] of Object.entries(window.menuConfig.baseSizes)) {
-      window.menuConfig.sizes[key] = ary.map(val => val + window.menuConfig.extraDims);
+      window.menuConfig.sizes[key] = ary.map(val => val + window.menuConfig.sizeOffset);
     }
 
     menuStateCounter++;

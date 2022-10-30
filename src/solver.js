@@ -1,10 +1,16 @@
 (() => {
+
+  window.showSolverUnsupportedMessage = () => {
+      window.solverunsupported.style.display = "block";
+      window.solvewrapper.style.display = "none";
+  };
+
   // The interface from the UI thread to the solver worker.
   if (window.Worker) {
     window.solverWorker = new Worker("src/solver-worker.js");
+    window.solverWorker.onerror = ((evt) => showSolverUnsupportedMessage());
   } else {
-    window.solverunsupported.style.display = "block";
-    window.solvewrapper.style.display = "none";
+    showSolverUnsupportedMessage();
   }
 
   // Generated solution can be traverses using 2 stacks.

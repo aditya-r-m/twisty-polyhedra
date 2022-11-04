@@ -18,7 +18,7 @@
   window.explodedStickers = true;
   window.animate = true;
 
-  window.selectedPuzzle = new Tetrahedron();
+  window.selectedPuzzle = new Tesseract();
   Puzzle.prototype.onFinish = (time) => {
     window.help.style.display = "none";
     window.menu.style.display = "none";

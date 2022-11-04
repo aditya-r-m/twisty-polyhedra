@@ -64,6 +64,14 @@ class Puzzle {
     );
   }
 
+  updateOrientation(orientation) {
+    this.updatedOrientation = orientation;
+  }
+
+  getUpdatedOrientation() {
+    return this.updatedOrientation;
+  }
+
   // Update works in two modes
   // 1) When a slice twist is animated, covered stickers are rotated around cycle axis & then sorted by depth (slow)
   // 2) When the puzzle is not changing, face orientations are updated & sorted by normal vector values (fast)

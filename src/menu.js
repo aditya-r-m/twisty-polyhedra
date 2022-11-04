@@ -5,6 +5,7 @@
       tetrahedron: (size, isDemo) =>
         new Tetrahedron(size, isDemo ? 42.5 : undefined),
       cube: (size, isDemo) => new Cube(size, isDemo ? 50 : undefined),
+      tesseract: (_, isDemo) => new Tesseract(isDemo ? 25 : undefined),
       octahedron: (size, isDemo) =>
         new Octahedron(size, isDemo ? 42.5 : undefined),
       dodecahedron: (size, isDemo) =>
@@ -48,10 +49,10 @@
       const ctx = window[elemId].getContext("2d");
       const constructor = window.menuConfig.puzzles[elemId];
       const puzzle = constructor(undefined, true);
-      puzzle.updatedOrientation = {
+      puzzle.updateOrientation({
         axis: new Vector({ x: 1, y: 1, z: 0 }),
         angle: 0,
-      };
+      });
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.translate(50, 50);
       const animationFPSThrottler = createAnimationFPSThrottler();
@@ -60,7 +61,10 @@
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
         ctx.restore();
-        puzzle.updatedOrientation.angle += 0.015;
+        puzzle.updateOrientation({
+          axis: puzzle.getUpdatedOrientation().axis,
+          angle: puzzle.getUpdatedOrientation().angle + 0.015
+        });
         puzzle.update();
         puzzle.render(ctx);
         if (menuStateCounter === localState) {
@@ -74,6 +78,11 @@
   };
 
   window.showSizeMenu = (elemId) => {
+    const constructor = window.menuConfig.puzzles[elemId];
+    if (!window.menuConfig.sizes[elemId]) {
+        window.selectedPuzzle = constructor(undefined, false);
+        return;
+    }
     menuStateCounter++;
     const localState = menuStateCounter;
     window.shapemenu.style.display = window.settingsmenubutton.style.display =
@@ -82,13 +91,12 @@
       "inline-block";
     for (let i = 0; i < 3; i++) {
       const ctx = window[`size-${i + 1}`].getContext("2d");
-      const constructor = window.menuConfig.puzzles[elemId];
       const puzzleSize = window.menuConfig.sizes[elemId][i];
       const puzzle = constructor(puzzleSize, true);
-      puzzle.updatedOrientation = {
+      puzzle.updateOrientation({
         axis: new Vector({ x: 1, y: 1, z: 0 }),
         angle: 0,
-      };
+      });
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.translate(50, 50);
       animationFPSThrottler = createAnimationFPSThrottler();
@@ -97,7 +105,10 @@
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
         ctx.restore();
-        puzzle.updatedOrientation.angle += 0.015;
+        puzzle.updateOrientation({
+          axis: puzzle.getUpdatedOrientation().axis,
+          angle: puzzle.getUpdatedOrientation().angle + 0.015,
+        });
         puzzle.update();
         puzzle.render(ctx);
         if (menuStateCounter === localState) {

@@ -1,4 +1,4 @@
-class TSticker {
+class TesseractSticker {
   constructor(colorCode, w, x, y, z) {
     this.colorCode = colorCode;
     this.w = w;
@@ -19,8 +19,8 @@ class TSticker {
     if (this.w < -0.5) return;
     let r = 2 / (1 + this.w);
     [this.rx, this.ry, this.rz] = [r*this.x, r*this.y, r*this.z];
-    [this.rx, this.rz] = this.rotate(this.rx, this.rz, -Math.PI/9);
-    [this.ry, this.rz] = this.rotate(this.ry, this.rz, Math.PI/9);
+    [this.rx, this.rz] = this.rotate(this.rx, this.rz, -Math.PI/4);
+    [this.ry, this.rz] = this.rotate(this.ry, this.rz, Math.PI/6);
   }
 
   render(ctx, scale) {
@@ -28,7 +28,7 @@ class TSticker {
     ctx.fillStyle = this.colorCode;
     ctx.strokeStyle = "#000000";
     ctx.beginPath();
-    ctx.arc(scale*this.rx, scale*this.ry, 7, 0, 2*Math.PI);
+    ctx.arc(scale*this.rx, scale*this.ry, 7*scale/100, 0, 2*Math.PI);
     ctx.fill();
     ctx.stroke();
   }
@@ -42,19 +42,19 @@ class Tesseract {
     this.twisting = this.rotating = false;
 
     this.stickers = [];
-    let del = 0.13;
+    let offset = 0.8, del = 0.15;
     for (let i = -1; i <= 1; i++)
     for (let j = -1; j <= 1; j++)
     for (let k = -1; k <= 1; k++)
     this.stickers.push(
-      new TSticker("white", -1, 0+i*del, 0+j*del, 0+k*del),
-      new TSticker("yellow", 1, 0+i*del, 0+j*del, 0+k*del),
-      new TSticker("blue", 0+i*del, -1, 0+j*del, 0+k*del),
-      new TSticker("red", 0+i*del, 1, 0+j*del, 0+k*del),
-      new TSticker("green", 0+j*del, 0+i*del, -1, 0+k*del),
-      new TSticker("cyan", 0+j*del, 0+i*del, 1, 0+k*del),
-      new TSticker("magenta", 0+k*del, 0+i*del, 0+j*del, -1),
-      new TSticker("purple", 0+k*del, 0+i*del, 0+j*del, 1));
+      new TesseractSticker("yellow", -offset, 0+i*del, 0+j*del, 0+k*del),
+      new TesseractSticker("white", offset, 0+i*del, 0+j*del, 0+k*del),
+      new TesseractSticker("blue", 0+i*del, -offset, 0+j*del, 0+k*del),
+      new TesseractSticker("red", 0+i*del, offset, 0+j*del, 0+k*del),
+      new TesseractSticker("cyan", 0+j*del, 0+i*del, -offset, 0+k*del),
+      new TesseractSticker("green", 0+j*del, 0+i*del, offset, 0+k*del),
+      new TesseractSticker("magenta", 0+k*del, 0+i*del, 0+j*del, -offset),
+      new TesseractSticker("purple", 0+k*del, 0+i*del, 0+j*del, offset));
   }
 
   clearStats() {
@@ -68,13 +68,20 @@ class Tesseract {
     this.stickers.forEach(sticker => sticker.render(ctx, this.scale));
   }
 
-  update() {
+  updateOrientation() {
+    console.log('called');
     this.stickers.forEach(sticker =>
       {
-        [sticker.w, sticker.x] = sticker.rotate(sticker.w, sticker.x, Math.PI/100);
+        [sticker.w, sticker.z] = sticker.rotate(sticker.w, sticker.z, -Math.PI/100);
       }
     );
   }
+
+  getUpdatedOrientation() {
+    return {};
+  }
+
+  update() {}
 
   isSolved() {
     throw "Not Implemented";
@@ -84,13 +91,9 @@ class Tesseract {
     throw "Not Implemented";
   }
 
-  drag(x, y) {
-    throw "Not Implemented";
-  }
+  drag(x, y) {}
 
-  release() {
-    throw "Not Implemented";
-  }
+  release() {}
 
   scramble() {
     throw "Not Implemented";

@@ -29,21 +29,26 @@
     const val = Math.max((parseInt(elem.value) || 0) + count, 0);
     elem.value = val;
     window.menuConfig.sizeOffset = val;
-  }
+  };
 
   window.showShapeMenu = () => {
-
     // Create sizes.
     window.menuConfig.sizes = [];
     for (const [key, ary] of Object.entries(window.menuConfig.baseSizes)) {
-      window.menuConfig.sizes[key] = ary.map(val => val + window.menuConfig.sizeOffset);
+      window.menuConfig.sizes[key] = ary.map(
+        (val) => val + window.menuConfig.sizeOffset
+      );
     }
 
     menuStateCounter++;
-    window.puzzlemenu.style.display = window.shapemenu.style.display = window.settingsmenubutton.style.display =
-      "inline-block";
-    window.configurationmenu.style.display = window.puzzlemenubutton.style.display = window.sizemenu.style.display =
-      "none";
+    window.puzzlemenu.style.display =
+      window.shapemenu.style.display =
+      window.settingsmenubutton.style.display =
+        "inline-block";
+    window.configurationmenu.style.display =
+      window.puzzlemenubutton.style.display =
+      window.sizemenu.style.display =
+        "none";
     const localState = menuStateCounter;
     for (const elemId in window.menuConfig.puzzles) {
       const ctx = window[elemId].getContext("2d");
@@ -63,7 +68,7 @@
         ctx.restore();
         puzzle.updateOrientation({
           axis: puzzle.getUpdatedOrientation().axis,
-          angle: puzzle.getUpdatedOrientation().angle + 0.015
+          angle: puzzle.getUpdatedOrientation().angle + 0.015,
         });
         puzzle.update();
         puzzle.render(ctx);
@@ -80,8 +85,8 @@
   window.showSizeMenu = (elemId) => {
     const constructor = window.menuConfig.puzzles[elemId];
     if (!window.menuConfig.sizes[elemId]) {
-        window.selectedPuzzle = constructor(undefined, false);
-        return;
+      window.selectedPuzzle = constructor(undefined, false);
+      return;
     }
     menuStateCounter++;
     const localState = menuStateCounter;
@@ -128,8 +133,8 @@
   window.showSettingsMenu = () => {
     window.puzzlemenu.style.display = window.settingsmenubutton.style.display =
       "none";
-    window.configurationmenu.style.display = window.puzzlemenubutton.style.display =
-      "inline-block";
+    window.configurationmenu.style.display =
+      window.puzzlemenubutton.style.display = "inline-block";
   };
 
   window.hideStartButton = () => {

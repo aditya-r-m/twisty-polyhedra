@@ -164,16 +164,17 @@ this.attemptL0Algorithms = (
   );
   if (stickerPairToCycleMap[pairToFix]) {
     for (const composableCycle of stickerPairToCycleMap[pairToFix]) {
-      const newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-        [puzzleStateAsComposableCycle, composableCycle],
-        [
-          undefined,
-          {
-            sequence: `${this.moveCounter}) Simple Move`,
-            subSequence: getSubSequenceDescription(cluster),
-          },
-        ]
-      );
+      const newPuzzleStateAsComposableCycle =
+        ComposableCycle.fromComposableCycles(
+          [puzzleStateAsComposableCycle, composableCycle],
+          [
+            undefined,
+            {
+              sequence: `${this.moveCounter}) Simple Move`,
+              subSequence: getSubSequenceDescription(cluster),
+            },
+          ]
+        );
       if (
         isProgress(
           newPuzzleStateAsComposableCycle,
@@ -214,29 +215,30 @@ this.attemptL1Algorithms = (
     const pairToFix = this.getPairId(targetSticker, linkingSticker);
     if (stickerPairToCycleMap[pairToFix]) {
       for (const composableCycle of stickerPairToCycleMap[pairToFix]) {
-        const newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-          [
-            puzzleStateAsComposableCycle,
-            atomicComposableCycle,
-            composableCycle,
-            atomicComposableCycle.inverse(),
-          ],
-          [
-            undefined,
-            {
-              sequence: `${this.moveCounter}) Conjugated Move`,
-              subSequence: "Setup move",
-            },
-            {
-              sequence: `${this.moveCounter}) Conjugated Move`,
-              subSequence: getSubSequenceDescription(cluster),
-            },
-            {
-              sequence: `${this.moveCounter}) Conjugated Move`,
-              subSequence: "Setup move inverse",
-            },
-          ]
-        );
+        const newPuzzleStateAsComposableCycle =
+          ComposableCycle.fromComposableCycles(
+            [
+              puzzleStateAsComposableCycle,
+              atomicComposableCycle,
+              composableCycle,
+              atomicComposableCycle.inverse(),
+            ],
+            [
+              undefined,
+              {
+                sequence: `${this.moveCounter}) Conjugated Move`,
+                subSequence: "Setup move",
+              },
+              {
+                sequence: `${this.moveCounter}) Conjugated Move`,
+                subSequence: getSubSequenceDescription(cluster),
+              },
+              {
+                sequence: `${this.moveCounter}) Conjugated Move`,
+                subSequence: "Setup move inverse",
+              },
+            ]
+          );
         if (
           isProgress(
             newPuzzleStateAsComposableCycle,
@@ -276,24 +278,25 @@ this.attemptL2Algorithms = (
           for (const composableCycleSecond of stickerPairToCycleMap[
             pairToFixFinal
           ]) {
-            let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-              [
-                puzzleStateAsComposableCycle,
-                composableCycleFirst,
-                composableCycleSecond,
-              ],
-              [
-                undefined,
-                {
-                  sequence: `${this.moveCounter}) Paired Move`,
-                  subSequence: `First ${getSubSequenceDescription(cluster)}`,
-                },
-                {
-                  sequence: `${this.moveCounter}) Paired Move`,
-                  subSequence: `Second ${getSubSequenceDescription(cluster)}`,
-                },
-              ]
-            );
+            let newPuzzleStateAsComposableCycle =
+              ComposableCycle.fromComposableCycles(
+                [
+                  puzzleStateAsComposableCycle,
+                  composableCycleFirst,
+                  composableCycleSecond,
+                ],
+                [
+                  undefined,
+                  {
+                    sequence: `${this.moveCounter}) Paired Move`,
+                    subSequence: `First ${getSubSequenceDescription(cluster)}`,
+                  },
+                  {
+                    sequence: `${this.moveCounter}) Paired Move`,
+                    subSequence: `Second ${getSubSequenceDescription(cluster)}`,
+                  },
+                ]
+              );
             if (
               isProgress(
                 newPuzzleStateAsComposableCycle,
@@ -303,31 +306,32 @@ this.attemptL2Algorithms = (
               this.moveCounter++;
               return newPuzzleStateAsComposableCycle;
             }
-            newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-              [
-                puzzleStateAsComposableCycle,
-                composableCycleFirst,
-                composableCycleSecond,
-                composableCycleFirst.inverse(),
-              ],
-              [
-                undefined,
-                {
-                  sequence: `${this.moveCounter}) Conjugated Pair`,
-                  subSequence: `Setup ${getSubSequenceDescription(cluster)}`,
-                },
-                {
-                  sequence: `${this.moveCounter}) Conjugated Pair`,
-                  subSequence: `Core ${getSubSequenceDescription(cluster)}`,
-                },
-                {
-                  sequence: `${this.moveCounter}) Conjugated Pair`,
-                  subSequence: `Setup ${getSubSequenceDescription(
-                    cluster
-                  )} inverse`,
-                },
-              ]
-            );
+            newPuzzleStateAsComposableCycle =
+              ComposableCycle.fromComposableCycles(
+                [
+                  puzzleStateAsComposableCycle,
+                  composableCycleFirst,
+                  composableCycleSecond,
+                  composableCycleFirst.inverse(),
+                ],
+                [
+                  undefined,
+                  {
+                    sequence: `${this.moveCounter}) Conjugated Pair`,
+                    subSequence: `Setup ${getSubSequenceDescription(cluster)}`,
+                  },
+                  {
+                    sequence: `${this.moveCounter}) Conjugated Pair`,
+                    subSequence: `Core ${getSubSequenceDescription(cluster)}`,
+                  },
+                  {
+                    sequence: `${this.moveCounter}) Conjugated Pair`,
+                    subSequence: `Setup ${getSubSequenceDescription(
+                      cluster
+                    )} inverse`,
+                  },
+                ]
+              );
             if (
               isProgress(
                 newPuzzleStateAsComposableCycle,
@@ -387,34 +391,39 @@ this.attemptL3Algorithms = (
             for (const composableCycleSecond of stickerPairToCycleMap[
               pairToFixFinal
             ]) {
-              let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-                [
-                  puzzleStateAsComposableCycle,
-                  atomicComposableCycle,
-                  composableCycleFirst,
-                  composableCycleSecond,
-                  atomicComposableCycle.inverse(),
-                ],
-                [
-                  undefined,
-                  {
-                    sequence: `${this.moveCounter}) Conjugated Pair`,
-                    subSequence: `Setup move`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Conjugated Pair`,
-                    subSequence: `First ${getSubSequenceDescription(cluster)}`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Conjugated Pair`,
-                    subSequence: `Second ${getSubSequenceDescription(cluster)}`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Conjugated Pair`,
-                    subSequence: `Setup move inverse`,
-                  },
-                ]
-              );
+              let newPuzzleStateAsComposableCycle =
+                ComposableCycle.fromComposableCycles(
+                  [
+                    puzzleStateAsComposableCycle,
+                    atomicComposableCycle,
+                    composableCycleFirst,
+                    composableCycleSecond,
+                    atomicComposableCycle.inverse(),
+                  ],
+                  [
+                    undefined,
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `Setup move`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `First ${getSubSequenceDescription(
+                        cluster
+                      )}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `Second ${getSubSequenceDescription(
+                        cluster
+                      )}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Conjugated Pair`,
+                      subSequence: `Setup move inverse`,
+                    },
+                  ]
+                );
               if (
                 isProgress(
                   newPuzzleStateAsComposableCycle,
@@ -424,41 +433,46 @@ this.attemptL3Algorithms = (
                 this.moveCounter++;
                 return newPuzzleStateAsComposableCycle;
               }
-              newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-                [
-                  puzzleStateAsComposableCycle,
-                  atomicComposableCycle,
-                  composableCycleFirst,
-                  composableCycleSecond,
-                  composableCycleFirst.inverse(),
-                  atomicComposableCycle.inverse(),
-                ],
-                [
-                  undefined,
-                  {
-                    sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                    subSequence: `Setup move`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                    subSequence: `First ${getSubSequenceDescription(cluster)}`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                    subSequence: `Second ${getSubSequenceDescription(cluster)}`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                    subSequence: `First ${getSubSequenceDescription(
-                      cluster
-                    )} inverse`,
-                  },
-                  {
-                    sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                    subSequence: `Setup move inverse`,
-                  },
-                ]
-              );
+              newPuzzleStateAsComposableCycle =
+                ComposableCycle.fromComposableCycles(
+                  [
+                    puzzleStateAsComposableCycle,
+                    atomicComposableCycle,
+                    composableCycleFirst,
+                    composableCycleSecond,
+                    composableCycleFirst.inverse(),
+                    atomicComposableCycle.inverse(),
+                  ],
+                  [
+                    undefined,
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `Setup move`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `First ${getSubSequenceDescription(
+                        cluster
+                      )}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `Second ${getSubSequenceDescription(
+                        cluster
+                      )}`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `First ${getSubSequenceDescription(
+                        cluster
+                      )} inverse`,
+                    },
+                    {
+                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                      subSequence: `Setup move inverse`,
+                    },
+                  ]
+                );
               if (
                 isProgress(
                   newPuzzleStateAsComposableCycle,
@@ -523,38 +537,39 @@ this.attemptL4Algorithms = (
               for (const composableCycleSecond of stickerPairToCycleMap[
                 pairToFixFinal
               ]) {
-                let newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-                  [
-                    puzzleStateAsComposableCycle,
-                    setupMove,
-                    composableCycleFirst,
-                    composableCycleSecond,
-                    setupMove.inverse(),
-                  ],
-                  [
-                    undefined,
-                    {
-                      sequence: `${this.moveCounter}) Conjugated Pair`,
-                      subSequence: `Setup move`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Conjugated Pair`,
-                      subSequence: `First ${getSubSequenceDescription(
-                        cluster
-                      )}`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Conjugated Pair`,
-                      subSequence: `Second ${getSubSequenceDescription(
-                        cluster
-                      )}`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Conjugated Pair`,
-                      subSequence: `Setup move inverse`,
-                    },
-                  ]
-                );
+                let newPuzzleStateAsComposableCycle =
+                  ComposableCycle.fromComposableCycles(
+                    [
+                      puzzleStateAsComposableCycle,
+                      setupMove,
+                      composableCycleFirst,
+                      composableCycleSecond,
+                      setupMove.inverse(),
+                    ],
+                    [
+                      undefined,
+                      {
+                        sequence: `${this.moveCounter}) Conjugated Pair`,
+                        subSequence: `Setup move`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Conjugated Pair`,
+                        subSequence: `First ${getSubSequenceDescription(
+                          cluster
+                        )}`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Conjugated Pair`,
+                        subSequence: `Second ${getSubSequenceDescription(
+                          cluster
+                        )}`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Conjugated Pair`,
+                        subSequence: `Setup move inverse`,
+                      },
+                    ]
+                  );
                 if (
                   isProgress(
                     newPuzzleStateAsComposableCycle,
@@ -564,45 +579,46 @@ this.attemptL4Algorithms = (
                   this.moveCounter++;
                   return newPuzzleStateAsComposableCycle;
                 }
-                newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-                  [
-                    puzzleStateAsComposableCycle,
-                    setupMove,
-                    composableCycleFirst,
-                    composableCycleSecond,
-                    composableCycleFirst.inverse(),
-                    setupMove.inverse(),
-                  ],
-                  [
-                    undefined,
-                    {
-                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `Setup move`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `First ${getSubSequenceDescription(
-                        cluster
-                      )}`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `Second ${getSubSequenceDescription(
-                        cluster
-                      )}`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `First ${getSubSequenceDescription(
-                        cluster
-                      )} inverse`,
-                    },
-                    {
-                      sequence: `${this.moveCounter}) Nested Conjugated Pair`,
-                      subSequence: `Setup move inverse`,
-                    },
-                  ]
-                );
+                newPuzzleStateAsComposableCycle =
+                  ComposableCycle.fromComposableCycles(
+                    [
+                      puzzleStateAsComposableCycle,
+                      setupMove,
+                      composableCycleFirst,
+                      composableCycleSecond,
+                      composableCycleFirst.inverse(),
+                      setupMove.inverse(),
+                    ],
+                    [
+                      undefined,
+                      {
+                        sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                        subSequence: `Setup move`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                        subSequence: `First ${getSubSequenceDescription(
+                          cluster
+                        )}`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                        subSequence: `Second ${getSubSequenceDescription(
+                          cluster
+                        )}`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                        subSequence: `First ${getSubSequenceDescription(
+                          cluster
+                        )} inverse`,
+                      },
+                      {
+                        sequence: `${this.moveCounter}) Nested Conjugated Pair`,
+                        subSequence: `Setup move inverse`,
+                      },
+                    ]
+                  );
                 if (
                   isProgress(
                     newPuzzleStateAsComposableCycle,

@@ -55,7 +55,7 @@
       const constructor = window.menuConfig.puzzles[elemId];
       const puzzle = constructor(undefined, true);
       puzzle.updateOrientation({
-        axis: new Vector({ x: 1, y: 1, z: 0 }),
+        axis: new Vector({ x: 1, y: -1, z: 0 }),
         angle: 0,
       });
       ctx.setTransform(1, 0, 0, 1, 0, 0);

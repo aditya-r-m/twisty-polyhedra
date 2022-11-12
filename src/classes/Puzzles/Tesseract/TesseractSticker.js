@@ -20,8 +20,8 @@ class TesseractSticker {
     return this.w < -0.5;
   }
 
-  centerOfView() {
-    return this.w > 0.5;
+  centerOfView(offset) {
+    return Math.abs(this.w - offset) < 1 / 1024;
   }
 
   rotate(a, b, theta) {

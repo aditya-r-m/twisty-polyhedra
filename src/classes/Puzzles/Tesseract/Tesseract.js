@@ -131,7 +131,7 @@ class Tesseract {
         this.rotationInfo.axis,
         this.rotationInfo.direction
       );
-      if (Math.abs(this.rotationInfo.s.w - this.offset) < 1 / 1024) {
+      if (this.rotationInfo.s.centerOfView(this.offset)) {
         this.snapToGrid();
         this.rotating = false;
         this.rotationInfo = {

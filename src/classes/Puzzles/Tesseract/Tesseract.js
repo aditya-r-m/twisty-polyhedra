@@ -18,64 +18,64 @@ class Tesseract {
             new TesseractSticker(
               "yellow",
               -offset,
-              0 + i * del,
-              0 + j * del,
-              0 + k * del,
+              i * del,
+              j * del,
+              k * del,
               radius
             ),
             new TesseractSticker(
               "white",
               offset,
-              0 + i * del,
-              0 + j * del,
-              0 + k * del,
+              i * del,
+              j * del,
+              k * del,
               radius
             ),
             new TesseractSticker(
               "blue",
-              0 + i * del,
+              i * del,
               -offset,
-              0 + j * del,
-              0 + k * del,
+              j * del,
+              k * del,
               radius
             ),
             new TesseractSticker(
               "red",
-              0 + i * del,
+              i * del,
               offset,
-              0 + j * del,
-              0 + k * del,
+              j * del,
+              k * del,
               radius
             ),
             new TesseractSticker(
               "cyan",
-              0 + j * del,
-              0 + i * del,
+              j * del,
+              i * del,
               -offset,
-              0 + k * del,
+              k * del,
               radius
             ),
             new TesseractSticker(
               "green",
-              0 + j * del,
-              0 + i * del,
+              j * del,
+              i * del,
               offset,
-              0 + k * del,
+              k * del,
               radius
             ),
             new TesseractSticker(
               "magenta",
-              0 + k * del,
-              0 + i * del,
-              0 + j * del,
+              k * del,
+              i * del,
+              j * del,
               -offset,
               radius
             ),
             new TesseractSticker(
               "purple",
-              0 + k * del,
-              0 + i * del,
-              0 + j * del,
+              k * del,
+              i * del,
+              j * del,
               offset,
               radius
             )

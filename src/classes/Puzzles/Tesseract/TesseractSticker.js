@@ -1,6 +1,10 @@
 class TesseractSticker {
-  constructor(colorCode, w, x, y, z, r) {
-    this.colorCode = colorCode;
+  constructor(code, w, x, y, z, r) {
+    this.id = [w, x, y, z].map((i) => Math.round(10 * i)).join("|");
+    this.colorData = {
+      originalStickerId: this.id,
+      code,
+    };
     this.w = w;
     this.x = x;
     this.y = y;
@@ -40,7 +44,7 @@ class TesseractSticker {
 
   render(ctx) {
     if (this.outOfView()) return;
-    ctx.fillStyle = this.colorCode;
+    ctx.fillStyle = this.colorData.code;
     ctx.strokeStyle = "black";
     ctx.beginPath();
     ctx.arc(this.rx, this.ry, this.rr, 0, 2 * Math.PI);

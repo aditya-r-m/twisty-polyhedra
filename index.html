@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <title>Twisty Polyhedra</title>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-   <style>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <style>
       * {
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -62,19 +62,20 @@
       min-height: 737px;
     "
   >
-  <span
-    style="
-      display:inline-block;
-      position:fixed;
-      bottom: 10px;
-      left: 10px;
-      font-size: 40px;">
+    <span
+      style="
+        display: inline-block;
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        font-size: 40px;
+      "
+    >
       <a
         href="https://github.com/aditya-r-m/twisty-polyhedra"
         target="_blank"
-        style="
-          color: skyblue;
-          text-decoration: none;">
+        style="color: skyblue; text-decoration: none"
+      >
         &lt;/&gt;
       </a>
     </span>
@@ -89,7 +90,7 @@
         border-radius: 20px;
       "
     >
-      <h2 style="position: relative; font-family: cursive;">
+      <h2 style="position: relative; font-family: cursive">
         Congratulations!
         <div
           onclick="menu.style.display='inline-block';success.style.display='none'"
@@ -118,7 +119,7 @@
         border-radius: 20px;
       "
     >
-      <h2 style="font-family: cursive; position: relative;">
+      <h2 style="font-family: cursive; position: relative">
         HELP
         <div
           onclick="menu.style.display='inline-block';help.style.display='none'"
@@ -134,36 +135,42 @@
           X
         </div>
       </h2>
-      <ul style="margin-right: 10px;">
-        <li style="text-align: left; margin-bottom: 10px;">
+      <ul style="margin-right: 10px">
+        <li style="text-align: left; margin-bottom: 10px">
           To twist a slice,
-          <br/>press (left-mouse-button OR touch-screen) over a sticker &amp; drag.
+          <br />press (left-mouse-button OR touch-screen) over a sticker &amp;
+          drag.
         </li>
-        <li style="text-align: left; margin-bottom: 10px;">
+        <li style="text-align: left; margin-bottom: 10px">
           To rotate the puzzle,
-          <br/>press (left-mouse-button OR touch-screen) on the empty-space near the puzzle &amp; drag.
-          <br/><br/>Alternatively (on PC),
-          <br/>press (right-bouse-button OR ctrl+left-mouse-button) anywhere on puzzle canvas &amp; drag.
+          <br />press (left-mouse-button OR touch-screen) on the empty-space
+          near the puzzle &amp; drag. <br /><br />Alternatively (on PC),
+          <br />press (right-bouse-button OR ctrl+left-mouse-button) anywhere on
+          puzzle canvas &amp; drag.
         </li>
-        <li style="text-align: left; margin-bottom: 10px;">
+        <li style="text-align: left; margin-bottom: 10px">
           Click on any puzzle in the menu to select it &amp; Trigger automatic
           scramble using the play button.
         </li>
-        <li style="text-align: left; margin-bottom: 10px;">
-          You can use the solve button to auto-generate solutions for differnt puzzles to learn from.
+        <li style="text-align: left; margin-bottom: 10px">
+          You can use the solve button to auto-generate solutions for differnt
+          puzzles to learn from.
         </li>
-        <li style="text-align: left; margin-bottom: 10px;">
-          Before a given puzzle state can be solved by the algorithm, preprocessing must be done for the shape &amp; size. The preprocessed data stays in memory till the tab is killed, so subsequent solves are much faster than the first one.
+        <li style="text-align: left; margin-bottom: 10px">
+          Before a given puzzle state can be solved by the algorithm,
+          preprocessing must be done for the shape &amp; size. The preprocessed
+          data stays in memory till the tab is killed, so subsequent solves are
+          much faster than the first one.
         </li>
-        <li style="text-align: left; margin-bottom: 10px;">
+        <li style="text-align: left; margin-bottom: 10px">
           The interface has an advanced feature to point &amp; swap stickers.
-          This can be helpful to analyze different positions &amp; how the solver tackles them.
-          Note that it is very easy to bring the puzzle to unsolvable states by using this feature. The automated solver will do best effort fixing of such states.
+          This can be helpful to analyze different positions &amp; how the
+          solver tackles them. Note that it is very easy to bring the puzzle to
+          unsolvable states by using this feature. The automated solver will do
+          best effort fixing of such states.
         </li>
       </ul>
-      <h2 style="font-family: cursive;">
-        Happy Solving!
-      </h2>
+      <h2 style="font-family: cursive">Happy Solving!</h2>
     </div>
     <div
       id="menu"
@@ -175,14 +182,14 @@
         width: 400px;
       "
     >
-      <div id="puzzlemenu" style="display: inline-block; height: 300px;">
-        <div id="shapemenu" style="display: inline-block; height: 300px;">
-          <div style="height: 100px;">
-            <div style="display: inline-block; width: 100px; height: 100px;">
+      <div id="puzzlemenu" style="display: inline-block; height: 300px">
+        <div id="shapemenu" style="display: inline-block; height: 300px">
+          <div style="height: 100px">
+            <div style="display: inline-block; width: 100px; height: 100px">
               <canvas id="tetrahedron" width="100px" height="100px"></canvas>
             </div>
           </div>
-          <div style="height: 100px;">
+          <div style="height: 100px">
             <div
               style="
                 display: inline-block;
@@ -193,11 +200,11 @@
             >
               <canvas id="cube" width="100px" height="100px"></canvas>
             </div>
-            <div style="display: inline-block; width: 100px; height: 100px;">
+            <div style="display: inline-block; width: 100px; height: 100px">
               <canvas id="octahedron" width="100px" height="100px"></canvas>
             </div>
           </div>
-          <div style="height: 100px;">
+          <div style="height: 100px">
             <div
               style="
                 display: inline-block;
@@ -209,12 +216,12 @@
             >
               <canvas id="dodecahedron" width="100px" height="100px"></canvas>
             </div>
-            <div style="display: inline-block; width: 100px; height: 100px;">
+            <div style="display: inline-block; width: 100px; height: 100px">
               <canvas id="icosahedron" width="100px" height="100px"></canvas>
             </div>
           </div>
         </div>
-        <div id="sizemenu" style="height: 300px; margin-top: 15px;">
+        <div id="sizemenu" style="height: 300px; margin-top: 15px">
           <div
             style="
               display: inline-block;
@@ -222,15 +229,15 @@
               margin-top: 100px;
             "
           >
-            <div style="width: 100px; height: 100px;">
+            <div style="width: 100px; height: 100px">
               <canvas id="size-1" width="100px" height="100px"></canvas>
             </div>
           </div>
-          <div style="vertical-align: top;">
-            <div style="display: inline-block; width: 100px; height: 100px;">
+          <div style="vertical-align: top">
+            <div style="display: inline-block; width: 100px; height: 100px">
               <canvas id="size-2" width="100px" height="100px"></canvas>
             </div>
-            <div style="display: inline-block; width: 100px; height: 100px;">
+            <div style="display: inline-block; width: 100px; height: 100px">
               <canvas id="size-3" width="100px" height="100px"></canvas>
             </div>
           </div>
@@ -326,10 +333,9 @@
             onclick="updateSizeOffset(document.getElementById('soff'), 1)"
           />
           <label>Size Offset</label>
-
         </div>
       </div>
-      <div style="margin: 50px 65px; height: 35px; font-size: 40px;">
+      <div style="margin: 50px 65px; height: 35px; font-size: 40px">
         <span
           onclick="help.style.display='inline-block';menu.style.display='none'"
           style="
@@ -345,7 +351,7 @@
         <span
           id="settingsmenubutton"
           onclick="puzzlemenu.style.display=settingsmenubutton.style.display='none';configurationmenu.style.display=puzzlemenubutton.style.display='inline-block';"
-          style="cursor: pointer; width: 50px; height: 50px; line-height: 50px;"
+          style="cursor: pointer; width: 50px; height: 50px; line-height: 50px"
           >&#9881;</span
         >
         <span
@@ -376,8 +382,10 @@
           >&#9658;</span
         >
       </div>
-      <div id="solverunsupported" style="color:skyblue; display: none;">
-        Solver could not be initialized. Please ensure that your browser supports background workers and you are accessing the application through a remote or local server.
+      <div id="solverunsupported" style="color: skyblue; display: none">
+        Solver could not be initialized. Please ensure that your browser
+        supports background workers and you are accessing the application
+        through a remote or local server.
       </div>
       <div id="solvewrapper">
         <div
@@ -397,18 +405,20 @@
         </div>
         <div
           id="solverstatus"
-          style="display: none; cursor: pointer; color: skyblue;"
+          style="display: none; cursor: pointer; color: skyblue"
         >
-          <div id="solverstatustext" style="padding-bottom: 10px;"></div>
+          <div id="solverstatustext" style="padding-bottom: 10px"></div>
           <span id="solverloader"></span>
         </div>
       </div>
     </div>
-    <div style="display: inline-block; color: skyblue;">
+    <div style="display: inline-block; color: skyblue">
       <canvas id="gameCanvas" width="600px" height="600px"></canvas>
-      <div id="solutionpanel" width="600px" style="display: none;">
+      <div id="solutionpanel" width="600px" style="display: none">
         <span id="revertsolutionpanel">
-          <span class="makemovebutton" onclick="revertAllSolverMoves()">|<</span>
+          <span class="makemovebutton" onclick="revertAllSolverMoves()"
+            >|<</span
+          >
           <span class="makemovebutton" onclick="revertSolverMoveSequence()"
             ><<</span
           >
@@ -416,7 +426,7 @@
         </span>
         <span
           id="solutioninfo"
-          style="display: inline-block; width: 150px;"
+          style="display: inline-block; width: 150px"
         ></span>
         <span id="applysolutionpanel">
           <span class="makemovebutton" onclick="makeSolverMove()">></span>
@@ -428,13 +438,13 @@
       </div>
       <span
         id="stats"
-        style="position: fixed; right: 50px; top: 50px; display: none;"
+        style="position: fixed; right: 50px; top: 50px; display: none"
         >Time Taken: --:--, Moves Made: --</span
       >
     </div>
     <div
       id="rearView"
-      style="position: fixed; display: none; right: 0px; bottom: 20px;"
+      style="position: fixed; display: none; right: 0px; bottom: 20px"
     >
       <canvas id="gameCanvasInverted" width="200px" height="200px"></canvas>
     </div>

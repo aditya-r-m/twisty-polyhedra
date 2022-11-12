@@ -19,10 +19,11 @@ this.alignFaceCentres = (
       const targetSticker = puzzleStateAsComposableCycle.swapMap[sticker];
       for (const atomicComposableCycle of atomicComposableCycles) {
         if (atomicComposableCycle.swapMap[targetSticker] === sourceSticker) {
-          const newPuzzleStateAsComposableCycle = ComposableCycle.fromComposableCycles(
-            [puzzleStateAsComposableCycle, atomicComposableCycle],
-            [undefined, { sequence: "Face center alignment" }]
-          );
+          const newPuzzleStateAsComposableCycle =
+            ComposableCycle.fromComposableCycles(
+              [puzzleStateAsComposableCycle, atomicComposableCycle],
+              [undefined, { sequence: "Face center alignment" }]
+            );
           if (
             countOverlappingFaceCentres(newPuzzleStateAsComposableCycle) <
             countOverlappingFaceCentres(puzzleStateAsComposableCycle)
@@ -68,10 +69,11 @@ this.correctParity = (
     if (hasOddOverlap(cluster, puzzleStateAsEvenComposableCycle)) {
       for (const atomicComposableCycle of atomicComposableCycles) {
         if (hasOddOverlap(cluster, atomicComposableCycle)) {
-          puzzleStateAsEvenComposableCycle = ComposableCycle.fromComposableCycles(
-            [puzzleStateAsEvenComposableCycle, atomicComposableCycle],
-            [undefined, { sequence: "Parity Correction" }]
-          );
+          puzzleStateAsEvenComposableCycle =
+            ComposableCycle.fromComposableCycles(
+              [puzzleStateAsEvenComposableCycle, atomicComposableCycle],
+              [undefined, { sequence: "Parity Correction" }]
+            );
           break;
         }
       }

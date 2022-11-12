@@ -1,14 +1,13 @@
 (() => {
-
   window.showSolverUnsupportedMessage = () => {
-      window.solverunsupported.style.display = "block";
-      window.solvewrapper.style.display = "none";
+    window.solverunsupported.style.display = "block";
+    window.solvewrapper.style.display = "none";
   };
 
   // The interface from the UI thread to the solver worker.
   if (window.Worker) {
     window.solverWorker = new Worker("src/solver-worker.js");
-    window.solverWorker.onerror = ((evt) => showSolverUnsupportedMessage());
+    window.solverWorker.onerror = (evt) => showSolverUnsupportedMessage();
   } else {
     showSolverUnsupportedMessage();
   }

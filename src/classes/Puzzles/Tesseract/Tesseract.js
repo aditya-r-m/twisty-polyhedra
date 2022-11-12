@@ -8,78 +8,11 @@ class Tesseract {
     this.rotationInfo = { s: undefined, axis: undefined, direction: undefined };
 
     this.stickers = [];
-    let offset = (this.offset = 0.8);
-    let del = (this.del = 0.15);
-    let radius = (this.radius = 0.07);
-    for (let i = -1; i <= 1; i++)
-      for (let j = -1; j <= 1; j++)
-        for (let k = -1; k <= 1; k++)
-          this.stickers.push(
-            new TesseractSticker(
-              "yellow",
-              -offset,
-              i * del,
-              j * del,
-              k * del,
-              radius
-            ),
-            new TesseractSticker(
-              "white",
-              offset,
-              i * del,
-              j * del,
-              k * del,
-              radius
-            ),
-            new TesseractSticker(
-              "blue",
-              i * del,
-              -offset,
-              j * del,
-              k * del,
-              radius
-            ),
-            new TesseractSticker(
-              "red",
-              i * del,
-              offset,
-              j * del,
-              k * del,
-              radius
-            ),
-            new TesseractSticker(
-              "cyan",
-              j * del,
-              i * del,
-              -offset,
-              k * del,
-              radius
-            ),
-            new TesseractSticker(
-              "green",
-              j * del,
-              i * del,
-              offset,
-              k * del,
-              radius
-            ),
-            new TesseractSticker(
-              "magenta",
-              k * del,
-              i * del,
-              j * del,
-              -offset,
-              radius
-            ),
-            new TesseractSticker(
-              "purple",
-              k * del,
-              i * del,
-              j * del,
-              offset,
-              radius
-            )
-          );
+    this.offset = 0.8;
+    this.del = 0.16;
+    this.radius = 0.08;
+    this.stickers = buildTesseractStickers(this.offset, this.del, this.radius);
+    this.cycles = buildTesseractCycles(this.stickers, this.offset, this.del);
     this.grid = [];
     for (let s of this.stickers) {
       this.grid.push({ w: s.w, x: s.x, y: s.y, z: s.z });
@@ -131,7 +64,7 @@ class Tesseract {
         this.rotationInfo.axis,
         this.rotationInfo.direction
       );
-      if (this.rotationInfo.s.centerOfView(this.offset)) {
+      if (this.stickers.reduce((c, s) => c + s.centerOfView(this.offset), 0) == 27) {
         this.snapToGrid();
         this.rotating = false;
         this.rotationInfo = {

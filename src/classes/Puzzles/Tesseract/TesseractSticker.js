@@ -20,15 +20,12 @@ class TesseractSticker {
     return this.w < -0.5;
   }
 
-  centerOfView(offset) {
-    return Math.abs(this.w - offset) < 1 / 1024;
+  closeToCenterOfView(offset) {
+    return this.w > 0.5;
   }
 
-  rotate(a, b, theta) {
-    return [
-      a * Math.cos(theta) - b * Math.sin(theta),
-      a * Math.sin(theta) + b * Math.cos(theta),
-    ];
+  centerOfView(offset) {
+    return Math.abs(this.w - offset) < 1 / 1024;
   }
 
   prepareRender(scale) {
@@ -37,8 +34,8 @@ class TesseractSticker {
     [this.rx, this.ry, this.rz] = [this.x, this.y, this.z].map(
       (a) => p * scale * a
     );
-    [this.rx, this.rz] = this.rotate(this.rx, this.rz, -Math.PI / 4);
-    [this.ry, this.rz] = this.rotate(this.ry, this.rz, Math.PI / 6);
+    [this.rx, this.rz] = rotate2(this.rx, this.rz, -Math.PI / 4);
+    [this.ry, this.rz] = rotate2(this.ry, this.rz, Math.PI / 6);
     this.rr = this.r * scale;
   }
 

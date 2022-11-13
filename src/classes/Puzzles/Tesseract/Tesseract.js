@@ -44,7 +44,7 @@ class Tesseract {
 
   updateOrientation(_, a = "w", b = "z", i = -1) {
     this.stickers.forEach((sticker) => {
-      [sticker[a], sticker[b]] = sticker.rotate(
+      [sticker[a], sticker[b]] = rotate2(
         sticker[a],
         sticker[b],
         (parseFloat(i) * Math.PI) / 96
@@ -64,7 +64,9 @@ class Tesseract {
         this.rotationInfo.axis,
         this.rotationInfo.direction
       );
-      if (this.stickers.reduce((c, s) => c + s.centerOfView(this.offset), 0) == 27) {
+      if (
+        this.stickers.reduce((c, s) => c + s.centerOfView(this.offset), 0) == 27
+      ) {
         this.snapToGrid();
         this.rotating = false;
         this.rotationInfo = {
@@ -82,9 +84,9 @@ class Tesseract {
 
   grab(x, y, type) {
     if (this.rotating) return;
-    let touchedSticker = this.stickers.find((s) => s.overlaps(x, y));
+    let touchedSticker = this.stickers.findLast((s) => s.overlaps(x, y));
     if (!touchedSticker) return;
-    if (!touchedSticker.centerOfView()) {
+    if (!touchedSticker.closeToCenterOfView()) {
       this.rotating = true;
       this.rotationInfo.s = touchedSticker;
       this.rotationInfo.axis = ["x", "y", "z"].reduce(
@@ -94,6 +96,9 @@ class Tesseract {
       );
       this.rotationInfo.direction =
         touchedSticker[this.rotationInfo.axis] < 0 ? 1 : -1;
+    } else {
+      let cycle = this.cycles.find((c) => c.index === touchedSticker.id);
+      if (cycle) cycle.twist();
     }
   }
 

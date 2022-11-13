@@ -12,7 +12,7 @@ importScripts("./solver-core.js");
 
 this.clusterCache = {};
 this.getPuzzleId = (puzzle) =>
-  `${puzzle.faces.length}-f-${puzzle.cycles.length}-c`;
+  `${(puzzle.faces || {}).length}-f-${puzzle.cycles.length}-c`;
 
 this.getPuzzleStateAsComposableCycle = (puzzle) => {
   const puzzlePermutation = {};

@@ -22,9 +22,11 @@ The interface relies on cursor/touch gestures and works well with pc/mobile setu
 
 ## Solver <a name="solver"></a>
 
-The project contains a polynomial time solver for the 5 platonic solids. The solver stays agnostic to the shape it's given & the solution length is quadratic in terms of edge length (i.e. bounded by the number of clusters with solution of each cluster bounded by some constant).
+The project contains a polynomial time solver for the 5 platonic solids. The solver stays agnostic to the shape it's given & the solution length is quadratic in terms of edge length i.e. bounded by the number of clusters with solution of each cluster bounded by some constant.
 
 ### Algorithm <a name="algorithm"></a>
+
+The states and moves are all naturally representated as permutations, with identity permutation as the special solved state. The core idea is that move sequences can be composed following some patterns which lead to very few stickers getting swapped. The solution steps are simple greedy choices on these composed permutations such that application of chosen move sequence to the current state cancels out a small non-zero number of swapped stickers. Iteratively moving with these greedy choices consistently results in new states slightly closers to the final solved identity permutation, till the same is reached.
 
 The solver proceeds cluster by cluster. It breaks down the stickers into connected components & then does the following,
 
@@ -61,10 +63,6 @@ Note: We have to be careful with special clusters of the following kind,
 2. Commutators result in small cycles within the cluster, but all of them dislocate pieces of other clusters (ex. - star clusters on Dodecahedra).
 
 We identify which cluster fall in these categories just by looking at the results of the preprocessing & solve these before considering the normal clusters. Since there are no useful commutators for type (1) special clusters, we substitute their simple atomic twists into the patterns which generally apply commutators to improve puzzle state.
-
-At the code level, any given puzzle state can be represented by a permutation (ComposableCycle) & any allowed twist is a permutation itself.
-The solved state is naturally represented by the identity permutation.
-The key task is composing the starting state with different permutations while constantly moving towards smaller & smaller permutations.
 
 ### Benchmarks (Chrome 83 | Intel i7-9750H @2.60GHz) <a name="benchmarks"></a>
 
